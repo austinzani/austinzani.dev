@@ -1,5 +1,6 @@
 export interface allTimeObject {
   name: string;
+  is_active: boolean;
   total_games: number;
   total_wins: number;
   playoff_games: number;
