@@ -9,6 +9,7 @@ import {
 } from "@remix-run/react";
 
 import styles from './styles/app.css'
+import NavHeader from './components/NavHeader'
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
@@ -26,23 +27,15 @@ export const links: LinksFunction = () => {
   ]
 }
 
-const NavHeader = () => {
-    return (
-        <div className={"flex justify-between h-[54px] border-b border-b-orange-500 "}>
-            <h3 className={"text-2xl p-2 text-teal-600"}>{"{ Austin Zani }"}</h3>
-            <h3 className={"text-2xl p-2 text-teal-600"}>Menu Items</h3>
-        </div>
-    )
-}
-
 export default function App() {
   return (
-    <html lang="en">
+    <html lang="en" className={"w-full h-full"}>
       <head>
         <Meta />
         <Links />
+        <script src="https://kit.fontawesome.com/84ef1ed513.js" crossOrigin="anonymous"></script>
       </head>
-      <body className={"bg-gray-700 text-white font-['Outfit']"}>
+      <body className={"w-full h-full bg-black text-white font-['Outfit']"}>
         <NavHeader />
         <Outlet />
         <ScrollRestoration />

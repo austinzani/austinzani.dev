@@ -33,7 +33,7 @@ export function Select<T extends object>(props: AriaSelectProps<T>) {
     let { focusProps, isFocusVisible } = useFocusRing();
 
     return (
-        <div className="inline-flex flex-col relative w-52 mt-4">
+        <div className="inline-flex flex-col relative w-52">
             <div
                 {...labelProps}
                 className="block text-sm font-medium text-white text-left cursor-default"

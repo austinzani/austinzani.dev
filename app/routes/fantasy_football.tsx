@@ -6,9 +6,6 @@ import type { LoaderArgs } from "@remix-run/node";
 import type { allTimeObject } from "../../db_types";
 
 export const loader = async ({ request }: LoaderArgs) => {
-    const url = new URL(request.url);
-    const season = url.searchParams.get("season");
-
     // Fetch all manager names and ids for use in all FF pages
     const {data: managerData, error: managerError} = await supabase
         .from('manager')

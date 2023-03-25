@@ -1,24 +1,28 @@
 import { NavLink } from "@remix-run/react";
+import {className} from "postcss-selector-parser";
 
 type SideNavigationProps = {
-    options: {route: string, label: string}[]
+    options: {route: string, label: string}[],
+    className?: string,
 }
 
 const SideNavigation = (props: SideNavigationProps) => {
 
     return (
-        <aside className="w-64 min-w-64" aria-label="Sidebar">
-            <div className="px-3 py-4 overflow-y-auto rounded">
-                <ul className="space-y-2">
+        <nav className={`w-64 z-10 min-w-64 mr-1 pt-4 absolute ${props.className}`} aria-label="Sidebar">
+            <div className="w-full">
+                <ul className="w-full">
                 {props.options.map((option) => {
                     return (
-                        <li key={option.route}>
+                        <li className={"h-8 flex items-center"} key={option.route}>
                             <NavLink
                                 to={option.route}
+                                prefetch="intent"
+                                end
                                 className={({ isActive }) => {
                                     return isActive ?
-                                        "text-gray-900" :
-                                        "text-gray-500";
+                                        "text-white ml-2 pl-3 font-bold w-60 bg-orange-500/60 rounded-md" :
+                                        "text-white ml-2 font-light pl-3 w-60 hover:bg-orange-500/60 rounded-md"
                                 }}
                             >{option.label}</NavLink>
                         </li>
@@ -27,7 +31,7 @@ const SideNavigation = (props: SideNavigationProps) => {
                 }
                 </ul>
             </div>
-        </aside>
+        </nav>
 
     );
 }
