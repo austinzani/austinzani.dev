@@ -1,8 +1,11 @@
-
+import React from "react";
 
 const Music = () => {
     return (
-        <h1 className={"text-5xl h-full w-full flex items-center justify-center"}>Coming Soon</h1>
+        <div className={"h-full w-full flex flex-col items-center justify-center"}>
+            <h1 className={"text-5xl"}>Music List</h1>
+        <h1 className={"text-5xl"}>Coming Soon</h1>
+        </div>
     )
 }
 

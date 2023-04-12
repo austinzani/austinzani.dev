@@ -3,7 +3,7 @@ import {useNavigate} from "@remix-run/react";
 
 import {capitalizeFirstLetter} from "~/utils/helpers";
 
-import type {allTimeObject} from "../../../db_types";
+import type {Database} from "../../../db_types";
 
 import {Item, Select} from "~/components/Select";
 
@@ -13,7 +13,7 @@ import SideNavigation from "~/components/SideNavigation";
 import {useFootballContext} from "~/routes/fantasy_football";
 import {id} from "postcss-selector-parser";
 
-const AllTimeTable = ({allTime, showAll}: { allTime: allTimeObject[], showAll: boolean }) => {
+const AllTimeTable = ({allTime, showAll}: { allTime: Database["public"]["CompositeTypes"]["all_time_object"][], showAll: boolean }) => {
     const navigate = useNavigate();
     const {managers} = useFootballContext();
     return (

@@ -5,7 +5,7 @@ import supabase from "~/utils/supabase";
 import {capitalizeFirstLetter} from "~/utils/helpers";
 
 import type {LoaderArgs} from "@remix-run/node";
-import type {seasonDetailsObject} from "../../../../db_types";
+import type {Database} from "../../../../db_types";
 
 import {useFootballContext} from "~/routes/fantasy_football";
 
@@ -16,7 +16,6 @@ import SideNavigation from "~/components/SideNavigation";
 
 export const loader = async ({params}: LoaderArgs) => {
     const season = params.year;
-    console.log(season)
     if (season) {
         const seasonInt = parseInt(season);
         if (!seasonInt) {
@@ -50,7 +49,9 @@ export const loader = async ({params}: LoaderArgs) => {
     }
 }
 
-const SeasonTable = ({season}: { season: seasonDetailsObject[] }) => {
+const SeasonTable = ({season}: { season: Database["public"]["CompositeTypes"]["season_details_object"][] }) => {
+    const navigate = useNavigate();
+    const {managers} = useFootballContext();
     return (
         <table className='table-auto'>
             <thead>
@@ -65,17 +66,20 @@ const SeasonTable = ({season}: { season: seasonDetailsObject[] }) => {
             </tr>
             </thead>
             <tbody>
-            {season?.map((manager) => (
-                <tr className={'hover:bg-orange-500/60 rounded-md'} key={manager.manager_name}>
-                    <td className={'px-4 tabular-nums py-1 cursor-default font-light text-left rounded-l-lg'}>{capitalizeFirstLetter(manager.manager_name)}{manager.championships ? " 🏆" : ""}</td>
-                    <td className={'px-4 tabular-nums py-1 cursor-default font-light text-right rounded-r-lg sm:rounded-none'}>{manager.total_wins} - {manager.total_games - manager.total_wins}</td>
-                    <td className={'px-4 tabular-nums hidden sm:table-cell py-1 cursor-default font-light text-right'}>{manager.total_points_for.toFixed(2)}</td>
-                    <td className={'px-4 tabular-nums hidden sm:table-cell py-1 cursor-default font-light text-right sm:rounded-r-lg lg:rounded-none'}>{manager.total_points_against.toFixed(2)}</td>
-                    <td className={'px-4 tabular-nums hidden lg:table-cell py-1 cursor-default font-light text-right'}>{manager.high_point_weeks}</td>
-                    <td className={'px-4 tabular-nums hidden lg:table-cell py-1 cursor-default font-light text-right'}>{manager.low_point_weeks}</td>
-                    <td className={'px-4 tabular-nums hidden lg:table-cell py-1 cursor-default font-light text-right rounded-r-lg'}>{manager.playoff_wins} - {manager.playoff_games - manager.playoff_wins}</td>
-                </tr>
-            ))}
+            {season?.map((manager) =>{
+                const managerId = managers.find((m) => m.name === manager.manager_name)?.id;
+                return  (
+                    <tr onClick={() => navigate(`/fantasy_football/manager/${managerId}`)} className={'hover:bg-orange-500/60 rounded-md'} key={manager.manager_name}>
+                        <td className={'px-4 cursor-pointer tabular-nums py-1 font-light text-left rounded-l-lg'}>{capitalizeFirstLetter(manager.manager_name)}{manager.championships ? " 🏆" : ""}</td>
+                        <td className={'px-4 cursor-pointer tabular-nums py-1 font-light text-right rounded-r-lg sm:rounded-none'}>{manager.total_wins} - {manager.total_games - manager.total_wins}</td>
+                        <td className={'px-4 cursor-pointer tabular-nums hidden sm:table-cell py-1 font-light text-right'}>{manager.total_points_for.toFixed(2)}</td>
+                        <td className={'px-4 cursor-pointer tabular-nums hidden sm:table-cell py-1 font-light text-right sm:rounded-r-lg lg:rounded-none'}>{manager.total_points_against.toFixed(2)}</td>
+                        <td className={'px-4 cursor-pointer tabular-nums hidden lg:table-cell py-1 font-light text-right'}>{manager.high_point_weeks}</td>
+                        <td className={'px-4 cursor-pointer tabular-nums hidden lg:table-cell py-1 font-light text-right'}>{manager.low_point_weeks}</td>
+                        <td className={'px-4 cursor-pointer tabular-nums hidden lg:table-cell py-1 font-light text-right rounded-r-lg'}>{manager.playoff_wins} - {manager.playoff_games - manager.playoff_wins}</td>
+                    </tr>
+                )
+            })}
             </tbody>
         </table>
     )

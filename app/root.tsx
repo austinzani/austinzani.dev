@@ -7,6 +7,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
+import React from "react";
 
 import styles from './styles/app.css'
 import NavHeader from './components/NavHeader'

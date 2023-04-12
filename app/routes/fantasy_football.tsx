@@ -3,7 +3,7 @@ import React from "react";
 import supabase from "~/utils/supabase";
 
 import type { LoaderArgs } from "@remix-run/node";
-import type { allTimeObject } from "../../db_types";
+import type { Database } from "../../db_types";
 
 export const loader = async ({ request }: LoaderArgs) => {
     // Fetch all manager names and ids for use in all FF pages
@@ -17,7 +17,6 @@ export const loader = async ({ request }: LoaderArgs) => {
         .select( 'year')
         .order('year', {ascending: false})
 
-    let allTimeData: allTimeObject[] | null = null;
 
     const {data: allTimeResponse, error: allTimeError} = await supabase
         .rpc('all_time')
@@ -30,9 +29,7 @@ export const loader = async ({ request }: LoaderArgs) => {
             years: [],
         }
     }
-
-    allTimeData = allTimeResponse;
-    allTimeData?.sort((a, b) => (b.total_wins / b.total_games) - (a.total_wins / a.total_games))
+    allTimeResponse?.sort((a, b) => (b.total_wins / b.total_games) - (a.total_wins / a.total_games))
 
     // Adding key to years data and All Time as an option
     const years = yearsData?.map(year => {
@@ -46,11 +43,11 @@ export const loader = async ({ request }: LoaderArgs) => {
     return {
         error: null,
         managers: managerData ?? [],
-        allTime: allTimeData ?? [],
+        allTime: allTimeResponse ?? [],
         years: years ?? []
     }
 }
-type ContextType = { managers: {id: string, name: string}[], allTime: allTimeObject[], years: {key: string, value: string}[] }
+type ContextType = { managers: {id: number, name: string}[], allTime: Database["public"]["CompositeTypes"]["all_time_object"][], years: {key: string, value: string}[] }
 
 
 export default function Index() {
