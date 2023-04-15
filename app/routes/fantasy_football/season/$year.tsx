@@ -1,4 +1,4 @@
-import {useLoaderData, useNavigate} from "@remix-run/react";
+import {Link, useLoaderData, useNavigate} from "@remix-run/react";
 import React, {useState} from "react";
 import supabase from "~/utils/supabase";
 
@@ -96,7 +96,10 @@ export default function Year() {
         <React.Fragment>
             <SideNavigation options={navOptions} className={'hidden lg:flex'}/>
             <main className="absolute lg:pl-64 flex flex-col w-full">
+                <div className={'flex items-baseline'}>
                 <h2 className={"text-xl mx-3 mt-3 border-b w-fit"}>{`League History ${year}`}</h2>
+                <Link to={`/fantasy_football/matchups?year=${year}&week=1`} className={'mx-3 text-orange-500'}>{`View Schedule >`}</Link>
+                </div>
                 <div className={'lg:hidden mx-3 mb-2'}>
                     <Select
                         label="Pick Year"

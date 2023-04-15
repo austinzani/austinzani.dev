@@ -80,9 +80,9 @@ function Option({ item, state }: OptionProps) {
         ref
     );
 
-    let text = "text-gray-700";
+    let text = "text-white";
     if (isFocused || isSelected) {
-        text = "text-orange-600";
+        text = "text-white";
     } else if (isDisabled) {
         text = "text-gray-200";
     }
@@ -91,13 +91,13 @@ function Option({ item, state }: OptionProps) {
         <li
             {...optionProps}
             ref={ref}
-            className={`m-1 rounded-md py-2 px-2 text-sm outline-none cursor-default flex items-center justify-between ${text} ${
-                isFocused ? "bg-orange-100" : ""
+            className={`m-1 font-light rounded-md py-2 px-2 text-sm outline-none cursor-default flex items-center justify-between ${text} ${
+                isFocused ? "bg-orange-500/60" : ""
             } ${isSelected ? "font-bold" : ""}`}
         >
             {item.rendered}
             {isSelected && (
-                <CheckIcon aria-hidden="true" className="w-5 h-5 text-orange-600" />
+                <CheckIcon aria-hidden="true" className="w-5 h-5 text-white" />
             )}
         </li>
     );

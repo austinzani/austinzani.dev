@@ -11,7 +11,7 @@ export default function Index() {
     const random = Math.floor(Math.random() * 6);
   return (
       <div className="w-full h-full flex items-center flex-col">
-        <img className={"w-60 h-60 mt-20 mb-4"} src={memojis[random]}/>
+        <img className={"w-60 h-60 mt-20 mb-4"} src={memojis[random]} alt={"Random MeMoji of the site owner Austin Zani"}/>
         <h1 className="font-['Outfit'] w-fit font-medium text-4xl">Austin Zani</h1>
         <h2 className="font-['Outfit'] text-gray-400 w-fit font-light text-l">Husband, Father, Sports Addict, Software Developer</h2>
       </div>
