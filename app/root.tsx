@@ -26,6 +26,7 @@ export const links: LinksFunction = () => {
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "true" },
       { rel: "preload", as: "image", href: "https://bvaxppgdleypbyzyjchu.supabase.co/storage/v1/object/public/images/league_pic.JPG" },
+      { rel: "me", href: "https://mastodon.social/@zaniad" },
   ]
 }
 
