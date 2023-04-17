@@ -6,7 +6,7 @@ import {capitalizeFirstLetter} from "~/utils/helpers";
 import type {LoaderArgs} from "@remix-run/node";
 import {useFootballContext} from "~/routes/fantasy_football";
 import {Database} from "../../../../db_types";
-import ScoreCard from "~/components/ScoreCard";
+import {ScoreCardGroup} from "~/components/ScoreCard";
 
 interface loaderData {
     error: string | null,
@@ -66,10 +66,10 @@ type statKey = keyof HeadToHeadAlt
 const StatRow = (props: { stat_key: statKey, head_to_head: HeadToHeadAlt[], stat: string, stat_helper?: string }) => {
     const {stat_key, head_to_head, stat_helper, stat} = props;
 
-    return (<tr>
-        <td className={'text-left font-light'}>{head_to_head[0][stat_key]}</td>
-        <td className={'text-center'}>{stat}</td>
-        <td className={'text-right font-light'}>{head_to_head[1][stat_key]}</td>
+    return (<tr className={"hover:bg-orange-500/60"}>
+        <td className={'px-4 rounded-l-lg text-left font-light'}>{head_to_head[0][stat_key]}</td>
+        <td className={'px-4 text-center'}>{stat}</td>
+        <td className={'px-4 rounded-r-lg text-right font-light'}>{head_to_head[1][stat_key]}</td>
     </tr>)
 }
 
@@ -78,6 +78,9 @@ const HeadToHeadStats = ({head_to_head}: {
 }) => {
     const team_one_manager = capitalizeFirstLetter(head_to_head[0].name)
     const team_two_manager = capitalizeFirstLetter(head_to_head[1].name)
+    const {managers} = useFootballContext();
+    const team_one_id = managers.find((manager) => manager.name.toLowerCase() === team_one_manager.toLowerCase())?.id ?? 0;
+    const team_two_id = managers.find((manager) => manager.name.toLowerCase() === team_two_manager.toLowerCase())?.id ?? 0;
     const head_to_head_alt: HeadToHeadAlt[] = head_to_head.map((manager) => {
         return {
             ...manager,
@@ -85,13 +88,25 @@ const HeadToHeadStats = ({head_to_head}: {
             playoff_record: `${manager.playoff_wins} - ${manager.playoff_games - manager.playoff_wins}`
         }
     })
+
+
     return (
+        <div>
+            <div className={"flex justify-between items-center"}>
+                <Link className={"px-2 text-2xl hover:text-orange-500 max-w-[45%] min-w-[45%] hover:underline text-left"} to={`/fantasy_football/manager/${team_one_id}`} prefetch={"intent"}>
+                    {team_one_manager}
+                </Link>
+                <div className={"text-xl max-w-[10%] min-w-[10%] italic text-center"}>vs.</div>
+                <Link className={"px-2 text-2xl hover:text-orange-500 max-w-[45%] min-w-[45%] hover:underline text-right"} to={`/fantasy_football/manager/${team_two_id}`} prefetch={"intent"}>
+                    {team_two_manager}
+                </Link>
+            </div>
         <table className='table-auto'>
             <thead>
             <tr>
-                <th className={'text-2xl text-left'}>{team_one_manager}</th>
-                <th className={'text-2xl text-center italic'}>vs.</th>
-                <th className={'text-2xl text-right'}>{team_two_manager}</th>
+                <th className={'overflow-x-hidden w-[45%] px-2 text-2xl text-left'}></th>
+                <th className={'overflow-x-hidden w-[10%] px-2 text-2xl text-center italic'}></th>
+                <th className={'overflow-x-hidden w-[45%] px-2 text-2xl text-right'}></th>
             </tr>
             </thead>
             <tbody>
@@ -106,24 +121,19 @@ const HeadToHeadStats = ({head_to_head}: {
             <StatRow stat_key={"championships"} head_to_head={head_to_head_alt} stat={"Championships"}/>
             </tbody>
         </table>
+        </div>
     )
 }
 
 export default function Manager() {
-    const {error, matchups, team_one_id, team_two_id, headToHead} = useLoaderData<loaderData>()
-    const {managers} = useFootballContext();
-    const team_one_manager = capitalizeFirstLetter(managers?.find((manager) => manager.id === team_one_id)?.name ?? "")
-    const team_two_manager = capitalizeFirstLetter(managers?.find((manager) => manager.id === team_two_id)?.name ?? "")
+    const {error, matchups, headToHead} = useLoaderData<loaderData>()
     return (
         <div className={'flex justify-center w-full'}>
             <div className={'flex m-3 flex-col w-full max-w-[64rem]'}>
                 {headToHead && <HeadToHeadStats head_to_head={headToHead}/>}
                 <h1 className={"pt-4 pb-2 text-2xl"}>Matchup History</h1>
                 <div className={"flex flex-wrap justify-around"}>
-                {matchups && matchups.map((matchup) => {
-                    return <ScoreCard matchup={matchup} showDate/>
-                })
-                }
+                {matchups && <ScoreCardGroup matchups={matchups} showDate={true}/>}
                 </div>
             </div>
         </div>

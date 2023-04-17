@@ -118,6 +118,7 @@ export interface Database {
           teams: number[]
           toilet_bowl_champ: number | null
           year: number
+          total_weeks: number | null
         }
         Insert: {
           champ?: number | null
@@ -128,6 +129,7 @@ export interface Database {
           teams: number[]
           toilet_bowl_champ?: number | null
           year?: number
+          total_weeks?: number | null
         }
         Update: {
           champ?: number | null
@@ -138,6 +140,7 @@ export interface Database {
           teams?: number[]
           toilet_bowl_champ?: number | null
           year?: number
+          total_weeks?: number | null
         }
       }
       team: {

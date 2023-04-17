@@ -3,7 +3,7 @@ import React, {forwardRef, RefObject} from "react";
 import { useButton, useFocusRing, mergeProps } from "react-aria";
 
 interface ButtonProps extends AriaButtonProps {
-    isPressed?: boolean;
+    isPressed: boolean;
 }
 
 // @ts-ignore

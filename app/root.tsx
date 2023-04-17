@@ -39,7 +39,9 @@ export default function App() {
       </head>
       <body className={"w-full h-full bg-black text-white font-['Outfit']"}>
         <NavHeader />
-        <Outlet />
+        <div className={"h-[calc(100%_-_3.5rem)] w-full"}>
+            <Outlet />
+        </div>
         <ScrollRestoration />
         <Scripts />
         <LiveReload />

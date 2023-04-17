@@ -49,6 +49,7 @@ export const loader = async ({params}: LoaderArgs): Promise<loaderData> => {
 }
 
 const SeasonTable = ({seasons}: { seasons: Database['public']['CompositeTypes']['manager_season_object'][] }) => {
+    const navigate = useNavigate();
     return (
         <table className='table-auto'>
             <thead>
@@ -64,14 +65,15 @@ const SeasonTable = ({seasons}: { seasons: Database['public']['CompositeTypes'][
             </thead>
             <tbody>
             {seasons?.map((year) => (
-                <tr className={'hover:bg-orange-500/60 rounded-md'} key={year.year}>
-                    <td className={'px-4 tabular-nums py-1 cursor-default font-light text-left rounded-l-lg'}>{year.year}{(year.playoff_wins === year.playoff_games) && year.playoff_games > 0 ? " 🏆" : ""}</td>
-                    <td className={'px-4 tabular-nums py-1 cursor-default font-light text-right rounded-r-lg sm:rounded-none'}>{year.total_wins} - {year.total_games - year.total_wins}</td>
-                    <td className={'px-4 tabular-nums hidden sm:table-cell py-1 cursor-default font-light text-right'}>{year.total_points_for.toFixed(2)}</td>
-                    <td className={'px-4 tabular-nums hidden sm:table-cell py-1 cursor-default font-light text-right sm:rounded-r-lg lg:rounded-none'}>{year.total_points_against.toFixed(2)}</td>
-                    <td className={'px-4 tabular-nums hidden lg:table-cell py-1 cursor-default font-light text-right'}>{year.high_point_weeks}</td>
-                    <td className={'px-4 tabular-nums hidden lg:table-cell py-1 cursor-default font-light text-right'}>{year.low_point_weeks}</td>
-                    <td className={'px-4 tabular-nums hidden lg:table-cell py-1 cursor-default font-light text-right rounded-r-lg'}>{year.playoff_wins} - {year.playoff_games - year.playoff_wins}</td>
+                <tr onClick={() => navigate(`/fantasy_football/season/${year.year}`)}
+                    className={'hover:bg-orange-500/60 rounded-md'} key={year.year}>
+                    <td className={'px-4 cursor-pointer tabular-nums py-1 font-light text-left rounded-l-lg'}>{year.year}{(year.playoff_wins === year.playoff_games) && year.playoff_games > 0 ? " 🏆" : ""}</td>
+                    <td className={'px-4 cursor-pointer tabular-nums py-1 font-light text-right rounded-r-lg sm:rounded-none'}>{year.total_wins} - {year.total_games - year.total_wins}</td>
+                    <td className={'px-4 cursor-pointer tabular-nums hidden sm:table-cell py-1 font-light text-right'}>{year.total_points_for.toFixed(2)}</td>
+                    <td className={'px-4 cursor-pointer tabular-nums hidden sm:table-cell py-1 font-light text-right sm:rounded-r-lg lg:rounded-none'}>{year.total_points_against.toFixed(2)}</td>
+                    <td className={'px-4 cursor-pointer tabular-nums hidden lg:table-cell py-1 font-light text-right'}>{year.high_point_weeks}</td>
+                    <td className={'px-4 cursor-pointer tabular-nums hidden lg:table-cell py-1 font-light text-right'}>{year.low_point_weeks}</td>
+                    <td className={'px-4 cursor-pointer tabular-nums hidden lg:table-cell py-1 font-light text-right rounded-r-lg'}>{year.playoff_wins} - {year.playoff_games - year.playoff_wins}</td>
                 </tr>
             ))}
             </tbody>
@@ -89,7 +91,9 @@ const StatBlock = (props: { title: string, value: string | number }) => {
     </div>)
 }
 
-const ManagerStats = ({ all_time_stats }: { all_time_stats: Database['public']['CompositeTypes']['all_time_object'] }) => {
+const ManagerStats = ({all_time_stats}: {
+    all_time_stats: Database['public']['CompositeTypes']['all_time_object']
+}) => {
     return (
         <div className={'w-0.5 flex flex-row flex-grow justify-between flex-wrap max-w-[32rem]'}>
             <h1 className={"w-full mt-4 md:mt-0"}>All Time Stats</h1>
@@ -117,7 +121,10 @@ const ManagerStats = ({ all_time_stats }: { all_time_stats: Database['public']['
     )
 }
 
-const OpponentTable = ({opponents, manager_id}: { opponents: Database['public']['CompositeTypes']['opponents_object'][], manager_id: number }) => {
+const OpponentTable = ({opponents, manager_id}: {
+    opponents: Database['public']['CompositeTypes']['opponents_object'][],
+    manager_id: number
+}) => {
     const navigate = useNavigate();
     return (
         <table className='table-auto'>
@@ -129,7 +136,8 @@ const OpponentTable = ({opponents, manager_id}: { opponents: Database['public'][
             </thead>
             <tbody>
             {opponents?.map((opponent) => (
-                <tr onClick={() => navigate(`/fantasy_football/head_to_head?team_one=${manager_id}&team_two=${opponent.id}`)} className={'hover:bg-orange-500/60 rounded-md'} key={opponent.id}>
+                <tr onClick={() => navigate(`/fantasy_football/head_to_head?team_one=${manager_id}&team_two=${opponent.id}`)}
+                    className={'hover:bg-orange-500/60 rounded-md'} key={opponent.id}>
                     <td className={'px-4 cursor-pointer tabular-nums py-1 cursor-default font-light text-left rounded-l-lg'}>{capitalizeFirstLetter(opponent.name)}</td>
                     <td className={'px-4 cursor-pointer tabular-nums py-1 cursor-default font-light text-right rounded-r-lg'}>{opponent.total_wins} - {opponent.total_games - opponent.total_wins}</td>
                 </tr>

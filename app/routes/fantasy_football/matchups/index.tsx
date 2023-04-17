@@ -1,12 +1,12 @@
-import {Link, useLoaderData, useNavigate} from "@remix-run/react";
-import React, {useState} from "react";
+import {Link, useLoaderData} from "@remix-run/react";
+import React from "react";
 import supabase from "~/utils/supabase";
 
-import {capitalizeFirstLetter} from "~/utils/helpers";
 import type {LoaderArgs} from "@remix-run/node";
 import {useFootballContext} from "~/routes/fantasy_football";
 import {Database} from "../../../../db_types";
-import ScoreCard from "~/components/ScoreCard";
+import {ScoreCardGroup} from "~/components/ScoreCard";
+import {ChevronLeftIcon, ChevronRightIcon} from "@heroicons/react/24/solid";
 
 interface loaderData {
     error: string | null,
@@ -28,23 +28,21 @@ export const loader = async ({request}: LoaderArgs): Promise<loaderData> => {
         }
         const [matchups, season] = await Promise.all([
             supabase.rpc('week_matchups', {selected_week: week_int, season_year: year_int}),
-            supabase.from('season').select().eq('year', year_int)
-        ])
+            supabase.from('season').select().eq('year', year_int).maybeSingle()])
+
         const {data: weekResponse, error: weekError} = matchups
-        const {data: seasonResponse, error: seasonError } = season
+        const {data: seasonResponse, error: seasonError} = season
         if (weekError || seasonError) {
-            console.log(weekError)
             // Todo: Route them back to the all time page
         }
         return {
             error: null,
             matchups: weekResponse,
-            season: seasonResponse ? seasonResponse[0] : null,
+            season: seasonResponse,
             year: year_int,
             week: week_int
         }
     }
-    console.log(year, week, "No good")
     return {
         error: "Invalid Year or Week",
         matchups: null,
@@ -54,22 +52,50 @@ export const loader = async ({request}: LoaderArgs): Promise<loaderData> => {
     }
 }
 
+type paginationButtonProps = {
+    to: string,
+    disabled: boolean,
+    children: JSX.Element
+}
+
+const PaginationButton = ({to, disabled, children}: paginationButtonProps) => {
+    if(disabled) return children
+    return <Link to={to} prefetch={"intent"}>{children}</Link>
+}
+
 export default function WeekMatchups() {
     const {error, matchups, year, week, season} = useLoaderData<loaderData>()
-    const {managers} = useFootballContext();
+    const isPlayoffs = week > (season?.regular_season_weeks ?? 13)
+    const winnersBracket = matchups?.filter(matchup => matchup.is_winners_bracket && matchup.is_playoffs && !matchup.is_bye_week)
+    const losersBracket = matchups?.filter(matchup => (!matchup.is_winners_bracket || !matchup.is_playoffs) && !matchup.is_bye_week)
     return (
         <div className={'flex justify-center w-full'}>
             <div className={'flex m-3 flex-col w-full max-w-[64rem]'}>
-                <div className={"flex flex-col mb-2 w-full justify-between items-baseline"}>
-                    <h1 className={"pt-4 pb-2 text-2xl"}>{`${year} Season: Week ${week}`}</h1>
+                <div className={"flex flex-col sm:flex-row mb-2 w-full justify-between items-baseline"}>
+                    <div className={"flex w-full justify-between sm:justify-start sm:w-auto items-center"}>
+                        <h1 className={"text-2xl pr-2"}><Link className={"text-orange-500"} to={`/fantasy_football/season/${year}`} prefetch={"intent"}>{year}</Link>{`: Week ${week}`}</h1>
+                        <div className={"flex"}>
+                            <PaginationButton to={`?year=${year}&week=${week - 1}`} disabled={week === 1}><ChevronLeftIcon
+                                className={`h-10 w-10 p-2 rounded-xl ${week === 1 ? "text-gray-700" : "hover:bg-orange-500/60 text-white"}`}/></PaginationButton>
+                            <PaginationButton to={`?year=${year}&week=${week + 1}`} disabled={week === season?.total_weeks}><ChevronRightIcon
+                                className={`h-10 w-10 p-2 rounded-xl ${week === season?.total_weeks ? "text-gray-700" : "hover:bg-orange-500/60 text-white"}`}/></PaginationButton>
+                        </div>
+                    </div>
                     <h1>{"🚀= High Point    🚽= Low Point"}</h1>
                 </div>
-                <div className={"flex flex-wrap justify-around"}>
-                    {matchups && matchups.map((matchup) => {
-                        return <ScoreCard matchup={matchup} showDate/>
-                    })
-                    }
-                </div>
+                    {(matchups && !isPlayoffs) && <ScoreCardGroup matchups={matchups}/>}
+                    {(matchups && isPlayoffs) && (
+                        <div>
+                            <div>
+                                <h1>Winners Bracket</h1>
+                                <ScoreCardGroup matchups={winnersBracket!} />
+                            </div>
+                            <div>
+                                <h1>Consolation Matches</h1>
+                                <ScoreCardGroup matchups={losersBracket!}/>
+                            </div>
+                        </div>
+                    )}
             </div>
         </div>
     );

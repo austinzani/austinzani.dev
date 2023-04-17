@@ -5,13 +5,13 @@ import {capitalizeFirstLetter} from "~/utils/helpers";
 
 const ScoreCard = ({matchup, showDate}: {
     matchup: Database['public']['CompositeTypes']['game_details'],
-    showDate: boolean
+    showDate?: boolean
 }) => {
     const playoffMatchup = matchup.is_winners_bracket && matchup.is_playoffs
     const highPoint = matchup.high_point
     const lowPoint = matchup.low_point
     const homeTeamIcon = matchup.home_manager_name === highPoint ? " 🚀" : matchup.home_manager_name === lowPoint ? " 🚽" : ""
-    const awayTeamIcon = matchup.away_manager_name === highPoint ? " 🚀" : matchup.away_manager_name === lowPoint ? " 🚽" : ""
+    const awayTeamIcon = matchup.is_bye_week ? "" : matchup.away_manager_name === highPoint ? " 🚀" : matchup.away_manager_name === lowPoint ? " 🚽" : ""
     return (
         <div className={"max-w-md w-full mb-2"}>
             {showDate &&
@@ -34,10 +34,10 @@ const ScoreCard = ({matchup, showDate}: {
                              alt="Team Icon"/>
                         <div className={'flex flex-col'}>
                             <h1>{matchup.away_team}{awayTeamIcon}</h1>
-                            <h4 className={'font-light text-sm'}>{capitalizeFirstLetter(matchup.away_manager_name)}</h4>
+                            <h4 className={'font-light text-sm'}>{capitalizeFirstLetter(matchup.is_bye_week ? "Bye Week" : matchup.away_manager_name)}</h4>
                         </div>
                     </div>
-                    <h1 className={"text-2xl tabular-nums mr-2"}>{matchup.away_score}</h1>
+                    <h1 className={"text-2xl tabular-nums mr-2"}>{matchup.away_score ?? "-"}</h1>
                 </div>
             </div>
         </div>
@@ -45,4 +45,16 @@ const ScoreCard = ({matchup, showDate}: {
 };
 
 export default ScoreCard;
+
+export const ScoreCardGroup = ({matchups, showDate = false}: {matchups: Database['public']['CompositeTypes']['game_details'][], showDate?: boolean}) => {
+    return (
+        <div className={"flex flex-wrap justify-around"}>
+            {matchups.map((matchup, index: number) => {
+
+                return <ScoreCard key={`${matchup.home_team}-${matchup.away_team}-${index}`} matchup={matchup} showDate={showDate}/>
+            })}
+            {!!(matchups.length % 2) && <div className={"flex-none max-w-md w-full mb-2"}/> }
+        </div>
+    )
+}
 

@@ -13,6 +13,7 @@ import {Item, Select} from "~/components/Select";
 
 import {mapYearNav} from "~/routes/fantasy_football/all_time";
 import SideNavigation from "~/components/SideNavigation";
+import Icon from "~/components/Icon";
 
 export const loader = async ({params}: LoaderArgs) => {
     const season = params.year;
@@ -98,7 +99,7 @@ export default function Year() {
             <main className="absolute lg:pl-64 flex flex-col w-full">
                 <div className={'flex items-baseline'}>
                 <h2 className={"text-xl mx-3 mt-3 border-b w-fit"}>{`League History ${year}`}</h2>
-                <Link to={`/fantasy_football/matchups?year=${year}&week=1`} className={'mx-3 text-orange-500'}>{`View Schedule >`}</Link>
+                <Link to={`/fantasy_football/matchups?year=${year}&week=1`} className={'mx-3 text-orange-500'}>{`View Schedule`}<Icon className={"ml-1"} name={"chevron-right"} /></Link>
                 </div>
                 <div className={'lg:hidden mx-3 mb-2'}>
                     <Select
