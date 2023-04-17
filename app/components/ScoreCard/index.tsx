@@ -1,7 +1,7 @@
 import React from 'react';
-import FootballHelmet from "../../icons/football-helmet-thin.svg";
 import {Database} from "../../../db_types";
 import {capitalizeFirstLetter} from "~/utils/helpers";
+import Icon from "~/components/Icon";
 
 const ScoreCard = ({matchup, showDate}: {
     matchup: Database['public']['CompositeTypes']['game_details'],
@@ -19,8 +19,8 @@ const ScoreCard = ({matchup, showDate}: {
             <div className={'flex flex-col mb-2 border border-white rounded'}>
                 <div className={'flex flex-row justify-between items-center p-1'}>
                     <div className={'flex flex-row items-center'}>
-                        <img className="w-10 h-10 mr-2 p-0.5 rounded bg-white" src={matchup.home_logo ?? FootballHelmet}
-                             alt="Team Icon"/>
+                        {matchup.home_logo ? <img className="w-10 h-10 mr-2 p-0.5 rounded" src={matchup.home_logo}
+                                                  alt="Team Icon"/> : <Icon name={"football-ball"} className={"w-8 h-8 mr-2 p-0.5 rounded"}/>}
                         <div className={'flex flex-col'}>
                             <h1>{matchup.home_team}{homeTeamIcon}</h1>
                             <h4 className={'font-light text-sm'}>{capitalizeFirstLetter(matchup.home_manager_name)}</h4>
@@ -30,8 +30,8 @@ const ScoreCard = ({matchup, showDate}: {
                 </div>
                 <div className={'flex flex-row justify-between items-center p-1'}>
                     <div className={'flex flex-row items-center'}>
-                        <img className="w-10 h-10 mr-2 p-0.5 rounded bg-white" src={matchup.away_logo ?? FootballHelmet}
-                             alt="Team Icon"/>
+                        {matchup.away_logo ? <img className="w-10 h-10 mr-2 p-0.5 rounded" src={matchup.away_logo}
+                                                    alt="Team Icon"/> : <Icon name={"football-ball"} className={"w-8 h-8 mr-2 p-0.5 rounded"}/>}
                         <div className={'flex flex-col'}>
                             <h1>{matchup.away_team}{awayTeamIcon}</h1>
                             <h4 className={'font-light text-sm'}>{capitalizeFirstLetter(matchup.is_bye_week ? "Bye Week" : matchup.away_manager_name)}</h4>

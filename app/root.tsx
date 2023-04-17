@@ -14,7 +14,7 @@ import NavHeader from './components/NavHeader'
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
-  title: "New Remix App",
+  title: "austinzani.dev",
   viewport: "width=device-width,initial-scale=1",
 });
 
