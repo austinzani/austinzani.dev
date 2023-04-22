@@ -85,9 +85,9 @@ const SeasonTable = ({seasons}: { seasons: Database['public']['CompositeTypes'][
 const StatBlock = (props: { title: string, value: string | number }) => {
     const {title, value} = props;
     return (<div className={'flex flex-row items-center justify-between w-full md:w-60'}>
-        <h2 className={'text-xl font-bold'}>{title}:</h2>
+        <h2 className={'text-lg'}>{title}:</h2>
         <div className={'flex flex-row items-center ml-2'}>
-            <h3 className={'text-lg'}>{value}</h3>
+            <h3 className={'text-lg font-light'}>{value}</h3>
         </div>
     </div>)
 }
@@ -97,7 +97,7 @@ const ManagerStats = ({all_time_stats}: {
 }) => {
     return (
         <div className={'w-0.5 flex flex-row flex-grow justify-between flex-wrap max-w-[32rem]'}>
-            <h1 className={"w-full mt-4 md:mt-0"}>All Time Stats</h1>
+            <h1 className={"w-full text-xl font-bold mt-4 md:mt-0"}>All Time Stats</h1>
             <StatBlock
                 title={"Record"}
                 value={`${all_time_stats?.total_wins} - ${(all_time_stats?.total_games ?? 0) - (all_time_stats?.total_wins ?? 0)}`}
@@ -117,6 +117,18 @@ const ManagerStats = ({all_time_stats}: {
             <StatBlock
                 title={"Low Point Weeks"}
                 value={all_time_stats?.low_point_weeks}
+            />
+            <StatBlock
+                title={"Playoff Appearances"}
+                value={all_time_stats?.playoff_births}
+            />
+            <StatBlock
+                title={"Playoff Record"}
+                value={`${all_time_stats?.playoff_wins} - ${(all_time_stats?.playoff_games ?? 0) - (all_time_stats?.playoff_wins ?? 0)}`}
+            />
+            <StatBlock
+                title={"Championships"}
+                value={all_time_stats?.championships}
             />
         </div>
     )
@@ -161,7 +173,10 @@ export default function Manager() {
                     <BreadcrumbItem>{capitalizeFirstLetter(all_time_stats?.name ?? "")}</BreadcrumbItem>
                 </Breadcrumbs>
                 <div className={"flex justify-around items-center flex-wrap"}>
-                    <h1 className={'text-2xl w-full md:w-auto font-bold'}>{manager_name}</h1>
+                    <div className={"w-full md:w-auto"}>
+                        <h1 className={'text-2xl font-bold'}>{manager_name}</h1>
+                        <p className={"text-md font-light"}>{all_time_stats?.total_seasons} Seasons</p>
+                    </div>
                     {all_time_stats && <ManagerStats all_time_stats={all_time_stats}/>}
                 </div>
                 {seasons && (
