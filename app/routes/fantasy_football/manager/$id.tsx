@@ -8,6 +8,7 @@ import type {LoaderArgs} from "@remix-run/node";
 
 import {useFootballContext} from "~/routes/fantasy_football";
 import {Database} from "../../../../db_types";
+import {BreadcrumbItem, Breadcrumbs} from "~/components/Breadcrumb";
 
 interface loaderData {
     error: string | null,
@@ -155,6 +156,10 @@ export default function Manager() {
     return (
         <div className={'flex justify-center w-full'}>
             <div className={'flex m-3 flex-col w-full max-w-[64rem]'}>
+                <Breadcrumbs className={"pb-3"}>
+                    <BreadcrumbItem href={`/fantasy_football/all_time`}>Season History</BreadcrumbItem>
+                    <BreadcrumbItem>{capitalizeFirstLetter(all_time_stats?.name ?? "")}</BreadcrumbItem>
+                </Breadcrumbs>
                 <div className={"flex justify-around items-center flex-wrap"}>
                     <h1 className={'text-2xl w-full md:w-auto font-bold'}>{manager_name}</h1>
                     {all_time_stats && <ManagerStats all_time_stats={all_time_stats}/>}

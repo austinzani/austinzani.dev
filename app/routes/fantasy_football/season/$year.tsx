@@ -14,6 +14,7 @@ import {Item, Select} from "~/components/Select";
 import {mapYearNav} from "~/routes/fantasy_football/all_time";
 import SideNavigation from "~/components/SideNavigation";
 import Icon from "~/components/Icon";
+import {BreadcrumbItem, Breadcrumbs} from "~/components/Breadcrumb";
 
 export const loader = async ({params}: LoaderArgs) => {
     const season = params.year;
@@ -54,7 +55,7 @@ const SeasonTable = ({season}: { season: Database["public"]["CompositeTypes"]["s
     const navigate = useNavigate();
     const {managers} = useFootballContext();
     return (
-        <table className='table-auto'>
+        <table className='table-auto mt-3'>
             <thead>
             <tr>
                 <th className={'px-4 cursor-default font-medium text-left'}>Manager</th>
@@ -97,11 +98,14 @@ export default function Year() {
         <React.Fragment>
             <SideNavigation options={navOptions} className={'hidden lg:flex'}/>
             <main className="absolute lg:pl-64 flex flex-col w-full">
+                <Breadcrumbs className={"pl-3 pt-3"}>
+                    <BreadcrumbItem href={"/fantasy_football/all_time"}>Season History</BreadcrumbItem>
+                </Breadcrumbs>
                 <div className={'flex items-baseline'}>
-                <h2 className={"text-xl mx-3 mt-3 border-b w-fit"}>{`League History ${year}`}</h2>
+                <h2 className={"text-xl m-3 mt-3 border-b w-fit"}>{`League History ${year}`}</h2>
                 <Link to={`/fantasy_football/matchups?year=${year}&week=1`} className={'mx-3 text-orange-500'}>{`View Schedule`}<Icon className={"ml-1"} name={"chevron-right"} /></Link>
                 </div>
-                <div className={'lg:hidden mx-3 mb-2'}>
+                <div className={'lg:hidden m-3 '}>
                     <Select
                         label="Pick Year"
                         items={years}

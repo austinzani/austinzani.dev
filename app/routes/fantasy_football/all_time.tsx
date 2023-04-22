@@ -12,6 +12,7 @@ import SideNavigation from "~/components/SideNavigation";
 
 import {useFootballContext} from "~/routes/fantasy_football";
 import {id} from "postcss-selector-parser";
+import {Breadcrumbs, BreadcrumbItem} from "~/components/Breadcrumb";
 
 const AllTimeTable = ({allTime, showAll}: { allTime: Database["public"]["CompositeTypes"]["all_time_object"][], showAll: boolean }) => {
     const navigate = useNavigate();
@@ -84,9 +85,12 @@ export default function All_time() {
         <React.Fragment>
             <SideNavigation options={navOptions} className={'hidden lg:flex'}/>
             <main className="absolute lg:pl-64 flex flex-col w-full">
-                <h2 className={"text-xl mx-3 mt-3 border-b w-fit"}>{`League History All Time`}</h2>
+                <Breadcrumbs className={"pl-3 pt-3"}>
+                    <BreadcrumbItem href={"/fantasy_football/all_time"}>Season History</BreadcrumbItem>
+                </Breadcrumbs>
+                <h2 className={"text-xl m-3 mt-3 border-b w-fit"}>{`League History All Time`}</h2>
                 <div className={"mx-3 flex items-center"}>
-                    <div className={'lg:hidden mb-2 mr-2'}>
+                    <div className={'lg:hidden my-3 '}>
                         <Select
                             label="Pick Year"
                             items={years}
@@ -104,7 +108,7 @@ export default function All_time() {
                     </div>
                     <Switch onChange={setSelected}>Show All Managers</Switch>
                 </div>
-                <div className={"w-fit"}>
+                <div className={"my-3 w-fit"}>
                     {allTime.length > 0 && <AllTimeTable allTime={allTime} showAll={selected}/>}
                 </div>
             </main>

@@ -3,10 +3,10 @@ import React from "react";
 import supabase from "~/utils/supabase";
 
 import type {LoaderArgs} from "@remix-run/node";
-import {useFootballContext} from "~/routes/fantasy_football";
 import {Database} from "../../../../db_types";
 import {ScoreCardGroup} from "~/components/ScoreCard";
 import {ChevronLeftIcon, ChevronRightIcon} from "@heroicons/react/24/solid";
+import { Breadcrumbs, BreadcrumbItem} from "~/components/Breadcrumb";
 
 interface loaderData {
     error: string | null,
@@ -71,9 +71,13 @@ export default function WeekMatchups() {
     return (
         <div className={'flex justify-center w-full'}>
             <div className={'flex m-3 flex-col w-full max-w-[64rem]'}>
+                <Breadcrumbs className={"pb-3"}>
+                    <BreadcrumbItem href={`/fantasy_football/season/${year}`}>Season History</BreadcrumbItem>
+                    <BreadcrumbItem href={`/fantasy_football/season/${year}`}>Matchups</BreadcrumbItem>
+                </Breadcrumbs>
                 <div className={"flex flex-col sm:flex-row mb-2 w-full justify-between items-baseline"}>
                     <div className={"flex w-full justify-between sm:justify-start sm:w-auto items-center"}>
-                        <h1 className={"text-2xl pr-2"}><Link className={"text-orange-500"} to={`/fantasy_football/season/${year}`} prefetch={"intent"}>{year}</Link>{`: Week ${week}`}</h1>
+                        <h1 className={"text-2xl pr-2"}>{`${year}: Week ${week}`}</h1>
                         <div className={"flex"}>
                             <PaginationButton to={`?year=${year}&week=${week - 1}`} disabled={week === 1}><ChevronLeftIcon
                                 className={`h-10 w-10 p-2 rounded-xl ${week === 1 ? "text-gray-700" : "hover:bg-orange-500/60 text-white"}`}/></PaginationButton>

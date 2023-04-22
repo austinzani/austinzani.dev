@@ -7,6 +7,7 @@ import type {LoaderArgs} from "@remix-run/node";
 import {useFootballContext} from "~/routes/fantasy_football";
 import {Database} from "../../../../db_types";
 import {ScoreCardGroup} from "~/components/ScoreCard";
+import {BreadcrumbItem, Breadcrumbs} from "~/components/Breadcrumb";
 
 interface loaderData {
     error: string | null,
@@ -126,10 +127,18 @@ const HeadToHeadStats = ({head_to_head}: {
 }
 
 export default function Manager() {
-    const {error, matchups, headToHead} = useLoaderData<loaderData>()
+    const {error, matchups, headToHead, team_one_id, team_two_id} = useLoaderData<loaderData>()
+    const {managers} = useFootballContext();
+    const team_one_manager = managers.find((manager) => manager.id === team_one_id)?.name ?? "";
+    const team_two_manager = managers.find((manager) => manager.id === team_two_id)?.name ?? "";
     return (
         <div className={'flex justify-center w-full'}>
             <div className={'flex m-3 flex-col w-full max-w-[64rem]'}>
+                <Breadcrumbs className={"pb-3"}>
+                    <BreadcrumbItem href={`/fantasy_football/all_time`}>Season History</BreadcrumbItem>
+                    <BreadcrumbItem href={`/fantasy_football/manager/${team_one_id}`}>{capitalizeFirstLetter(team_one_manager)}</BreadcrumbItem>
+                    <BreadcrumbItem>{`vs. ${capitalizeFirstLetter(team_two_manager)}`}</BreadcrumbItem>
+                </Breadcrumbs>
                 {headToHead && <HeadToHeadStats head_to_head={headToHead}/>}
                 <h1 className={"pt-4 pb-2 text-2xl"}>Matchup History</h1>
                 <div className={"flex flex-wrap justify-around"}>
