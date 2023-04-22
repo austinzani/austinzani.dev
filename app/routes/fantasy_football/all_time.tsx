@@ -25,7 +25,7 @@ const AllTimeTable = ({allTime, showAll}: { allTime: Database["public"]["Composi
                 <th className={'px-4 whitespace-nowrap cursor-default font-medium text-right'}>Winning %</th>
                 <th className={'px-4 whitespace-nowrap cursor-default font-medium text-right'}>Titles</th>
                 <th className={'px-4 hidden sm:table-cell whitespace-nowrap cursor-default font-medium text-right min-w-32'}>Playoff
-                    Births
+                    Berths
                 </th>
                 <th className={'px-4 hidden sm:table-cell whitespace-nowrap cursor-default font-medium text-right min-w-32'}>Playoff
                     Record

@@ -118,7 +118,7 @@ const HeadToHeadStats = ({head_to_head}: {
             <StatRow stat_key={'high_point_weeks'} head_to_head={head_to_head_alt} stat={"HP"}/>
             <StatRow stat_key={'low_point_weeks'} head_to_head={head_to_head_alt} stat={"LP"}/>
             <StatRow stat_key={'total_seasons'} head_to_head={head_to_head_alt} stat={"Seasons"}/>
-            <StatRow stat_key={'playoff_births'} head_to_head={head_to_head_alt} stat={"Playoff Appearances"}/>
+            <StatRow stat_key={'playoff_births'} head_to_head={head_to_head_alt} stat={"Playoff Berths"}/>
             <StatRow stat_key={"championships"} head_to_head={head_to_head_alt} stat={"Championships"}/>
             </tbody>
         </table>

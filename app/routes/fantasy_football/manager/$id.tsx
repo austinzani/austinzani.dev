@@ -119,7 +119,7 @@ const ManagerStats = ({all_time_stats}: {
                 value={all_time_stats?.low_point_weeks}
             />
             <StatBlock
-                title={"Playoff Appearances"}
+                title={"Playoff Berths"}
                 value={all_time_stats?.playoff_births}
             />
             <StatBlock
