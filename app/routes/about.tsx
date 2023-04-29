@@ -18,7 +18,7 @@ const About = () => {
                         I have been collecting vinyls for over 10 years and am very proud of my collection.</p>
 
                     <p className={"pb-5"}>I am an outspoken Apple fanboy 👨🏼‍💻.
-                        I worked at thr Apple Store when they were still selling the original iPhone 📱.
+                        I worked at the Apple Store when they were still selling the original iPhone 📱.
                         The launch of the App Store and how it changed the way we interact with our phones is what inspired me to eventually become a developer</p>
 
                     <p className={"pb-5"}>I completed <span className={"text-blue-300"}>Tech Elevator</span> Coding Bootcamp in 2020, and have since gained significant experience
