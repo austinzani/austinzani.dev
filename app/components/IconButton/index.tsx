@@ -17,7 +17,7 @@ export const Button = forwardRef((props: ButtonProps, ref: RefObject<HTMLButtonE
             <button
                 {...mergeProps(buttonProps, focusProps)}
                 ref={ref}
-                className={`${focus} text-white text-sm font-semibold py-2 px-4 rounded cursor-default focus:outline-none transition bg-transparent`}
+                className={`${focus} text-sm font-semibold py-2 px-4 rounded cursor-default focus:outline-none transition bg-transparent`}
             >
                 {props.children}
             </button>

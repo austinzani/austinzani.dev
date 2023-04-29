@@ -21,8 +21,8 @@ const SideNavigation = (props: SideNavigationProps) => {
                                 end
                                 className={({ isActive }) => {
                                     return isActive ?
-                                        "text-white ml-2 pl-3 font-bold w-60 bg-orange-500/60 rounded-md" :
-                                        "text-white ml-2 font-light pl-3 w-60 hover:bg-orange-500/60 rounded-md"
+                                        "ml-2 pl-3 font-bold w-60 bg-orange-500/60 rounded-md" :
+                                        "ml-2 font-light pl-3 w-60 hover:bg-orange-500/60 rounded-md"
                                 }}
                             >{option.label}</NavLink>
                         </li>

@@ -80,9 +80,9 @@ export default function WeekMatchups() {
                         <h1 className={"text-2xl pr-2"}>{`${year}: Week ${week}`}</h1>
                         <div className={"flex"}>
                             <PaginationButton to={`?year=${year}&week=${week - 1}`} disabled={week === 1}><ChevronLeftIcon
-                                className={`h-10 w-10 p-2 rounded-xl ${week === 1 ? "text-gray-700" : "hover:bg-orange-500/60 text-white"}`}/></PaginationButton>
+                                className={`h-10 w-10 p-2 rounded-xl ${week === 1 ? "dark:text-gray-700 text-gray-400" : "hover:bg-orange-500/60"}`}/></PaginationButton>
                             <PaginationButton to={`?year=${year}&week=${week + 1}`} disabled={week === season?.total_weeks}><ChevronRightIcon
-                                className={`h-10 w-10 p-2 rounded-xl ${week === season?.total_weeks ? "text-gray-700" : "hover:bg-orange-500/60 text-white"}`}/></PaginationButton>
+                                className={`h-10 w-10 p-2 rounded-xl ${week === season?.total_weeks ? "dark:text-gray-700 text-gray-400" : "hover:bg-orange-500/60"}`}/></PaginationButton>
                         </div>
                     </div>
                     <h1>{"🚀= High Point    🚽= Low Point"}</h1>
