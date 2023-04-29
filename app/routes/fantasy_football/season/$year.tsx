@@ -103,7 +103,7 @@ export default function Year() {
                 </Breadcrumbs>
                 <div className={'flex items-baseline'}>
                 <h2 className={"text-xl m-3 mt-3 border-b w-fit"}>{`League History ${year}`}</h2>
-                <Link to={`/fantasy_football/matchups?year=${year}&week=1`} className={'mx-3 text-orange-500'}>{`View Schedule`}<Icon className={"ml-1"} name={"chevron-right"} /></Link>
+                <Link to={`/fantasy_football/matchups?year=${year}&week=1`} className={'mx-3 px-3 p-1 border rounded-xl border-orange-500 text-orange-500'}>{`View Schedule`}<Icon className={"ml-2"} name={"chevron-right"} /></Link>
                 </div>
                 <div className={'lg:hidden m-3 '}>
                     <Select

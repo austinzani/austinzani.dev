@@ -13,7 +13,8 @@ const About = () => {
                     <p className={"pb-5"}>Apart from coding, I am an avid sports fan. I am a proud <span className={"text-red-600"}>University of Cincinnati Bearcat</span> alumni,
                         a <span className={"text-orange-500"}>Cincinnati Bengals</span> season ticket holder, and a die hard <span className={"text-green-600"}>Boston Celtics</span> fan.</p>
 
-                    <p className={"pb-5"}>I love discovering new music and going to concerts. I also have a fairly large vinyl collection that I am pretty proud of.</p>
+                    <p className={"pb-5"}>Although I don't play any instruments Music plays a big part in my life.
+                        I love discovering new music and going to concerts. I also have a fairly large vinyl collection that I am very proud of.</p>
 
                     <p className={"pb-5"}>I am also an outspoken Apple fanboy 👨🏼‍💻, having worked at the Apple Store during my college days.
                         I started working there when they were still selling the original iPhone 📱.
@@ -28,7 +29,7 @@ const About = () => {
                     <p className={"pb-5"}>This website is my playground, where I experiment with new technologies and share my passions
                         with the world. It was created using React, Typescript, Tailwind CSS, Remix, and Supabase.</p>
 
-                    <p>Thank you for stopping by and getting to know me better. I am excited to continue to add to this site to share more about me.</p>
+                    <p>Thank you for stopping by and getting to know me better. I am excited to continue to add to this site to share more about myself.</p>
                 </div>
             </div>
         </div>

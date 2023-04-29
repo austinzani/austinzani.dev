@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "@remix-run/react";
+import Icon from "~/components/Icon";
 
 export default function Football() {
 
@@ -17,8 +18,9 @@ export default function Football() {
                     somewhere on a server at ESPN even though they said it is deleted. I don't buy it. Regardless I have
                     collected most of the league data from ESPN and Sleeper so we can compare records, head to head stats, and
                     championships. </h2>
-                <Link to={"/fantasy_football/all_time"} prefetch="intent" className={"text-orange-500 underline hover:cursor-pointer"}>
+                <Link to={"/fantasy_football/all_time"} prefetch="intent" className={"p-2 mt-4 text-center rounded-xl border border-orange-500 text-orange-500 hover:cursor-pointer"}>
                     View League Data
+                    <Icon className={"pl-3"} name={"chevron-right"}/>
                 </Link>
             </div>
         </div>

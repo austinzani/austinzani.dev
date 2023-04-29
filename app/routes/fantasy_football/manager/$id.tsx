@@ -151,8 +151,8 @@ const OpponentTable = ({opponents, manager_id}: {
             {opponents?.map((opponent) => (
                 <tr onClick={() => navigate(`/fantasy_football/head_to_head?team_one=${manager_id}&team_two=${opponent.id}`)}
                     className={'hover:bg-orange-500/60 rounded-md'} key={opponent.id}>
-                    <td className={'px-4 cursor-pointer tabular-nums py-1 cursor-default font-light text-left rounded-l-lg'}>{capitalizeFirstLetter(opponent.name)}</td>
-                    <td className={'px-4 cursor-pointer tabular-nums py-1 cursor-default font-light text-right rounded-r-lg'}>{opponent.total_wins} - {opponent.total_games - opponent.total_wins}</td>
+                    <td className={'px-4 cursor-pointer tabular-nums py-1 font-light text-left rounded-l-lg'}>{capitalizeFirstLetter(opponent.name)}</td>
+                    <td className={'px-4 cursor-pointer tabular-nums py-1 font-light text-right rounded-r-lg'}>{opponent.total_wins} - {opponent.total_games - opponent.total_wins}</td>
                 </tr>
             ))}
             </tbody>
