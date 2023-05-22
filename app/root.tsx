@@ -1,16 +1,36 @@
 import type {LinksFunction, MetaFunction} from "@remix-run/node";
 import {
-  Links,
-  LiveReload,
-  Meta,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
+    Links,
+    LiveReload,
+    Meta,
+    Outlet,
+    Scripts,
+    ScrollRestoration,
+    useLoaderData
 } from "@remix-run/react";
 import React from "react";
+import {Theme} from "~/utils/theme-provider";
+import {getThemeSession} from "~/utils/theme.server";
+import {LoaderFunction} from "@remix-run/node";
+
+import {useTheme, ThemeProvider, NonFlashOfWrongThemeEls} from "~/utils/theme-provider";
 
 import styles from './styles/app.css'
 import NavHeader from './components/NavHeader'
+
+export type LoaderData = {
+    theme: Theme | null;
+};
+
+export const loader: LoaderFunction = async ({ request }) => {
+    const themeSession = await getThemeSession(request);
+
+    const data: LoaderData = {
+        theme: themeSession.getTheme(),
+    };
+
+    return data;
+};
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
@@ -30,15 +50,21 @@ export const links: LinksFunction = () => {
   ]
 }
 
-export default function App() {
-  return (
-    <html lang="en" className={"w-full h-full"}>
+function App() {
+    const [theme] = useTheme();
+    const data = useLoaderData<LoaderData>();
+
+
+
+    return (
+    <html lang="en" className={`w-full h-full ${theme || ""}`}>
       <head>
         <Meta />
         <Links />
+          <NonFlashOfWrongThemeEls ssrTheme={Boolean(data.theme)} />
         <script src="https://kit.fontawesome.com/84ef1ed513.js" crossOrigin="anonymous"></script>
       </head>
-      <body className={"w-full h-full bg-black text-white font-['Outfit']"}>
+      <body className={"w-full h-full dark:bg-black dark:text-white font-['Outfit']"}>
         <NavHeader />
         <div className={"h-[calc(100%_-_3.5rem)] w-full"}>
             <Outlet />
@@ -49,4 +75,14 @@ export default function App() {
       </body>
     </html>
   );
+}
+
+export default function AppWithProviders() {
+    const data = useLoaderData<LoaderData>();
+
+    return (
+        <ThemeProvider specifiedTheme={data.theme}>
+            <App />
+        </ThemeProvider>
+    );
 }

@@ -18,16 +18,16 @@ export default function Index() {
         <h1 className="font-['Outfit'] w-fit font-medium text-4xl">Austin Zani</h1>
         <h2 className="font-['Outfit'] text-gray-400 w-fit font-light text-l">Husband, Father, Sports Addict, Software Developer</h2>
         <div className="flex flex-row mt-4">
-            <a target="_blank" rel="noopener noreferrer" href={"https://mastodon.social/@zaniad"} className={"h-10 text-2xl w-10 p-2.5 mx-1 flex items-center justify-center hover:bg-orange-500/60 border-black border hover:cursor-pointer rounded-md"}>
+            <a target="_blank" rel="noopener noreferrer" href={"https://mastodon.social/@zaniad"} className={"h-10 text-2xl w-10 p-2.5 mx-1 flex items-center justify-center hover:bg-orange-500/60 hover:cursor-pointer rounded-md"}>
                 <Icon name={'mastodon'} prefix={"fab"}/>
             </a>
-            <a target="_blank" rel="noopener noreferrer" href={"https://github.com/austinzani"} className={"h-10 text-2xl w-10 p-2.5 mx-1 flex items-center justify-center hover:bg-orange-500/60 border-black border hover:cursor-pointer rounded-md"}>
+            <a target="_blank" rel="noopener noreferrer" href={"https://github.com/austinzani"} className={"h-10 text-2xl w-10 p-2.5 mx-1 flex items-center justify-center hover:bg-orange-500/60 hover:cursor-pointer rounded-md"}>
                 <Icon name={'github'} prefix={"fab"}/>
             </a>
-            <a target="_blank" rel="noopener noreferrer" href={"https://www.linkedin.com/in/zaniad/"} className={"h-10 text-2xl w-10 p-2.5 mx-1 flex items-center justify-center hover:bg-orange-500/60 border-black border hover:cursor-pointer rounded-md"}>
+            <a target="_blank" rel="noopener noreferrer" href={"https://www.linkedin.com/in/zaniad/"} className={"h-10 text-2xl w-10 p-2.5 mx-1 flex items-center justify-center hover:bg-orange-500/60 hover:cursor-pointer rounded-md"}>
                 <Icon name={'linkedin'} prefix={"fab"}/>
             </a>
-            <a target="_blank" rel="noopener noreferrer" href={"mailto:austinzani@gmail.com"} className={"h-10 text-2xl w-10 p-2.5 mx-1 flex items-center justify-center hover:bg-orange-500/60 border-black border hover:cursor-pointer rounded-md"}>
+            <a target="_blank" rel="noopener noreferrer" href={"mailto:austinzani@gmail.com"} className={"h-10 text-2xl w-10 p-2.5 mx-1 flex items-center justify-center hover:bg-orange-500/60 hover:cursor-pointer rounded-md"}>
                 <Icon name={'envelope'} />
             </a>
         </div>
