@@ -12,7 +12,7 @@ export default function Football() {
             </div>
             <div className={"w-11/12 md:w-1/3 flex flex-col justify-center"}>
                 <h1 className="font-['Outfit'] mb-2 w-fit font-medium text-4xl">Tony's League to Lose</h1>
-                <h2 className="font-['Outfit'] mb-2 text-gray-400 w-full font-light text-l flex-wrap">This league has been
+                <h2 className="font-['Outfit'] mb-2 w-full font-light text-l flex-wrap">This league has been
                     going on in some form since 2009. We have seen managers come and go but for
                     the most part the members have been the same. The first few seasons have been lost to time
                     somewhere on a server at ESPN even though they said it is deleted. I don't buy it. Regardless I have
