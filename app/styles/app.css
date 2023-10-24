@@ -1360,6 +1360,11 @@ video {
   color: rgb(229 231 235 / var(--tw-text-opacity));
 }
 
+:is(.dark .dark\:text-gray-700) {
+  --tw-text-opacity: 1;
+  color: rgb(55 65 81 / var(--tw-text-opacity));
+}
+
 @media (min-width: 640px) {
   .sm\:table-cell {
     display: table-cell;
