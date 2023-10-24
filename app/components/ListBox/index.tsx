@@ -80,11 +80,11 @@ function Option({ item, state }: OptionProps) {
         ref
     );
 
-    let text = "text-white";
+    let text = "dark:text-white";
     if (isFocused || isSelected) {
-        text = "text-white";
+        text = "dark:text-white";
     } else if (isDisabled) {
-        text = "text-gray-200";
+        text = "dark:text-gray-200";
     }
 
     return (
@@ -97,7 +97,7 @@ function Option({ item, state }: OptionProps) {
         >
             {item.rendered}
             {isSelected && (
-                <CheckIcon aria-hidden="true" className="w-5 h-5 text-white" />
+                <CheckIcon aria-hidden="true" className="w-5 h-5 dark:text-white" />
             )}
         </li>
     );
