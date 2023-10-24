@@ -16,7 +16,7 @@ const ScoreCard = ({matchup, showDate}: {
         <div className={"max-w-md w-full mb-2"}>
             {showDate &&
                 <h1 className={'text-md font-light'}>{`Week ${matchup.week}, ${matchup.year}${playoffMatchup ? " (Playoffs)" : ""}`}</h1>}
-            <div className={'flex flex-col mb-2 border border-white rounded'}>
+            <div className={'flex flex-col mb-2 border border-gray-300 dark:border-zinc-700 rounded'}>
                 <div className={'flex flex-row justify-between items-center p-1'}>
                     <div className={'flex flex-row items-center'}>
                         {matchup.home_logo ? <img className="w-10 h-10 mr-2 p-0.5 rounded" src={matchup.home_logo}

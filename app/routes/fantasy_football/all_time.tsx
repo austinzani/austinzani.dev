@@ -38,13 +38,13 @@ const AllTimeTable = ({allTime, showAll}: { allTime: Database["public"]["Composi
             {allTime?.map((manager) => {
                 const managerId = managers.find((m) => m.name === manager.name)?.id;
                 const row = (<tr onClick={() => navigate(`/fantasy_football/manager/${managerId}`)} className={'hover:bg-orange-500/60 rounded-md'} key={manager.name}>
-                    <td className={'px-4 cursor-pointer whitespace-nowrap py-1 cursor-default font-light text-left rounded-l-lg'}>{capitalizeFirstLetter(manager.name)}</td>
-                    <td className={'px-4 cursor-pointer tabular-nums whitespace-nowrap py-1 cursor-default font-light text-right'}>{(manager.total_wins / manager.total_games).toFixed(3)}</td>
-                    <td className={'px-4 cursor-pointer tabular-nums whitespace-nowrap py-1 cursor-default font-light text-right rounded-r-lg sm:rounded-none'}>{manager.championships}</td>
-                    <td className={'px-4 cursor-pointer tabular-nums hidden sm:table-cell whitespace-nowrap py-1 cursor-default font-light text-right'}>{manager.playoff_births}</td>
-                    <td className={'px-4 cursor-pointer tabular-nums hidden sm:table-cell whitespace-nowrap py-1 cursor-default font-light text-right sm:rounded-r-lg lg:rounded-none'}>{manager.playoff_wins} - {manager.playoff_games - manager.playoff_wins}</td>
-                    <td className={'px-4 cursor-pointer tabular-nums hidden lg:table-cell whitespace-nowrap py-1 cursor-default font-light text-right'}>{manager.high_point_weeks}</td>
-                    <td className={'px-4 cursor-pointer tabular-nums hidden lg:table-cell whitespace-nowrap py-1 cursor-default font-light text-right rounded-r-lg'}>{manager.low_point_weeks}</td>
+                    <td className={'px-4 cursor-pointer whitespace-nowrap py-1 font-light text-left rounded-l-lg'}>{capitalizeFirstLetter(manager.name)}</td>
+                    <td className={'px-4 cursor-pointer tabular-nums whitespace-nowrap py-1 font-light text-right'}>{(manager.total_wins / manager.total_games).toFixed(3)}</td>
+                    <td className={'px-4 cursor-pointer tabular-nums whitespace-nowrap py-1 font-light text-right rounded-r-lg sm:rounded-none'}>{manager.championships}</td>
+                    <td className={'px-4 cursor-pointer tabular-nums hidden sm:table-cell whitespace-nowrap py-1 font-light text-right'}>{manager.playoff_births}</td>
+                    <td className={'px-4 cursor-pointer tabular-nums hidden sm:table-cell whitespace-nowrap py-1 font-light text-right sm:rounded-r-lg lg:rounded-none'}>{manager.playoff_wins} - {manager.playoff_games - manager.playoff_wins}</td>
+                    <td className={'px-4 cursor-pointer tabular-nums hidden lg:table-cell whitespace-nowrap py-1 font-light text-right'}>{manager.high_point_weeks}</td>
+                    <td className={'px-4 cursor-pointer tabular-nums hidden lg:table-cell whitespace-nowrap py-1 font-light text-right rounded-r-lg'}>{manager.low_point_weeks}</td>
                 </tr>)
                 if (showAll || (!showAll && manager.is_active)) {
                     return row;

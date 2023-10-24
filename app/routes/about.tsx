@@ -5,7 +5,7 @@ const About = () => {
     return (
         <div className={'flex justify-center w-full'}>
             <div className={"h-full w-full max-w-xl flex flex-col items-center justify-center"}>
-                <div className="p-6 rounded-lg shadow-lg ">
+                <div className="p-6 rounded-lg">
                     <h1 className="text-3xl font-bold mb-8">Hello! I'm Austin Zani</h1>
                     <p className={"pb-5"}>I'm a software developer based in Cincinnati, OH.
                         I am a husband to my amazing wife Cath and father to our two lovely children, Anderson and Quinn.</p>
