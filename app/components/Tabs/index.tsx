@@ -23,7 +23,7 @@ const Tab = ({ item, state }: {item: Node<object>, state: TabListState<any>}) =>
     let ref = useRef(null);
     let { tabProps } = useTab({ key }, state, ref);
     return (
-        <div {...tabProps} ref={ref} className={`py-2 px-4 no ${state.selectedKey === key && "border-b-2 border-b-orange-400 bg-gray-100 rounded-t-xl"}`}>
+        <div {...tabProps} ref={ref} className={`py-2 px-4 no ${state.selectedKey === key && "border-b-2 border-b-orange-400 bg-gray-100 dark:bg-zinc-800 rounded-t-xl"}`}>
             {rendered}
         </div>
     );

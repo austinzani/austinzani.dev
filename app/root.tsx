@@ -1,4 +1,4 @@
-import type {LinksFunction, MetaFunction} from "@remix-run/node";
+import type {LinksFunction} from "@remix-run/node";
 import {
     Links,
     LiveReload,
@@ -32,14 +32,6 @@ export const loader: LoaderFunction = async ({ request }) => {
     return data;
 };
 
-export const meta = () => {
-    return [{
-        charset: "utf-8",
-        title: "austinzani.dev",
-        viewport: "width=device-width,initial-scale=1",
-    }];
-};
-
 // @ts-ignore
 export const links: LinksFunction = () => {
   return [
@@ -56,12 +48,12 @@ function App() {
     const [theme] = useTheme();
     const data = useLoaderData<LoaderData>();
 
-
-
     return (
     <html lang="en" className={`w-full h-full ${theme || ""}`}>
       <head>
-        <Meta />
+        <title>austinzani.dev</title>
+        <meta charSet="utf-8"/>
+        <meta name="viewport" content="width=device-width,initial-scale=1"/>
         <Links />
           <NonFlashOfWrongThemeEls ssrTheme={Boolean(data.theme)} />
         <script src="https://kit.fontawesome.com/84ef1ed513.js" crossOrigin="anonymous"></script>
