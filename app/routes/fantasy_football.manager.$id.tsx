@@ -4,10 +4,10 @@ import supabase from "~/utils/supabase";
 
 import {capitalizeFirstLetter} from "~/utils/helpers";
 
-import type {LoaderArgs} from "@remix-run/node";
+import type {LoaderFunctionArgs} from "@remix-run/node";
 
 import {useFootballContext} from "~/routes/fantasy_football";
-import {Database} from "../../../../db_types";
+import {Database} from "../../db_types";
 import {BreadcrumbItem, Breadcrumbs} from "~/components/Breadcrumb";
 
 interface loaderData {
@@ -17,7 +17,7 @@ interface loaderData {
     manager_id: number
 }
 
-export const loader = async ({params}: LoaderArgs): Promise<loaderData> => {
+export const loader = async ({params}: LoaderFunctionArgs): Promise<loaderData> => {
     const manager_id = params.id;
     if (manager_id) {
         const id = parseInt(manager_id);

@@ -5,7 +5,7 @@ import Icon from "~/components/Icon";
 export default function Football() {
 
     return (
-        <div className="w-full py-20 flex flex-col items-center md:justify-center md:flex-row">
+        <div className="w-full pt-20 flex flex-col items-center md:justify-center md:flex-row">
             <div className={"w-11/12 mb-12 md:w-1/2 max-w-xl md:mb-0 md:mr-12 flex flex-col justify-center"}>
                 <img className={"max-w-full h-auto transform rounded-xl"}
                      src={"https://bvaxppgdleypbyzyjchu.supabase.co/storage/v1/object/public/images/league_pic.JPG"}/>

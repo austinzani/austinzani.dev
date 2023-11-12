@@ -2,10 +2,10 @@ import {Outlet, useLoaderData, useOutletContext} from "@remix-run/react";
 import React from "react";
 import supabase from "~/utils/supabase";
 
-import type { LoaderArgs } from "@remix-run/node";
+import type { LoaderFunctionArgs } from "@remix-run/node";
 import type { Database } from "../../db_types";
 
-export const loader = async ({ request }: LoaderArgs) => {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
     // Fetch all manager names and ids for use in all FF pages
     const {data: managerData, error: managerError} = await supabase
         .from('manager')

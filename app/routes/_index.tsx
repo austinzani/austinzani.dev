@@ -7,9 +7,8 @@ import six from '../images/memoji_6.png'
 const memojis = [one, two, three, four, five, six]
 
 import Icon from "~/components/Icon";
-import {Link} from "@remix-run/react";
 
-export default function Index() {
+export default function _index() {
     // Get a random number between 0 and 5
     const random = Math.floor(Math.random() * 6);
   return (

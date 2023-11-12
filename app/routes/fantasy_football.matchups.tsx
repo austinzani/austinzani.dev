@@ -2,8 +2,8 @@ import {Link, useLoaderData} from "@remix-run/react";
 import React from "react";
 import supabase from "~/utils/supabase";
 
-import type {LoaderArgs} from "@remix-run/node";
-import {Database} from "../../../../db_types";
+import type {LoaderFunctionArgs} from "@remix-run/node";
+import {Database} from "../../db_types";
 import {ScoreCardGroup} from "~/components/ScoreCard";
 import {ChevronLeftIcon, ChevronRightIcon} from "@heroicons/react/24/solid";
 import { Breadcrumbs, BreadcrumbItem} from "~/components/Breadcrumb";
@@ -16,7 +16,7 @@ interface loaderData {
     week: number
 }
 
-export const loader = async ({request}: LoaderArgs): Promise<loaderData> => {
+export const loader = async ({request}: LoaderFunctionArgs): Promise<loaderData> => {
     const url = new URL(request.url);
     const year = url.searchParams.get("year");
     const week = url.searchParams.get("week");

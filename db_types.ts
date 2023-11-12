@@ -3,7 +3,7 @@ export type Json =
   | number
   | boolean
   | null
-  | { [key: string]: Json }
+  | { [key: string]: Json | undefined }
   | Json[]
 
 export interface Database {
@@ -58,6 +58,29 @@ export interface Database {
           winning_team?: number | null
           year?: number
         }
+        Relationships: [
+          {
+            foreignKeyName: "game_away_team_fkey"
+            columns: ["away_team"]
+            isOneToOne: false
+            referencedRelation: "manager"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "game_home_team_fkey"
+            columns: ["home_team"]
+            isOneToOne: false
+            referencedRelation: "manager"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "game_winning_team_fkey"
+            columns: ["winning_team"]
+            isOneToOne: false
+            referencedRelation: "manager"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       high_point: {
         Row: {
@@ -87,6 +110,22 @@ export interface Database {
           week?: number
           year?: number
         }
+        Relationships: [
+          {
+            foreignKeyName: "high_point_high_point_manager_fkey"
+            columns: ["high_point_manager"]
+            isOneToOne: false
+            referencedRelation: "manager"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "high_point_low_point_manager_fkey"
+            columns: ["low_point_manager"]
+            isOneToOne: false
+            referencedRelation: "manager"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       manager: {
         Row: {
@@ -107,6 +146,37 @@ export interface Database {
           is_active?: boolean
           name?: string
         }
+        Relationships: []
+      }
+      music_history: {
+        Row: {
+          album_art_url: string
+          apple_music_url: string
+          artist: string
+          created_at: string
+          id: number
+          title: string
+          type: string
+        }
+        Insert: {
+          album_art_url: string
+          apple_music_url: string
+          artist: string
+          created_at?: string
+          id?: number
+          title: string
+          type: string
+        }
+        Update: {
+          album_art_url?: string
+          apple_music_url?: string
+          artist?: string
+          created_at?: string
+          id?: number
+          title?: string
+          type?: string
+        }
+        Relationships: []
       }
       season: {
         Row: {
@@ -117,8 +187,8 @@ export interface Database {
           regular_season_weeks: number
           teams: number[]
           toilet_bowl_champ: number | null
-          year: number
           total_weeks: number | null
+          year: number
         }
         Insert: {
           champ?: number | null
@@ -128,8 +198,8 @@ export interface Database {
           regular_season_weeks: number
           teams: number[]
           toilet_bowl_champ?: number | null
-          year?: number
           total_weeks?: number | null
+          year?: number
         }
         Update: {
           champ?: number | null
@@ -139,9 +209,25 @@ export interface Database {
           regular_season_weeks?: number
           teams?: number[]
           toilet_bowl_champ?: number | null
-          year?: number
           total_weeks?: number | null
+          year?: number
         }
+        Relationships: [
+          {
+            foreignKeyName: "season_champ_fkey"
+            columns: ["champ"]
+            isOneToOne: false
+            referencedRelation: "manager"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "season_toilet_bowl_champ_fkey"
+            columns: ["toilet_bowl_champ"]
+            isOneToOne: false
+            referencedRelation: "manager"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       team: {
         Row: {
@@ -183,6 +269,22 @@ export interface Database {
           transactions?: number | null
           year?: number
         }
+        Relationships: [
+          {
+            foreignKeyName: "team_manager_fkey"
+            columns: ["manager"]
+            isOneToOne: false
+            referencedRelation: "manager"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "team_year_fkey"
+            columns: ["year"]
+            isOneToOne: false
+            referencedRelation: "season"
+            referencedColumns: ["year"]
+          }
+        ]
       }
     }
     Views: {
@@ -191,46 +293,46 @@ export interface Database {
     Functions: {
       all_time: {
         Args: Record<PropertyKey, never>
-        Returns: Database["public"]["CompositeTypes"]["all_time_object"]
+        Returns: Database["public"]["CompositeTypes"]["all_time_object"][]
       }
       head_to_head: {
         Args: {
           team_one: number
           team_two: number
         }
-        Returns: Database["public"]["CompositeTypes"]["head_to_head_object"]
+        Returns: Database["public"]["CompositeTypes"]["head_to_head_object"][]
       }
       head_to_head_matchups: {
         Args: {
           team_one: number
           team_two: number
         }
-        Returns: Database["public"]["CompositeTypes"]["game_details"]
+        Returns: Database["public"]["CompositeTypes"]["game_details"][]
       }
       manager_seasons: {
         Args: {
           manager_id: number
         }
-        Returns: Database["public"]["CompositeTypes"]["manager_season_object"]
+        Returns: Database["public"]["CompositeTypes"]["manager_season_object"][]
       }
       opponents: {
         Args: {
           manager_id: number
         }
-        Returns: Database["public"]["CompositeTypes"]["opponents_object"]
+        Returns: Database["public"]["CompositeTypes"]["opponents_object"][]
       }
       season_details: {
         Args: {
           season_year: number
         }
-        Returns: Database["public"]["CompositeTypes"]["season_details_object"]
+        Returns: Database["public"]["CompositeTypes"]["season_details_object"][]
       }
       week_matchups: {
         Args: {
           season_year: number
           selected_week: number
         }
-        Returns: Database["public"]["CompositeTypes"]["game_details"]
+        Returns: Database["public"]["CompositeTypes"]["game_details"][]
       }
     }
     Enums: {
