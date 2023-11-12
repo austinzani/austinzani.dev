@@ -6,7 +6,7 @@ const RecentMusicCard = ({recentObject}: {
     recentObject: Database['public']['Tables']['music_history']['Row']}) => {
     const isAlbum = recentObject.type === "ALBUM"
     return (
-            <div className={'max-w-md w-full flex mb-2 border border-gray-300 dark:border-zinc-700 p-2 items-center rounded bg-gray-100'}>
+            <div className={'max-w-md w-full flex mb-2 border border-gray-300 dark:border-zinc-700 p-2 items-center rounded bg-gray-100 dark:bg-zinc-800'}>
                 <img className={"h-28 w-28"} src={recentObject.album_art_url}/>
                 <div className={'h-full flex justify-between w-full p-1'}>
                 <div className={'h-full flex flex-col p-1'}>
