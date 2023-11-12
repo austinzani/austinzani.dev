@@ -4,26 +4,26 @@ import supabase from "~/utils/supabase";
 
 import {capitalizeFirstLetter} from "~/utils/helpers";
 
-import type {LoaderArgs} from "@remix-run/node";
-import type {Database} from "../../../../db_types";
+import type {LoaderFunctionArgs} from "@remix-run/node";
+import type {Database} from "../../db_types";
 
 import {useFootballContext} from "~/routes/fantasy_football";
 
 import {Item, Select} from "~/components/Select";
 
-import {mapYearNav} from "~/routes/fantasy_football/all_time";
+import {mapYearNav} from "~/routes/fantasy_football.all_time";
 import SideNavigation from "~/components/SideNavigation";
 import Icon from "~/components/Icon";
 import {BreadcrumbItem, Breadcrumbs} from "~/components/Breadcrumb";
 
-export const loader = async ({params}: LoaderArgs) => {
+export const loader = async ({params}: LoaderFunctionArgs) => {
     const season = params.year;
     if (season) {
         const seasonInt = parseInt(season);
         if (!seasonInt) {
             return {
                 error: "Invalid season",
-                season: [],
+                season: null,
                 year: seasonInt
             }
         }
@@ -36,7 +36,7 @@ export const loader = async ({params}: LoaderArgs) => {
         if (seasonError) {
             return {
                 error: seasonError,
-                season: [],
+                season: null,
                 year: seasonInt
             }
         } else {
@@ -123,7 +123,7 @@ export default function Year() {
                         {years.map(year => <Item key={year.key}>{year.value}</Item>)}
                     </Select>
                 </div>
-                {season.length > 0 && <SeasonTable season={season}/>}
+                {(season?.length && season.length > 0) && <SeasonTable season={season}/>}
             </main>
         </React.Fragment>
     );

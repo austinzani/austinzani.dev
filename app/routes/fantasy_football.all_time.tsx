@@ -3,7 +3,7 @@ import {useNavigate} from "@remix-run/react";
 
 import {capitalizeFirstLetter} from "~/utils/helpers";
 
-import type {Database} from "../../../db_types";
+import type {Database} from "../../db_types";
 
 import {Item, Select} from "~/components/Select";
 
@@ -74,7 +74,7 @@ export const mapYearNav = (years: { key: string, value: string }[]) => {
     })
 }
 
-export default function All_time() {
+export default function Fantasy_footballAll_time() {
     const {allTime, years} = useFootballContext();
     const navigate = useNavigate();
     const [selectedYear, setSelectedYear] = useState("all_time");

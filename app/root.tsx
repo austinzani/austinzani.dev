@@ -32,11 +32,13 @@ export const loader: LoaderFunction = async ({ request }) => {
     return data;
 };
 
-export const meta: MetaFunction = () => ({
-  charset: "utf-8",
-  title: "austinzani.dev",
-  viewport: "width=device-width,initial-scale=1",
-});
+export const meta = () => {
+    return [{
+        charset: "utf-8",
+        title: "austinzani.dev",
+        viewport: "width=device-width,initial-scale=1",
+    }];
+};
 
 // @ts-ignore
 export const links: LinksFunction = () => {

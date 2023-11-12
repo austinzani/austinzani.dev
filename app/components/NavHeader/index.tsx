@@ -36,7 +36,7 @@ const DarkModeToggle = () => {
 
 const NavHeader = () => {
     return (
-        <header className={"flex justify-between h-14 items-center px-4"}>
+        <header className={"flex justify-between h-14 border-b bg-gray-100 border-gray-200 dark:border-zinc-800 dark:bg-zinc-900 items-center px-4 sticky top-0 z-10"}>
             <p className={"text-2xl h-10 w-10 font-medium flex justify-center items-center p-2 border border-black dark:border-orange-500 dark:text-orange-500 rounded-lg"}>{"AZ"}</p>
             <div className={"w-fit flex items-center"}>
                 <DarkModeToggle/>
