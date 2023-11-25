@@ -42,7 +42,7 @@ const Music = () => {
     return (
         <div className={'flex justify-center w-full'}>
             <div className={'flex m-3 flex-col w-full max-w-[64rem]'}>
-                <h1 className={"text-4xl font-['Outfit'] font-medium"}>Music</h1>
+                <h1 className={"text-4xl font-['Outfit'] font-medium mb-2"}>Music</h1>
                 {/*@ts-ignore*/}
                 <Tabs>
                     <Item key="feed" title="Feed">
@@ -53,8 +53,10 @@ const Music = () => {
                         })}
                     </div>
                     </Item>
-                    <Item key="year" title="Yearly List">Yearly List</Item>
-                    <Item key="all" title="All Time">All Time</Item>
+                    <Item key="year" title="Yearly List">
+                        <p className={"font-['Outfit'] py-2 font-light"}>My top 25 albums from the end of every year.</p>
+
+                    </Item>
                 </Tabs>
             </div>
         </div>
