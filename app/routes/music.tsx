@@ -11,8 +11,6 @@ import {Database} from "../../db_types";
 export const meta: MetaFunction = ({ matches }) => {
     const parentMeta = matches.flatMap(match => match.meta ?? []) //@ts-ignore
         .filter((meta) => !['og:title', 'og:image', 'og:description'].includes(meta.name) && !("title" in meta))
-
-    console.log(parentMeta)
     return [
         { title: "Austin's Music" },
         { name: "og:title", content: "Austin's Music" },
@@ -34,7 +32,8 @@ export const loader = async ({params}: LoaderFunctionArgs) => {
             error: "Invalid Offset",
             music: null,
             year: null,
-            album: null
+            album: null,
+            yearList: null
         }
     }
 
@@ -47,92 +46,60 @@ export const loader = async ({params}: LoaderFunctionArgs) => {
         .limit(10)
         .range(parsedOffset, parsedOffset + 10)
 
+    const {data: year_response, error: year_error} = await supabase.from('albums_of_the_year')
+        .select('*')
+        .order('rank', {ascending: true})
+        .limit(1000)
+
     if (music_error) {
         return {
             error: music_error,
             music: null,
             year: null,
-            album: null
+            album: null,
+            yearList: null
         }
     }
+    if (year_error) {
+        return {
+            error: year_error,
+            music: null,
+            year: null,
+            album: null,
+            yearList: null
+        }
+    }
+
+    const topAlbums: {
+        [key: number]: Array<Database['public']['Tables']['albums_of_the_year']['Row']>
+    } = {}
+
+    console.log(year_response)
+
+    year_response?.forEach((album) => {
+        if (topAlbums[album.year]) {
+            topAlbums[album.year].push(album)
+        } else {
+            topAlbums[album.year] = [album]
+        }
+    })
+
+    // Sort each year's albums by rank from lowest to highest
+    Object.keys(topAlbums).forEach((year) => {
+        topAlbums[parseInt(year)] = topAlbums[parseInt(year)].sort((a, b) => a.rank - b.rank)
+    })
 
     return {
         error: null,
         music: music_response,
         year: parsedYear ? year : null,
-        album: parsedAlbum && parsedAlbum < 26 ? album : null
+        album: parsedAlbum && parsedAlbum < 26 ? album : null,
+        yearList: topAlbums
     }
 }
 
-const topAlbums: {
-    [key: number]: Array<Database['public']['Tables']['albums_of_the_year']['Row']>
-} = {
-    2020: [{
-        artist: "Taylor Swift",
-        album: "folklore",
-        album_art_url: "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/4d/4b/00/4d4b00b8-f6ca-df80-cd7d-a00ba23530ed/075679673930.jpg/632x632bb.webp",
-        spotify_link: "https://open.spotify.com/album/2fenSS68JI1h4Fo296JfGr?si=JyVQ1T9hQ7G2n7K1sYJ2Cw",
-        apple_link: "https://music.apple.com/us/album/folklore/1524801269",
-        year: 2020,
-        rank: 1,
-        created_at: '2021-01-01T00:00:00.000000+00:00',
-        id: 1,
-        vinyl_link: null,
-        blurb: null
-    }, {
-        artist: "Phoebe Bridgers",
-        album: "Punisher",
-        album_art_url: "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/4d/4b/00/4d4b00b8-f6ca-df80-cd7d-a00ba23530ed/075679673930.jpg/632x632bb.webp",
-        spotify_link: "https://open.spotify.com/album/3ZBxJbCb8Wies9KNxZb7oV?si=0zJwZzL6QyqU2qUZqX3ZJw",
-        apple_link: "https://music.apple.com/us/album/punisher/1507873464",
-        year: 2020,
-        rank: 2,
-        created_at: '2021-01-01T00:00:00.000000+00:00',
-        id: 2,
-        vinyl_link: null,
-        blurb: null
-    }, {
-        artist: "Fleet Foxes",
-        album: "Shore",
-        album_art_url: "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/4d/4b/00/4d4b00b8-f6ca-df80-cd7d-a00ba23530ed/075679673930.jpg/632x632bb.webp",
-        spotify_link: "https://open.spotify.com/album/2nYJhEgC8yRJX8qzPwMsW5?si=0mF0aWQ0QXKQqJ1QV2ZC3w",
-        apple_link: "https://music.apple.com/us/album/shore/1523366264",
-        year: 2020,
-        rank: 3,
-        created_at: '2021-01-01T00:00:00.000000+00:00',
-        id: 3,
-        vinyl_link: null,
-        blurb: null
-    }],
-    2021: [{
-        artist: "Japanese Breakfast",
-        album: "Jubilee",
-        album_art_url: "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/4d/4b/00/4d4b00b8-f6ca-df80-cd7d-a00ba23530ed/075679673930.jpg/632x632bb.webp",
-        spotify_link: "https://open.spotify.com/album/4B5lqXjQ4Y5nQVZ5yWbYdL?si=0zJwZzL6QyqU2qUZqX3ZJw",
-        apple_link: "https://music.apple.com/us/album/jubilee/1557254090",
-        year: 2021,
-        rank: 1,
-        created_at: '2021-01-01T00:00:00.000000+00:00',
-        id: 4,
-        vinyl_link: null,
-        blurb: null
-    }, {
-        artist: "The Weather Station",
-        album: "Ignorance",
-        album_art_url: "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/4d/4b/00/4d4b00b8-f6ca-df80-cd7d-a00ba23530ed/075679673930.jpg/632x632bb.webp",
-        spotify_link: "https://open.spotify.com/album/2fenSS68JI1h4Fo296JfGr?si=JyVQ1T9hQ7G2n7K1sYJ2Cw",
-        apple_link: "https://music.apple.com/us/album/folklore/1524801269",
-        year: 2021,
-        rank: 2,
-        created_at: '2021-01-01T00:00:00.000000+00:00',
-        id: 5,
-        vinyl_link: null,
-        blurb: null
-    }]
-}
-
 const Music = () => {
-    const {music, year} = useLoaderData<typeof loader>()
+    const {music, year, yearList} = useLoaderData<typeof loader>()
     const [mainTab, setMainTab] = React.useState(year ? 'feed' : 'year')
     const [yearTab, setYearTab] = React.useState(year ? year.toString() : '2021')
 
@@ -160,11 +127,10 @@ const Music = () => {
                             year.</p>
                         {/*@ts-ignore*/}
                         <Tabs>
-                            {Object.keys(topAlbums).map((year) => {
+                            {Object.keys(yearList!).map((year) => {
                                 return <Item key={year} title={year}>
                                     <div className={"flex flex-col items-center w-full"}>
-                                        {topAlbums[parseInt(year)].map((album) => {
-
+                                        {yearList![parseInt(year)].map((album) => {
                                             return <AlbumOfTheYearListCard key={album.album} album={album} number={album.rank}/>
                                         })}
                                     </div>
