@@ -2,9 +2,14 @@ import { useRef, useState, useEffect } from "react";
 import {AriaTabListOptions, AriaTabPanelProps, useFocusRing, useTab, useTabList, useTabPanel, mergeProps} from 'react-aria';
 import {Node, TabListState, useTabListState} from 'react-stately';
 
-export const Tabs = (props: AriaTabListOptions<object>) => {
+interface TabsProps extends AriaTabListOptions<object> {
+    tabListClassName?: string,
+}
+
+export const Tabs = (props: TabsProps) => {
     let state = useTabListState(props);
     let ref = useRef(null);
+    let tabContainerRef = useRef(null);
     let { tabListProps } = useTabList(props, state, ref);
     let [activeTabStyle, setActiveTabStyle] = useState({
         width: 0,
@@ -15,10 +20,18 @@ export const Tabs = (props: AriaTabListOptions<object>) => {
         let activeTab = ref.current.querySelector(
             '[role="tab"][aria-selected="true"]'
         );
+        let tabContainer = tabContainerRef.current;
         setActiveTabStyle({
             width: activeTab?.offsetWidth,
             transform: `translateX(${activeTab?.offsetLeft}px)`
         });
+        const childOffset = activeTab?.offsetLeft; // @ts-ignore
+        const containerWidth = tabContainer?.offsetWidth;
+        const childWidth = activeTab?.offsetWidth;
+        console.log(childOffset - (containerWidth - childWidth) / 2, tabContainer)
+
+        // @ts-ignore
+        tabContainer.scrollLeft = childOffset - (containerWidth - childWidth) / 2;
     }, [state.selectedKey]);
 
     let { focusProps, isFocusVisible } = useFocusRing({
@@ -29,7 +42,7 @@ export const Tabs = (props: AriaTabListOptions<object>) => {
 
     return (
         <div>
-            <div className={"inline-block relative border-2 border-lightgray py-1 px-1 rounded-full z-0"}>
+            <div ref={tabContainerRef} className={`inline-block relative border-2 border-lightgray py-1 px-1 rounded-full z-0 max-w-full overflow-x-auto no-scrollbar scroll-smooth ${props.tabListClassName}`}>
                 <div
                     className={`absolute top-1 bottom-1 left-0 rounded-full bg-orange-500 transform will-change-[transform,width] transition-transform transition-width duration-100 -z-10 ${isFocusVisible ? afterStyle : ""}`}
                     style={activeTabStyle}

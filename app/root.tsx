@@ -14,8 +14,11 @@ import {getThemeSession} from "~/utils/theme.server";
 import {LoaderFunction} from "@remix-run/node";
 
 import {useTheme, ThemeProvider, NonFlashOfWrongThemeEls} from "~/utils/theme-provider";
+import one from './images/memoji_1.png'
+
 
 import styles from './styles/app.css'
+import globalStyles from './styles/global.css'
 import NavHeader from './components/NavHeader'
 
 export type LoaderData = {
@@ -36,6 +39,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 export const links: LinksFunction = () => {
   return [
       { rel: "stylesheet", href: styles },
+      { rel: "stylesheet", href: globalStyles },
       { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Outfit:wght@100;400;700&display=swap" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "true" },
@@ -51,9 +55,14 @@ function App() {
     return (
     <html lang="en" className={`w-full h-full ${theme || ""}`}>
       <head>
-        <title>austinzani.dev</title>
         <meta charSet="utf-8"/>
         <meta name="viewport" content="width=device-width,initial-scale=1"/>
+        <Meta />
+        <title>austinzani.dev</title>
+        <meta name="og:title" content="austinzani.dev"/>
+        <meta name="description" content="Austin Zani's personal website"/>
+        <meta name="og:description" content="Austin Zani's personal website"/>
+        <meta name="og:image" content={one}/>
         <Links />
           <NonFlashOfWrongThemeEls ssrTheme={Boolean(data.theme)} />
         <script src="https://kit.fontawesome.com/84ef1ed513.js" crossOrigin="anonymous"></script>

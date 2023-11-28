@@ -9,6 +9,48 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      albums_of_the_year: {
+        Row: {
+          album: string
+          album_art_url: string
+          apple_link: string
+          artist: string
+          blurb: string | null
+          created_at: string
+          id: number
+          rank: number
+          spotify_link: string
+          vinyl_link: string | null
+          year: number
+        }
+        Insert: {
+          album: string
+          album_art_url: string
+          apple_link: string
+          artist: string
+          blurb?: string | null
+          created_at?: string
+          id?: number
+          rank: number
+          spotify_link: string
+          vinyl_link?: string | null
+          year: number
+        }
+        Update: {
+          album?: string
+          album_art_url?: string
+          apple_link?: string
+          artist?: string
+          blurb?: string | null
+          created_at?: string
+          id?: number
+          rank?: number
+          spotify_link?: string
+          vinyl_link?: string | null
+          year?: number
+        }
+        Relationships: []
+      }
       game: {
         Row: {
           away_score: number | null
