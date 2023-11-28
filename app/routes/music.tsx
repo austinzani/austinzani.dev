@@ -9,7 +9,10 @@ import {Item} from 'react-stately';
 import {Database} from "../../db_types";
 
 export const meta: MetaFunction = ({ matches }) => {
-    const parentMeta = matches.flatMap(match => match.meta ?? [])
+    const parentMeta = matches.flatMap(match => match.meta ?? []) //@ts-ignore
+        .filter((meta) => !['og:title', 'og:image', 'og:description'].includes(meta.name) && !("title" in meta))
+
+    console.log(parentMeta)
     return [
         { title: "Austin's Music" },
         { name: "og:title", content: "Austin's Music" },
@@ -22,12 +25,21 @@ export const meta: MetaFunction = ({ matches }) => {
 export const loader = async ({params}: LoaderFunctionArgs) => {
     const offset = params.offset;
     const parsedOffset = parseInt(offset ?? "0");
+    const year = params.year || "";
+    const parsedYear = parseInt(year);
+    const album = params.album || "";
+    const parsedAlbum = parseInt(album);
     if (isNaN(parsedOffset)) {
         return {
             error: "Invalid Offset",
-            music: null
+            music: null,
+            year: null,
+            album: null
         }
     }
+
+    // TODO: add a fetch for all years of top music and check year against that
+
 
     const {data: music_response, error: music_error} = await supabase.from('music_history')
         .select('*')
@@ -38,13 +50,17 @@ export const loader = async ({params}: LoaderFunctionArgs) => {
     if (music_error) {
         return {
             error: music_error,
-            music: null
+            music: null,
+            year: null,
+            album: null
         }
     }
 
     return {
         error: null,
-        music: music_response
+        music: music_response,
+        year: parsedYear ? year : null,
+        album: parsedAlbum && parsedAlbum < 26 ? album : null
     }
 }
 
@@ -116,7 +132,9 @@ const topAlbums: {
 }
 
 const Music = () => {
-    const {music} = useLoaderData<typeof loader>()
+    const {music, year} = useLoaderData<typeof loader>()
+    const [mainTab, setMainTab] = React.useState(year ? 'feed' : 'year')
+    const [yearTab, setYearTab] = React.useState(year ? year.toString() : '2021')
 
     // @ts-ignore
     return (
@@ -124,7 +142,11 @@ const Music = () => {
             <div className={'flex m-3 flex-col w-full max-w-[64rem]'}>
                 <h1 className={"text-4xl font-['Outfit'] font-medium mb-2"}>Music</h1>
                 {/*@ts-ignore*/}
-                <Tabs>
+                <Tabs
+                    selectedKey={mainTab} // @ts-ignore
+                    onSelectionChange={(key) => setMainTab(key)}
+                    aria-label="Music"
+                >
                     <Item key="feed" title="Feed">
                         <p className={"font-['Outfit'] py-2 font-light"}>Some recent tunes I have been vibing with.</p>
                         <div className={"flex flex-col items-center"}>

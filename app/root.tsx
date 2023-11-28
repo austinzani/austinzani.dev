@@ -1,4 +1,4 @@
-import type {LinksFunction} from "@remix-run/node";
+import type {LinksFunction, MetaFunction} from "@remix-run/node";
 import {
     Links,
     LiveReload,
@@ -23,6 +23,24 @@ import NavHeader from './components/NavHeader'
 
 export type LoaderData = {
     theme: Theme | null;
+};
+
+export const meta: MetaFunction = () => {
+    return [
+        { title: "austinzani.dev" },
+        {
+            name: "og:title",
+            content: "austinzani.dev",
+        },
+        {
+            name: "description",
+            content: "Austin Zani's personal website",
+        },
+        {
+            name: "og:image",
+            content: one
+        }
+    ];
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -58,11 +76,6 @@ function App() {
         <meta charSet="utf-8"/>
         <meta name="viewport" content="width=device-width,initial-scale=1"/>
         <Meta />
-        <title>austinzani.dev</title>
-        <meta name="og:title" content="austinzani.dev"/>
-        <meta name="description" content="Austin Zani's personal website"/>
-        <meta name="og:description" content="Austin Zani's personal website"/>
-        <meta name="og:image" content={one}/>
         <Links />
           <NonFlashOfWrongThemeEls ssrTheme={Boolean(data.theme)} />
         <script src="https://kit.fontawesome.com/84ef1ed513.js" crossOrigin="anonymous"></script>
