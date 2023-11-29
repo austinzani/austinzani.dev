@@ -35,7 +35,7 @@ const RecentMusicCard = ({album, number, reveal_date}: {
             </div>
             <Modal isOpen={isModalOpen} closeModal={closeModal}>
                 <div className={'flex flex-col sm:flex-row items-center max-w-full sm:max-w-[30rem] relative'}>
-                    <div className={"w-48 min-w-[12rem] relative"}>
+                    <div className={"sm:w-48 w-full min-w-[12rem] relative"}>
                         <img className={"min-h-48 min-w-48"} src={album.album_art_url}/>
                         <h1 className={'absolute -top-2 -left-2 w-8 h-8 text-xl bg-orange-500 rounded-full flex items-center justify-center text-white'}>{number}</h1>
                         <div className={'flex flex-row justify-center mt-2'}>
@@ -56,9 +56,9 @@ const RecentMusicCard = ({album, number, reveal_date}: {
                         </div>
                     </div>
                     <div className={'flex flex-col sm: p-4'}>
-                        <h1 className={"text-lg"}>{album.album}</h1>
-                        <h3 className={"text-sm text-zinc-400"}>{album.artist}</h3>
-                        {album.blurb && <p className={"text-xs mt-3 dark:text-gray-400"}>{album.blurb}</p>}
+                        <h1 className={"text-2xl"}>{album.album}</h1>
+                        <h3 className={"text-md text-zinc-400"}>{album.artist}</h3>
+                        {album.blurb && <p className={"text-sm mt-3 dark:text-gray-400"}>{album.blurb}</p>}
                     </div>
                 </div>
             </Modal>

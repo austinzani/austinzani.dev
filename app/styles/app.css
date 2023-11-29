@@ -753,6 +753,10 @@ video {
   max-height: 18rem;
 }
 
+.max-h-\[95\%\] {
+  max-height: 95%;
+}
+
 .min-h-min {
   min-height: -moz-min-content;
   min-height: min-content;
@@ -1613,6 +1617,10 @@ video {
 
   .sm\:w-auto {
     width: auto;
+  }
+
+  .sm\:w-48 {
+    width: 12rem;
   }
 
   .sm\:max-w-\[30rem\] {
