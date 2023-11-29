@@ -114,14 +114,6 @@ const Music = () => {
                     onSelectionChange={(key) => setMainTab(key)}
                     aria-label="Music"
                 >
-                    <Item key="feed" title="Feed">
-                        <p className={"font-['Outfit'] py-2 font-light"}>Some recent tunes I have been vibing with.</p>
-                        <div className={"flex flex-col items-center"}>
-                            {music?.map((song, index) => {
-                                return <RecentMusicCard recentObject={song} key={index}/>
-                            })}
-                        </div>
-                    </Item>
                     <Item key="year" title="Yearly List">
                         <p className={"font-['Outfit'] py-2 font-light"}>My top 25 albums from the end of every
                             year.</p>
@@ -137,6 +129,14 @@ const Music = () => {
                                 </Item>
                             })}
                         </Tabs>
+                    </Item>
+                    <Item key="feed" title="Feed">
+                        <p className={"font-['Outfit'] py-2 font-light"}>Some recent tunes I have been vibing with.</p>
+                        <div className={"flex flex-col items-center"}>
+                            {music?.map((song, index) => {
+                                return <RecentMusicCard recentObject={song} key={index}/>
+                            })}
+                        </div>
                     </Item>
                 </Tabs>
             </div>

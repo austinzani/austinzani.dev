@@ -63,7 +63,7 @@ const Tab = ({ item, state }: {item: Node<object>, state: TabListState<any>}) =>
     let ref = useRef(null);
     let { tabProps } = useTab({ key }, state, ref);
     return (
-        <div {...tabProps} ref={ref} className={`px-8 py-2 text-sm font-semibold cursor-default outline-none rounded-full text-black transition-color duration-150 ${tabProps["aria-selected"] ? 'text-white' : ''}`}>
+        <div {...tabProps} ref={ref} className={`px-8 py-2 text-sm font-semibold cursor-default outline-none rounded-full transition-color duration-150 ${tabProps["aria-selected"] ? 'text-white' : ''}`}>
             {rendered}
         </div>
     );
