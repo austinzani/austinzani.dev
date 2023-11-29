@@ -35,9 +35,11 @@ const RecentMusicCard = ({album, number, reveal_date}: {
             </div>
             <Modal isOpen={isModalOpen} closeModal={closeModal}>
                 <div className={'flex flex-col sm:flex-row items-center max-w-full sm:max-w-[30rem] relative'}>
+                    <div>
                     <div className={"sm:w-48 w-full min-w-[12rem] relative"}>
                         <img className={"min-h-48 min-w-48"} src={album.album_art_url}/>
                         <h1 className={'absolute -top-2 -left-2 w-8 h-8 text-xl bg-orange-500 rounded-full flex items-center justify-center text-white'}>{number}</h1>
+                    </div>
                         <div className={'flex flex-row justify-center mt-2'}>
                             <a target="_blank" rel="noopener noreferrer" href={album.apple_link}
                                className={"h-10 text-2xl w-10 p-2.5 mx-1 flex items-center justify-center hover:bg-orange-500/60 hover:cursor-pointer rounded-md"}>
