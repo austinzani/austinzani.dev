@@ -14,7 +14,7 @@ export const meta: MetaFunction = ({ matches }) => {
     return [
         { title: "Austin's Music" },
         { name: "og:title", content: "Austin's Music" },
-        { name: "og:image", content: "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/4d/4b/00/4d4b00b8-f6ca-df80-cd7d-a00ba23530ed/075679673930.jpg/632x632bb.webp" },
+        // { name: "og:image", content: "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/4d/4b/00/4d4b00b8-f6ca-df80-cd7d-a00ba23530ed/075679673930.jpg/632x632bb.webp" },
         { name: "og:description", content: "Some of the music that I love" },
         ...parentMeta
     ];
@@ -128,6 +128,7 @@ const Music = () => {
     const {music, year, yearList} = useLoaderData<typeof loader>()
     const [mainTab, setMainTab] = React.useState(year ? 'feed' : 'year')
     const [yearTab, setYearTab] = React.useState(year ? year.toString() : '2021')
+    const yearTabs = Object.keys(yearList!).sort((a, b) => parseInt(b) - parseInt(a))
 
     // @ts-ignore
     return (
@@ -145,7 +146,7 @@ const Music = () => {
                             year.</p>
                         {/*@ts-ignore*/}
                         <Tabs>
-                            {Object.keys(yearList!).map((year) => {
+                            {yearTabs.map((year) => {
                                 return <Item key={year} title={year}>
                                     <div className={"flex flex-col items-center w-full"}>
                                         {yearList![parseInt(year)].map((album) => {
