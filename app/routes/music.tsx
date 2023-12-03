@@ -20,6 +20,31 @@ export const meta: MetaFunction = ({ matches }) => {
     ];
 };
 
+type UpcomingAlbum = {
+    upcoming: true,
+    rank: number,
+    reveal_date: string,
+    year: number
+}
+
+const hideUpcomingAlbums = (album: Database['public']['Tables']['albums_of_the_year']['Row']):
+    Database['public']['Tables']['albums_of_the_year']['Row'] | UpcomingAlbum => {
+    const today = new Date()
+    const todayDelta = 25 - today.getDate()
+    console.log(todayDelta, album.rank)
+    if(album.rank > todayDelta) {
+        return album
+    } else {
+        return {
+            upcoming: true,
+            rank: album.rank,
+            reveal_date: `Dec ${26 - album.rank}`,
+            year: album.year
+        }
+    }
+
+}
+
 export const loader = async ({params}: LoaderFunctionArgs) => {
     const offset = params.offset;
     const parsedOffset = parseInt(offset ?? "0");
@@ -71,22 +96,23 @@ export const loader = async ({params}: LoaderFunctionArgs) => {
     }
 
     const topAlbums: {
-        [key: number]: Array<Database['public']['Tables']['albums_of_the_year']['Row']>
+        [key: number]: Array<Database['public']['Tables']['albums_of_the_year']['Row'] | UpcomingAlbum>
     } = {}
 
-    console.log(year_response)
-
     year_response?.forEach((album) => {
+        const today = new Date()
+        const year = today.getFullYear()
+        const filteredAlbum = album.year === year ? hideUpcomingAlbums(album) : album
         if (topAlbums[album.year]) {
-            topAlbums[album.year].push(album)
+            topAlbums[album.year].push(filteredAlbum)
         } else {
-            topAlbums[album.year] = [album]
+            topAlbums[album.year] = [filteredAlbum]
         }
     })
 
     // Sort each year's albums by rank from lowest to highest
     Object.keys(topAlbums).forEach((year) => {
-        topAlbums[parseInt(year)] = topAlbums[parseInt(year)].sort((a, b) => a.rank - b.rank)
+        topAlbums[parseInt(year)] = topAlbums[parseInt(year)].sort((a, b) => b.rank - a.rank)
     })
 
     return {
@@ -123,7 +149,7 @@ const Music = () => {
                                 return <Item key={year} title={year}>
                                     <div className={"flex flex-col items-center w-full"}>
                                         {yearList![parseInt(year)].map((album) => {
-                                            return <AlbumOfTheYearListCard key={album.album} album={album} number={album.rank}/>
+                                            return <AlbumOfTheYearListCard key={`${album.year}-${album.rank}`} album={album} number={album.rank}/>
                                         })}
                                     </div>
                                 </Item>
