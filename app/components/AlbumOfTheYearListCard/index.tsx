@@ -15,17 +15,24 @@ const AlbumOfTheYearListCard = ({album, number}: {
     album: Database['public']['Tables']['albums_of_the_year']['Row'] | UpcomingAlbum,
     number: number
 }) => {
-   let canShare = false
+    let canShare = false
+    let shareObject = {}
     try {
-        canShare = navigator?.canShare()
-        console.log(navigator?.canShare())
+       if('album' in album) {
+           shareObject = {
+               title: `${album.album} by ${album.artist}`,
+               text: `Check out ${album.album} by ${album.artist}!`,
+               url: `https://austinzani.dev/music?year=${album.year}&album=${album.rank}`
+           }
+           canShare = navigator?.canShare(shareObject)
+       }
     } catch {
         canShare = false
     }
 
     if (!('upcoming' in album)) {
         return (
-            <div className={'flex flex-col sm:flex-row max-w-full sm:max-w-[40rem] relative border border-gray-300 dark:border-zinc-700 py-2 px-5 rounded bg-gray-100 dark:bg-zinc-800 m-2'}>
+            <div className={'flex flex-col sm:flex-row w-full max-w-full sm:max-w-[40rem] relative border border-gray-300 dark:border-zinc-700 py-2 px-5 rounded bg-gray-100 dark:bg-zinc-800 m-2'}>
                 <div className={'pt-4 sm:pb-2'}>
                     <div className={"sm:w-48 w-full min-w-[12rem] relative"}>
                         <img className={"min-h-48 min-w-48"} src={album.album_art_url}/>
@@ -49,11 +56,7 @@ const AlbumOfTheYearListCard = ({album, number}: {
                         {
                             canShare &&
                             <a target="_blank" rel="noopener noreferrer" onClick={() => {
-                                navigator.share({
-                                    title: `${album.album} by ${album.artist}`,
-                                    text: `Check out ${album.album} by ${album.artist}!`,
-                                    url: `https://austinzani.dev/music?year=${album.year}&album=${album.rank}`
-                                })
+                                navigator.share(shareObject)
                             }}
                                className={"h-10 text-2xl w-10 p-2.5 mx-1 flex items-center justify-center hover:bg-orange-500/60 hover:cursor-pointer rounded-md"}>
                                 <Icon name={'share'}/>
