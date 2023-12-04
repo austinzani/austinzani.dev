@@ -80,7 +80,7 @@ function App() {
           <NonFlashOfWrongThemeEls ssrTheme={Boolean(data.theme)} />
         <script src="https://kit.fontawesome.com/84ef1ed513.js" crossOrigin="anonymous"></script>
       </head>
-      <body className={"w-full h-full dark:bg-black dark:text-white font-['Outfit']"}>
+      <body className={"w-full h-full bg-white text-black dark:bg-black dark:text-white font-['Outfit']"}>
         <NavHeader />
         <div className={"h-[calc(100%_-_3.5rem)] w-full"}>
             <Outlet />
