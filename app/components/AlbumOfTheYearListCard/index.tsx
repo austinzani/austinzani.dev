@@ -21,7 +21,7 @@ const AlbumOfTheYearListCard = ({album, number}: {
        if('album' in album) {
            shareObject = {
                title: `${album.album} by ${album.artist}`,
-               text: `Check out ${album.album} by ${album.artist}!`,
+               text: album.blurb ? album.blurb : `Check out ${album.album} by ${album.artist}!`,
                url: `https://austinzani.dev/music?year=${album.year}&album=${album.rank}`
            }
            canShare = navigator?.canShare(shareObject)

@@ -8,6 +8,7 @@ import {Tabs} from "~/components/Tabs";
 import {Item} from 'react-stately';
 import {Database} from "../../db_types";
 import six from '~/images/memoji_6.png'
+import { createNewDateInTimeZone } from "~/utils/helpers";
 
 
 export const meta: MetaFunction<typeof loader> = ({ matches, data }) => {
@@ -51,7 +52,7 @@ type UpcomingAlbum = {
 
 const hideUpcomingAlbums = (album: Database['public']['Tables']['albums_of_the_year']['Row']):
     Database['public']['Tables']['albums_of_the_year']['Row'] | UpcomingAlbum => {
-    const today = new Date()
+    const today = createNewDateInTimeZone('America/New_York')
     const todayDelta = 25 - today.getDate()
     if(album.rank > todayDelta) {
         return album
