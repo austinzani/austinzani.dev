@@ -1,4 +1,4 @@
-import React from "react";
+import React, {SetStateAction} from "react";
 import {LoaderFunctionArgs, MetaFunction} from "@remix-run/node";
 import supabase from "~/utils/supabase";
 import {useLoaderData} from "@remix-run/react";
@@ -7,15 +7,37 @@ import AlbumOfTheYearListCard from "~/components/AlbumOfTheYearListCard";
 import {Tabs} from "~/components/Tabs";
 import {Item} from 'react-stately';
 import {Database} from "../../db_types";
+import six from '~/images/memoji_6.png'
 
-export const meta: MetaFunction = ({ matches }) => {
+
+export const meta: MetaFunction<typeof loader> = ({ matches, data }) => {
     const parentMeta = matches.flatMap(match => match.meta ?? []) //@ts-ignore
         .filter((meta) => !['og:title', 'og:image', 'og:description'].includes(meta.name) && !("title" in meta))
+
+    let title = "Austin's Music"
+    let description = "Some of the music that I love"
+    let image
+    // If we have a year and album, we can use that to generate the title, description, and image
+    if(data && data.year && data.album) {
+        if(data.year in data.yearList) {
+            const year = data.year
+            const album = data.yearList[parseInt(year)].find((album) => album.rank === parseInt(data.album!))
+            if(album && 'artist' in album) {
+                title = `${year} #${album.rank} - ${album.album} by ${album.artist}`
+                image = album.album_art_url
+                if(album.blurb) {
+                    description = album.blurb
+                }
+            }
+        }
+
+    }
+
     return [
-        { title: "Austin's Music" },
-        { name: "og:title", content: "Austin's Music" },
-        // { name: "og:image", content: "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/4d/4b/00/4d4b00b8-f6ca-df80-cd7d-a00ba23530ed/075679673930.jpg/632x632bb.webp" },
-        { name: "og:description", content: "Some of the music that I love" },
+        { title: title },
+        { name: "og:title", content: title },
+        { name: "og:image", content: image || six },
+        { name: "og:description", content: description },
         ...parentMeta
     ];
 };
@@ -31,7 +53,6 @@ const hideUpcomingAlbums = (album: Database['public']['Tables']['albums_of_the_y
     Database['public']['Tables']['albums_of_the_year']['Row'] | UpcomingAlbum => {
     const today = new Date()
     const todayDelta = 25 - today.getDate()
-    console.log(todayDelta, album.rank)
     if(album.rank > todayDelta) {
         return album
     } else {
@@ -45,31 +66,19 @@ const hideUpcomingAlbums = (album: Database['public']['Tables']['albums_of_the_y
 
 }
 
-export const loader = async ({params}: LoaderFunctionArgs) => {
-    const offset = params.offset;
-    const parsedOffset = parseInt(offset ?? "0");
-    const year = params.year || "";
+export const loader = async ({request}: LoaderFunctionArgs) => {
+    // parse the search params for `?q=`
+    const url = new URL(request.url);
+    const year = url.searchParams.get("year") || "";
     const parsedYear = parseInt(year);
-    const album = params.album || "";
+    const album = url.searchParams.get("album") || "";
     const parsedAlbum = parseInt(album);
-    if (isNaN(parsedOffset)) {
-        return {
-            error: "Invalid Offset",
-            music: null,
-            year: null,
-            album: null,
-            yearList: null
-        }
-    }
-
-    // TODO: add a fetch for all years of top music and check year against that
-
 
     const {data: music_response, error: music_error} = await supabase.from('music_history')
         .select('*')
         .order('created_at', {ascending: false})
         .limit(10)
-        .range(parsedOffset, parsedOffset + 10)
+        .range(0, 100)
 
     const {data: year_response, error: year_error} = await supabase.from('albums_of_the_year')
         .select('*')
@@ -126,9 +135,9 @@ export const loader = async ({params}: LoaderFunctionArgs) => {
 
 const Music = () => {
     const {music, year, yearList} = useLoaderData<typeof loader>()
-    const [mainTab, setMainTab] = React.useState(year ? 'feed' : 'year')
-    const [yearTab, setYearTab] = React.useState(year ? year.toString() : '2021')
     const yearTabs = Object.keys(yearList!).sort((a, b) => parseInt(b) - parseInt(a))
+    const [yearTab, setYearTab] = React.useState(year ? year : yearTabs[0])
+
 
     // @ts-ignore
     return (
@@ -137,15 +146,16 @@ const Music = () => {
                 <h1 className={"text-4xl font-['Outfit'] font-medium mb-2"}>Music</h1>
                 {/*@ts-ignore*/}
                 <Tabs
-                    selectedKey={mainTab} // @ts-ignore
-                    onSelectionChange={(key) => setMainTab(key)}
                     aria-label="Music"
                 >
                     <Item key="year" title="Yearly List">
                         <p className={"font-['Outfit'] py-2 font-light"}>My top 25 albums from the end of every
                             year.</p>
                         {/*@ts-ignore*/}
-                        <Tabs>
+                        <Tabs
+                            selectedKey={yearTab}
+                            onSelectionChange={key => setYearTab(key as SetStateAction<string>)}
+                        >
                             {yearTabs.map((year) => {
                                 return <Item key={year} title={year}>
                                     <div className={"flex flex-col items-center w-full"}>
