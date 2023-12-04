@@ -24,7 +24,7 @@ export const meta: MetaFunction<typeof loader> = ({ matches, data }) => {
             const year = data.year
             const album = data.yearList[parseInt(year)].find((album) => album.rank === parseInt(data.album!))
             if(album && 'artist' in album) {
-                title = `${year} #${album.rank} - ${album.album} by ${album.artist}`
+                title = `#${album.rank} - ${album.album} by ${album.artist}`
                 image = album.album_art_url
                 if(album.blurb) {
                     description = album.blurb
