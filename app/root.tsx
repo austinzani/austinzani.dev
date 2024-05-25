@@ -82,7 +82,7 @@ function App() {
       </head>
       <body className={"w-full h-full bg-white text-black dark:bg-black dark:text-white font-['Outfit']"}>
         <NavHeader />
-        <div className={"h-[calc(100%_-_3.5rem)] w-full"}>
+        <div className={"h-[calc(100%_-_3.5rem)] w-full overflow-x-scroll"}>
             <Outlet />
         </div>
         <ScrollRestoration />

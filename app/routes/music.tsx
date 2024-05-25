@@ -4,6 +4,7 @@ import supabase from "~/utils/supabase";
 import {useLoaderData} from "@remix-run/react";
 import RecentMusicCard from "~/components/RecentMusicCard";
 import AlbumOfTheYearListCard from "~/components/AlbumOfTheYearListCard";
+import Top100Card from "~/components/Top100Card";
 import {Tabs} from "~/components/Tabs";
 import {Item} from 'react-stately';
 import {Database} from "../../db_types";
@@ -86,13 +87,19 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
         .order('rank', {ascending: true})
         .limit(1000)
 
+    const {data: top_response, error: top_error} = await supabase.from('top_100_albums')
+        .select('*')
+        .limit(100)
+    console.log("top_response", top_error)
+
     if (music_error) {
         return {
             error: music_error,
             music: null,
             year: null,
             album: null,
-            yearList: null
+            yearList: null,
+            top100: null
         }
     }
     if (year_error) {
@@ -101,7 +108,18 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
             music: null,
             year: null,
             album: null,
-            yearList: null
+            yearList: null,
+            top100: null
+        }
+    }
+    if (top_error) {
+        return {
+            error: top_error,
+            music: null,
+            year: null,
+            album: null,
+            yearList: null,
+            top100: null
         }
     }
 
@@ -125,17 +143,30 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
         topAlbums[parseInt(year)] = topAlbums[parseInt(year)].sort((a, b) => b.rank - a.rank)
     })
 
+    // Create a map of the top 100 albums by tier
+    const tierMap: {
+        [key: string]: Array<Database['public']['Tables']['top_100_albums']['Row']>
+    } = {}
+    top_response?.forEach((album) => {
+        if (tierMap[album.tier]) {
+            tierMap[album.tier].push(album)
+        } else {
+            tierMap[album.tier] = [album]
+        }
+    })
+
     return {
         error: null,
         music: music_response,
         year: parsedYear ? year : null,
         album: parsedAlbum && parsedAlbum < 26 ? album : null,
-        yearList: topAlbums
+        yearList: topAlbums,
+        top100: tierMap
     }
 }
 
 const Music = () => {
-    const {music, year, yearList} = useLoaderData<typeof loader>()
+    const {music, year, yearList, top100} = useLoaderData<typeof loader>()
     const yearTabs = Object.keys(yearList!).sort((a, b) => parseInt(b) - parseInt(a))
     const [yearTab, setYearTab] = React.useState(year ? year : yearTabs[0])
 
@@ -149,7 +180,23 @@ const Music = () => {
                 <Tabs
                     aria-label="Music"
                 >
-                    <Item key="year" title="Yearly List">
+                    <Item key="top-100" title="Top 100">
+                        <p className={"font-['Outfit'] py-2"}>My Personal Top 100 Albums</p>
+                        {/*@ts-ignore*/}
+                        <div className={"flex flex-col items-center"}>
+                            {Object.keys(top100!).map((tier) => {
+                                return <div>
+                                    <h1 className="text-3xl font-['Outfit'] font-medium pb-2 w-full text-center pt-1 bg-white dark:bg-black sticky -top-1 z-10">{tier === "0" ? 'GOAT Tier' : `Tier ${tier}`}</h1>
+                                    <div className="flex flex-wrap justify-center min-[945px]:justify-between">
+                                    {top100![tier].map((album, index) => {
+                                        return <Top100Card key={`${album.album}-${index}`} album={album}/>
+                                    })}
+                                    </div>
+                                    </div>
+                            })}
+                        </div>
+                    </Item>
+                    <Item key="year" title="Annual Top 25">
                         <p className={"font-['Outfit'] py-2 font-light"}>My top 25 albums from the end of every
                             year.</p>
                         {/*@ts-ignore*/}
@@ -168,14 +215,14 @@ const Music = () => {
                             })}
                         </Tabs>
                     </Item>
-                    <Item key="feed" title="Feed">
+                    {/* <Item key="feed" title="What's Hot">
                         <p className={"font-['Outfit'] py-2 font-light"}>Some recent tunes I have been vibing with.</p>
                         <div className={"flex flex-col items-center"}>
                             {music?.map((song, index) => {
                                 return <RecentMusicCard recentObject={song} key={index}/>
                             })}
                         </div>
-                    </Item>
+                    </Item> */}
                 </Tabs>
             </div>
         </div>
