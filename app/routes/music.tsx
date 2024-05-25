@@ -155,6 +155,10 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
         }
     })
 
+    Object.keys(tierMap).forEach((tier) => {
+        tierMap[tier] = tierMap[tier].sort((a, b) => a.artist.localeCompare(b.artist))
+    })
+
     return {
         error: null,
         music: music_response,
