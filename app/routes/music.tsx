@@ -185,7 +185,7 @@ const Music = () => {
                         {/*@ts-ignore*/}
                         <div className={"flex flex-col items-center"}>
                             {Object.keys(top100!).map((tier) => {
-                                return <div>
+                                return <div className="w-full">
                                     <h1 className="text-3xl font-['Outfit'] font-medium pb-2 w-full text-center pt-1 bg-white dark:bg-black sticky -top-1 z-10">{tier === "0" ? 'GOAT Tier' : `Tier ${tier}`}</h1>
                                     <div className="flex flex-wrap justify-center min-[945px]:justify-between">
                                     {top100![tier].map((album, index) => {
