@@ -1,4 +1,4 @@
-import React, {SetStateAction} from "react";
+import React, {SetStateAction, useMemo} from "react";
 import {LoaderFunctionArgs, MetaFunction} from "@remix-run/node";
 import supabase from "~/utils/supabase";
 import {useLoaderData} from "@remix-run/react";
@@ -165,14 +165,76 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
         year: parsedYear ? year : null,
         album: parsedAlbum && parsedAlbum < 26 ? album : null,
         yearList: topAlbums,
-        top100: tierMap
+        top100: top_response
     }
+}
+
+const top100Filters = ['Tiers', 'Genres', 'Chronological', 'Artists']
+type Filter = typeof top100Filters[number]
+
+const tierLabels = ['GOAT Tier', 'Tier 1', 'Tier 2', 'Tier 3', 'Tier 4', 'Tier 5']
+
+const sortTop100 = (top100: Array<Database['public']['Tables']['top_100_albums']['Row']>, filter: Filter): {
+    [key: string]: Array<Database['public']['Tables']['top_100_albums']['Row']>
+} => {
+
+    const sortedTop100: {
+        [key: string]: Array<Database['public']['Tables']['top_100_albums']['Row']>
+    }  = {}
+
+    switch (filter) {
+        case 'Tiers':
+            top100.forEach((album) => {
+                const label = tierLabels[parseInt(album.tier)]
+                if (sortedTop100[label]) {
+                    sortedTop100[label].push(album)
+                } else {
+                    sortedTop100[label] = [album]
+                }
+            })
+            // Make the tier keys sort by the tierLabels array
+            tierLabels.forEach((label) => {
+                const value = sortedTop100[label]
+                delete sortedTop100[label]
+                sortedTop100[label] = value
+            })
+            break
+        case 'Genres':
+            // Sort the top 100 albums by genre
+            top100.forEach((album) => {
+                if (sortedTop100[album.genre]) {
+                    sortedTop100[album.genre].push(album)
+                } else {
+                    sortedTop100[album.genre] = [album]
+                }
+            })
+            // Make the genre keys sorted alphabetically
+            Object.keys(sortedTop100).sort().forEach((key) => {
+                const value = sortedTop100[key]
+                delete sortedTop100[key]
+                sortedTop100[key] = value
+            })
+            break
+        case 'Chronological':
+            // Sort the top 100 albums by release date from newest to oldest
+            top100.sort((a, b) => new Date(b.release_date).getTime() - new Date(a.release_date).getTime())
+            sortedTop100['Chronological'] = top100
+            break
+        case 'Artists':
+            // Sort the top 100 alphabetically by artist
+            top100.sort((a, b) => a.artist.localeCompare(b.artist))
+            sortedTop100['All Artists'] = top100
+            break
+    }
+    return sortedTop100
 }
 
 const Music = () => {
     const {music, year, yearList, top100} = useLoaderData<typeof loader>()
     const yearTabs = Object.keys(yearList!).sort((a, b) => parseInt(b) - parseInt(a))
     const [yearTab, setYearTab] = React.useState(year ? year : yearTabs[0])
+    const [top100Filter, setTop100Filter] = React.useState<Filter>(top100Filters[0])
+    const sortedTop100 = useMemo(() => sortTop100(top100!, top100Filter), [top100Filter])
 
 
     // @ts-ignore
@@ -186,13 +248,21 @@ const Music = () => {
                 >
                     <Item key="top-100" title="Top 100">
                         <p className={"font-['Outfit'] py-2"}>My Personal Top 100 Albums</p>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">Order By:</p>
                         {/*@ts-ignore*/}
+                        <Tabs
+                            selectedKey={top100Filter}
+                            onSelectionChange={key => setTop100Filter(key as SetStateAction<string>)}
+                        > 
+                            {top100Filters.map((filter) => <Item key={filter} title={filter} children={undefined}/>)}
+                        </Tabs>
                         <div className={"flex flex-col items-center"}>
-                            {Object.keys(top100!).map((tier) => {
+                            {Object.keys(sortedTop100).map((tier) => {
+                                const showLabel = Object.keys(sortedTop100).length > 1
                                 return <div className="w-full">
-                                    <h1 className="text-3xl font-['Outfit'] font-medium pb-2 w-full text-center pt-1 bg-white dark:bg-black sticky -top-1 z-10">{tier === "0" ? 'GOAT Tier' : `Tier ${tier}`}</h1>
+                                    {<h1 className="text-3xl font-['Outfit'] font-medium pb-2 w-full text-center pt-1 bg-white dark:bg-black sticky -top-1 z-10">{showLabel ? tier : " "}</h1>}
                                     <div className="flex flex-wrap justify-center min-[945px]:justify-between">
-                                    {top100![tier].map((album, index) => {
+                                    {sortedTop100[tier]?.map((album, index) => {
                                         return <Top100Card key={`${album.album}-${index}`} album={album}/>
                                     })}
                                     </div>
