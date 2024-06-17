@@ -169,7 +169,7 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
     }
 }
 
-const top100Filters = ['Tiers', 'Genres', 'Chronological', 'Artists']
+const top100Filters = ['Tier', 'Artist', 'Date', 'Genre']
 type Filter = typeof top100Filters[number]
 
 const tierLabels = ['GOAT Tier', 'Tier 1', 'Tier 2', 'Tier 3', 'Tier 4', 'Tier 5']
@@ -183,7 +183,7 @@ const sortTop100 = (top100: Array<Database['public']['Tables']['top_100_albums']
     }  = {}
 
     switch (filter) {
-        case 'Tiers':
+        case 'Tier':
             top100.forEach((album) => {
                 const label = tierLabels[parseInt(album.tier)]
                 if (sortedTop100[label]) {
@@ -199,7 +199,7 @@ const sortTop100 = (top100: Array<Database['public']['Tables']['top_100_albums']
                 sortedTop100[label] = value
             })
             break
-        case 'Genres':
+        case 'Genre':
             // Sort the top 100 albums by genre
             top100.forEach((album) => {
                 if (sortedTop100[album.genre]) {
@@ -215,12 +215,12 @@ const sortTop100 = (top100: Array<Database['public']['Tables']['top_100_albums']
                 sortedTop100[key] = value
             })
             break
-        case 'Chronological':
+        case 'Date':
             // Sort the top 100 albums by release date from newest to oldest
             top100.sort((a, b) => new Date(b.release_date).getTime() - new Date(a.release_date).getTime())
             sortedTop100['Chronological'] = top100
             break
-        case 'Artists':
+        case 'Artist':
             // Sort the top 100 alphabetically by artist
             top100.sort((a, b) => a.artist.localeCompare(b.artist))
             sortedTop100['All Artists'] = top100
@@ -260,7 +260,7 @@ const Music = () => {
                             {Object.keys(sortedTop100).map((tier) => {
                                 const showLabel = Object.keys(sortedTop100).length > 1
                                 return <div className="w-full">
-                                    {<h1 className="text-3xl font-['Outfit'] font-medium pb-2 w-full text-center pt-1 bg-white dark:bg-black sticky -top-1 z-10">{showLabel ? tier : " "}</h1>}
+                                    {<h1 className="text-3xl font-['Outfit'] font-medium pb-2 w-full pt-1 bg-white dark:bg-black sticky -top-1 z-10">{showLabel ? tier : " "}</h1>}
                                     <div className="flex flex-wrap justify-center min-[945px]:justify-between">
                                     {sortedTop100[tier]?.map((album, index) => {
                                         return <Top100Card key={`${album.album}-${index}`} album={album}/>
