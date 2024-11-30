@@ -10,6 +10,7 @@ import {Item} from 'react-stately';
 import {Database} from "../../db_types";
 import six from '~/images/memoji_6.png'
 import { createNewDateInTimeZone } from "~/utils/helpers";
+import StickySectionHeader from "~/components/StickyHeader";
 
 
 export const meta: MetaFunction<typeof loader> = ({ matches, data }) => {
@@ -55,15 +56,18 @@ const hideUpcomingAlbums = (album: Database['public']['Tables']['albums_of_the_y
     Database['public']['Tables']['albums_of_the_year']['Row'] | UpcomingAlbum => {
     const today = createNewDateInTimeZone('America/New_York')
     const todayDelta = 25 - today.getDate()
-    if(album.rank > todayDelta) {
+    const upcomingAlbum: UpcomingAlbum = {
+        upcoming: true,
+        rank: album.rank,
+        reveal_date: `Dec ${26 - album.rank}`,
+        year: album.year
+    }
+    if (today.getFullYear() == album.year && today.getMonth() != 12) {
+        return upcomingAlbum
+    } else if(album.rank > todayDelta) {
         return album
     } else {
-        return {
-            upcoming: true,
-            rank: album.rank,
-            reveal_date: `Dec ${26 - album.rank}`,
-            year: album.year
-        }
+        return upcomingAlbum
     }
 
 }
@@ -260,7 +264,7 @@ const Music = () => {
                             {Object.keys(sortedTop100).map((tier) => {
                                 const showLabel = Object.keys(sortedTop100).length > 1
                                 return <div className="w-full">
-                                    {<h1 className="text-3xl font-['Outfit'] font-medium pb-2 w-full pt-1 bg-white dark:bg-black sticky -top-1 z-10">{showLabel ? tier : " "}</h1>}
+                                    {<StickySectionHeader title={showLabel ? tier : " "}/>}
                                     <div className="flex flex-wrap justify-center min-[945px]:justify-between">
                                     {sortedTop100[tier]?.map((album, index) => {
                                         return <Top100Card key={`${album.album}-${index}`} album={album}/>
