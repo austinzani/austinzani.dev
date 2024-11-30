@@ -32,7 +32,7 @@ const AlbumOfTheYearListCard = ({album, number}: {
 
     if (!('upcoming' in album)) {
         return (
-            <div className={'flex flex-col sm:flex-row w-full max-w-full sm:max-w-[40rem] relative border border-gray-300 dark:border-zinc-700 py-2 px-5 rounded bg-gray-100 dark:bg-zinc-800 m-2'}>
+            <div className={'flex flex-col sm:flex-row w-full max-w-full sm:max-w-[40rem] relative border border-gray-300 dark:border-zinc-700 py-2 px-5 rounded bg-gray-100 dark:bg-zinc-900 m-2'}>
                 <div className={'pt-4 sm:pb-2'}>
                     <div className={"sm:w-48 w-full min-w-[12rem] relative"}>
                         <img className={"min-h-48 min-w-48"} src={album.album_art_url}/>
@@ -72,7 +72,7 @@ const AlbumOfTheYearListCard = ({album, number}: {
             </div>)
     } else {
         return (
-            <div className={'flex flex-col w-full sm:flex-row max-w-full sm:max-w-[40rem] relative border border-gray-300 dark:border-zinc-700 py-2 px-5 rounded bg-gray-100 dark:bg-zinc-800 m-2'}>
+            <div className={'flex flex-col w-full sm:flex-row max-w-full sm:max-w-[40rem] relative border border-gray-300 dark:border-zinc-700 py-2 px-5 rounded bg-gray-100 dark:bg-zinc-900 m-2'}>
                 <div className={'pt-4 sm:pb-2'}>
                     <div className={"sm:w-48 w-full min-w-[12rem] relative"}>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">

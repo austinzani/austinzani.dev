@@ -25,7 +25,7 @@ export default function Football() {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-6 flex items-center shadow-sm dark:shadow-none">
+          <div className="bg-gray-100 dark:bg-zinc-900 rounded-lg p-6 flex items-center shadow-sm dark:shadow-none">
             <Icon name="house" className="w-8 h-8 text-orange-500 mr-4" />
             <div>
               <p className="text-gray-600 dark:text-gray-400">Established</p>
@@ -33,7 +33,7 @@ export default function Football() {
             </div>
           </div>
 
-          <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-6 flex items-center shadow-sm dark:shadow-none">
+          <div className="bg-gray-100 dark:bg-zinc-900 rounded-lg p-6 flex items-center shadow-sm dark:shadow-none">
             <Icon name="user" className="w-8 h-8 text-orange-500 mr-4" />
             <div>
               <p className="text-gray-600 dark:text-gray-400">League Members</p>
@@ -41,7 +41,7 @@ export default function Football() {
             </div>
           </div>
 
-          <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-6 flex items-center shadow-sm dark:shadow-none">
+          <div className="bg-gray-100 dark:bg-zinc-900 rounded-lg p-6 flex items-center shadow-sm dark:shadow-none">
             <Icon name="football" className="w-8 h-8 text-orange-500 mr-4" />
             <div>
               <p className="text-gray-600 dark:text-gray-400">Seasons</p>
@@ -49,7 +49,7 @@ export default function Football() {
             </div>
           </div>
 
-          <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-6 flex items-center shadow-sm dark:shadow-none">
+          <div className="bg-gray-100 dark:bg-zinc-900 rounded-lg p-6 flex items-center shadow-sm dark:shadow-none">
             <Icon name="share" className="w-8 h-8 text-orange-500 mr-4" />
             <div>
               <p className="text-gray-600 dark:text-gray-400">Data Source</p>
@@ -59,7 +59,7 @@ export default function Football() {
         </div>
 
         {/* Description */}
-        <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-6 shadow-sm dark:shadow-none">
+        <div className="bg-gray-100 dark:bg-zinc-900 rounded-lg p-6 shadow-sm dark:shadow-none">
           <p className="text-lg mb-6">
             This league has been going strong since 2009, with a core group of
             dedicated managers who've stuck together through the years. While

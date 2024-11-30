@@ -41,7 +41,7 @@ const NavigationButton = ({
   const tooltipStyles = `
     absolute top-full mt-2
     px-2 py-1
-    bg-gray-800 dark:bg-gray-700
+    bg-gray-800 dark:bg-zinc-800
     text-white
     text-sm rounded
     opacity-0 group-hover:opacity-100
