@@ -1,28 +1,87 @@
-import React from "react";
-import { Link } from "@remix-run/react";
 import Icon from "~/components/Icon";
+import { useFootballContext } from "~/routes/fantasy_football";
+import { Link } from "@remix-run/react";
 
 export default function Football() {
+  const { years, managers, allTime } = useFootballContext();
+  const activeMembers = allTime.filter((manager) => manager.is_active);
 
-    return (
-        <div className="w-full pt-20 flex flex-col items-center md:justify-center md:flex-row">
-            <div className={"w-11/12 mb-12 md:w-1/2 max-w-xl md:mb-0 md:mr-12 flex flex-col justify-center"}>
-                <img className={"max-w-full h-auto transform rounded-xl"}
-                     src={"https://bvaxppgdleypbyzyjchu.supabase.co/storage/v1/object/public/images/league_pic.JPG"}/>
-            </div>
-            <div className={"w-11/12 md:w-1/3 flex flex-col justify-center"}>
-                <h1 className="font-['Outfit'] mb-2 w-fit font-medium text-4xl">Tony's League to Lose</h1>
-                <h2 className="font-['Outfit'] mb-2 w-full font-light text-l flex-wrap">This league has been
-                    going on in some form since 2009. We have seen managers come and go but for
-                    the most part the members have been the same. The first few seasons have been lost to time
-                    somewhere on a server at ESPN even though they said it is deleted. I don't buy it. Regardless I have
-                    collected most of the league data from ESPN and Sleeper so we can compare records, head to head stats, and
-                    championships. </h2>
-                <Link to={"/fantasy_football/all_time"} prefetch="intent" className={"p-2 mt-4 text-center rounded-xl border border-orange-500 text-orange-500 hover:cursor-pointer"}>
-                    View League Data
-                    <Icon className={"pl-3"} name={"chevron-right"}/>
-                </Link>
-            </div>
+  return (
+    <div className="min-h-screen flex justify-center ">
+      <div className={"flex m-3 flex-col w-full max-w-[64rem]"}>
+        {/* Header and Image Section */}
+        <div className="mb-8">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6">
+            Matt's League to Lose
+          </h1>
+          <div className="relative w-full aspect-[3/2]">
+            <img
+              className="w-full h-full rounded-xl shadow-sm dark:shadow-none absolute inset-0 object-cover"
+              src="https://bvaxppgdleypbyzyjchu.supabase.co/storage/v1/object/public/images/league_pic.JPG"
+              alt="League Members"
+            />
+          </div>
         </div>
-    );
+
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-6 flex items-center shadow-sm dark:shadow-none">
+            <Icon name="house" className="w-8 h-8 text-orange-500 mr-4" />
+            <div>
+              <p className="text-gray-600 dark:text-gray-400">Established</p>
+              <p className="text-xl font-bold">2009</p>
+            </div>
+          </div>
+
+          <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-6 flex items-center shadow-sm dark:shadow-none">
+            <Icon name="user" className="w-8 h-8 text-orange-500 mr-4" />
+            <div>
+              <p className="text-gray-600 dark:text-gray-400">League Members</p>
+              <p className="text-xl font-bold">{activeMembers.length} Teams</p>
+            </div>
+          </div>
+
+          <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-6 flex items-center shadow-sm dark:shadow-none">
+            <Icon name="football" className="w-8 h-8 text-orange-500 mr-4" />
+            <div>
+              <p className="text-gray-600 dark:text-gray-400">Seasons</p>
+              <p className="text-xl font-bold">{years.length}</p>
+            </div>
+          </div>
+
+          <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-6 flex items-center shadow-sm dark:shadow-none">
+            <Icon name="share" className="w-8 h-8 text-orange-500 mr-4" />
+            <div>
+              <p className="text-gray-600 dark:text-gray-400">Data Source</p>
+              <p className="text-xl font-bold">ESPN + Sleeper</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Description */}
+        <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-6 shadow-sm dark:shadow-none">
+          <p className="text-lg mb-6">
+            This league has been going strong since 2009, with a core group of
+            dedicated managers who've stuck together through the years. While
+            we've welcomed new faces along the way, our community's competitive
+            spirit has remained unchanged.
+          </p>
+          <p className="text-lg mb-6">
+            We've preserved our league's history by collecting comprehensive
+            data from both ESPN and Sleeper platforms, enabling us to track
+            records, analyze head-to-head stats, and celebrate our league.
+          </p>
+
+          <Link
+            to={"/fantasy_football/all_time"}
+            prefetch="intent"
+            className="bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-6 rounded-lg flex items-center justify-center w-full md:w-auto transition-colors"
+          >
+            View League Data
+            <Icon className={"pl-3"} name={"chevron-right"} />
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
 }
