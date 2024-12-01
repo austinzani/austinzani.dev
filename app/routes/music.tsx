@@ -55,7 +55,7 @@ type UpcomingAlbum = {
 const hideUpcomingAlbums = (album: Database['public']['Tables']['albums_of_the_year']['Row']):
     Database['public']['Tables']['albums_of_the_year']['Row'] | UpcomingAlbum => {
     const today = createNewDateInTimeZone('America/New_York')
-    const todayDelta = 24 - today.getDate()
+    const todayDelta = 25 - today.getDate()
     const upcomingAlbum: UpcomingAlbum = {
         upcoming: true,
         rank: album.rank,
