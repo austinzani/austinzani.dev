@@ -55,14 +55,13 @@ type UpcomingAlbum = {
 const hideUpcomingAlbums = (album: Database['public']['Tables']['albums_of_the_year']['Row']):
     Database['public']['Tables']['albums_of_the_year']['Row'] | UpcomingAlbum => {
     const today = createNewDateInTimeZone('America/New_York')
-    const todayDelta = 25 - today.getDate()
+    const todayDelta = 24 - today.getDate()
     const upcomingAlbum: UpcomingAlbum = {
         upcoming: true,
         rank: album.rank,
         reveal_date: `Dec ${26 - album.rank}`,
         year: album.year
     }
-    console.log("today", today.getMonth())
     // If the album is from the current year and it is not December, show the upcoming album
     if (today.getFullYear() == album.year && today.getMonth() != 11) {
         return upcomingAlbum
@@ -238,11 +237,13 @@ const sortTop100 = (top100: Array<Database['public']['Tables']['top_100_albums']
 }
 
 const Music = () => {
-    const {music, year, yearList, top100} = useLoaderData<typeof loader>()
+    const {year, yearList, top100} = useLoaderData<typeof loader>()
     const yearTabs = Object.keys(yearList!).sort((a, b) => parseInt(b) - parseInt(a))
+    const [mainTab, setMainTab] = React.useState(year ? 'year' : 'top-100')
     const [yearTab, setYearTab] = React.useState(year ? year : yearTabs[0])
     const [top100Filter, setTop100Filter] = React.useState<Filter>(top100Filters[0])
     const sortedTop100 = useMemo(() => sortTop100(top100!, top100Filter), [top100Filter])
+    // Check the query params for the year and album
 
 
     // @ts-ignore
@@ -253,6 +254,8 @@ const Music = () => {
                 {/*@ts-ignore*/}
                 <Tabs
                     aria-label="Music"
+                    selectedKey={mainTab}
+                    onSelectionChange={key => setMainTab(key as SetStateAction<string>)}
                 >
                     <Item key="top-100" title="Top 100">
                         <p className={"font-['Outfit'] py-2"}>My Personal Top 100 Albums</p>
