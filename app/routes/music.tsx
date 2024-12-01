@@ -62,10 +62,14 @@ const hideUpcomingAlbums = (album: Database['public']['Tables']['albums_of_the_y
         reveal_date: `Dec ${26 - album.rank}`,
         year: album.year
     }
-    if (today.getFullYear() == album.year && today.getMonth() != 12) {
+    console.log("today", today.getMonth())
+    // If the album is from the current year and it is not December, show the upcoming album
+    if (today.getFullYear() == album.year && today.getMonth() != 11) {
         return upcomingAlbum
+    // Else if the album rank is greater than the days left till Christmas, show the upcoming album
     } else if(album.rank > todayDelta) {
         return album
+    // Else show the album
     } else {
         return upcomingAlbum
     }
