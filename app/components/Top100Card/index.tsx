@@ -1,5 +1,6 @@
 import { Database } from "../../../db_types";
 import Icon from "../Icon";
+import IconButton from "../IconButton";
 
 const Top100Card = ({
   album,
@@ -25,28 +26,20 @@ const Top100Card = ({
       </div>
       <div className={"absolute flex bottom-1 right-1"}>
           {album.apple_music_url && (
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href={album.apple_music_url}
-              className={
-                "h-10 text-2xl w-10 p-2.5 mx-1 flex items-center justify-c  enter hover:bg-orange-500/60 hover:cursor-pointer rounded-md"
-              }
-            >
-              <Icon name={"apple"} prefix={"fab"} />
-            </a>
+            <IconButton
+              link={album.apple_music_url}
+              icon={"apple"}
+              iconPrefix="fab"
+              label={"Apple Music"}
+            />
           )}
           {album.spotify_url && (
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href={album.spotify_url}
-              className={
-                "h-10 text-2xl w-10 p-2.5 mx-1 flex items-center justify-center hover:bg-orange-500/60 hover:cursor-pointer rounded-md"
-              }
-            >
-              <Icon name={"spotify"} prefix={"fab"} />
-            </a>
+            <IconButton
+              link={album.spotify_url}
+              icon={"spotify"}
+              iconPrefix="fab"
+              label={"Spotify"}
+              />
           )}
         </div>
     </div>

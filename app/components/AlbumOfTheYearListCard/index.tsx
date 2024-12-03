@@ -2,6 +2,7 @@ import React from "react";
 import { Database } from "../../../db_types";
 import Icon from "../Icon";
 import Modal from "../Modal";
+import IconButton from "../IconButton";
 
 export type UpcomingAlbum = {
   upcoming: true;
@@ -23,18 +24,26 @@ const AlbumOfTheYearListCard = ({
   let shareObject = {};
   try {
     if ("album" in album) {
-      shareObject = {
-        title: `${album.album} by ${album.artist}`,
-        text: album.blurb
-          ? album.blurb
-          : `Check out ${album.album} by ${album.artist}!`,
-        url: `https://austinzani.dev/music?year=${album.year}&album=${album.rank}`,
-      };
-      canShare = navigator?.canShare(shareObject);
+      // First check if the Share API is supported at all
+      if (typeof navigator.share !== "undefined" && typeof navigator.canShare === "function") {
+        shareObject = {
+          title: `${album.album} by ${album.artist}`,
+          text: album.blurb
+            ? album.blurb
+            : `Check out ${album.album} by ${album.artist}!`,
+          url: `https://austinzani.dev/music?year=${album.year}&album=${album.rank}`,
+        };
+        
+        // Check if this specific content can be shared
+        canShare = navigator.canShare(shareObject);
+        console.log('Can share:', canShare);
+      }
     }
-  } catch {
+  } catch (error) {
+    console.error('Share error:', error);
     canShare = false;
   }
+  
 
   if (!("upcoming" in album)) {
     return (
@@ -55,51 +64,35 @@ const AlbumOfTheYearListCard = ({
             </h1>
           </div>
           <div className={"flex flex-row justify-center mt-2"}>
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href={album.apple_link}
-              className={
-                "h-10 text-2xl w-10 p-2.5 mx-1 flex items-center justify-center hover:bg-orange-500/60 hover:cursor-pointer rounded-md"
-              }
-            >
-              <Icon name={"apple"} prefix={"fab"} />
-            </a>
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href={album.spotify_link}
-              className={
-                "h-10 text-2xl w-10 p-2.5 mx-1 flex items-center justify-center hover:bg-orange-500/60 hover:cursor-pointer rounded-md"
-              }
-            >
-              <Icon name={"spotify"} prefix={"fab"} />
-            </a>
+            
+              <IconButton
+                link={album.apple_link}
+                icon={"apple"}
+                iconPrefix="fab"
+                label="Apple Music"
+                />
+            <IconButton
+                link={album.spotify_link}
+                icon={"spotify"}
+                iconPrefix="fab"
+                label="Spotify"
+                />
             {album.vinyl_link && (
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href={album.vinyl_link}
-                className={
-                  "h-10 text-2xl w-10 p-2.5 mx-1 flex items-center justify-center hover:bg-orange-500/60 hover:cursor-pointer rounded-md"
-                }
-              >
-                <Icon name={"record-vinyl"} />
-              </a>
+              <IconButton
+                link={album.vinyl_link}
+                icon={"record-vinyl"}
+                label="Vinyl"
+                />
             )}
             {canShare && (
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
+                <IconButton
                 onClick={() => {
                   navigator.share(shareObject);
                 }}
-                className={
-                  "h-10 text-2xl w-10 p-2.5 mx-1 flex items-center justify-center hover:bg-orange-500/60 hover:cursor-pointer rounded-md"
-                }
-              >
-                <Icon name={"share"} />
-              </a>
+                icon="share"
+                label="Share"
+              />
+              
             )}
           </div>
         </div>

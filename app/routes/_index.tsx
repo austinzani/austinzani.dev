@@ -7,7 +7,7 @@ import six from "../images/memoji_6.png";
 const memojis = [one, two, three, four, five, six];
 import Icon from "~/components/Icon";
 import { MetaFunction } from "@remix-run/node";
-import NavigationButton from "~/components/NavigationButton";
+import IconButton from "~/components/IconButton";
 
 export default function _index() {
   // Get a random number between 0 and 5
@@ -27,28 +27,28 @@ export default function _index() {
         Sports Addict, Software Developer
       </h2>
       <div className="w-fit flex items-center space-x-2 mt-4">
-        <NavigationButton
+        <IconButton
           link="https://mastodon.social/@zaniad"
           icon="mastodon"
           internal={false}
           iconPrefix="fab"
           label="Mastodon"
         />
-        <NavigationButton
+        <IconButton
           link="https://github.com/austinzani"
           icon="github"
           internal={false}
           iconPrefix="fab"
           label="Github"
         />
-        <NavigationButton
+        <IconButton
           link="https://www.linkedin.com/in/zaniad/"
           icon="linkedin"
           internal={false}
           iconPrefix="fab"
           label="LinkedIn"
         />
-        <NavigationButton
+        <IconButton
           link="mailto:austinzani@gmail.com"
           icon="envelope"
           internal={false}

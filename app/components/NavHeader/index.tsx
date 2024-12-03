@@ -1,7 +1,7 @@
 import { Link } from "@remix-run/react";
 import Icon from "../Icon";
 import { Theme, useTheme } from "~/utils/theme-provider";
-import NavigationButton from "../NavigationButton";
+import IconButton from "../IconButton";
 
 const iconTransformOrigin = { transformOrigin: "50% 100px" };
 const DarkModeToggle = () => {
@@ -49,15 +49,15 @@ const NavHeader = () => {
       </p>
       <div className="w-fit flex items-center space-x-2">
         <DarkModeToggle />
-        <NavigationButton link="/" icon={"house"} internal={true} label="Home" />
-        <NavigationButton
+        <IconButton link="/" icon={"house"} internal={true} label="Home" />
+        <IconButton
           link="/fantasy_football"
           icon={"football"}
           internal={true}
           label="Fantasy Football"
         />
-        <NavigationButton link="/music" icon={"music"} internal={true} label="Music" />
-        <NavigationButton link="/about" icon={"user"} internal={true} label="About" />
+        <IconButton link="/music" icon={"music"} internal={true} label="Music" />
+        <IconButton link="/about" icon={"user"} internal={true} label="About" />
       </div>
     </header>
   );
