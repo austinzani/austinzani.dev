@@ -178,7 +178,7 @@ const ManagerStats = ({
     return (
         <div className="w-full bg-gray-100 dark:bg-zinc-900 rounded-xl p-4 mt-4">
             <h2 className="text-xl font-bold mb-4">All Time Stats</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 <StatCard
                     title="Record"
                     value={`${all_time_stats.total_wins}-${all_time_stats.total_games - all_time_stats.total_wins}`}
@@ -190,14 +190,6 @@ const ManagerStats = ({
                     subtitle={`${all_time_stats.playoff_births} playoff appearances`}
                 />
                 <StatCard
-                    title="Points For"
-                    value={all_time_stats.total_points_for.toFixed(2)}
-                />
-                <StatCard
-                    title="Points Against"
-                    value={all_time_stats.total_points_against.toFixed(2)}
-                />
-                <StatCard
                     title="Playoff Record"
                     value={`${all_time_stats.playoff_wins}-${all_time_stats.playoff_games - all_time_stats.playoff_wins}`}
                     subtitle={`${playoffWinPercentage}% playoff win rate`}
@@ -206,6 +198,16 @@ const ManagerStats = ({
                     title="Weekly Records"
                     value={`${all_time_stats.high_point_weeks}H / ${all_time_stats.low_point_weeks}L`}
                     subtitle="High/Low point weeks"
+                />
+                <StatCard
+                    title="Points For"
+                    value={all_time_stats.total_points_for.toFixed(2)}
+                    subtitle={`${(all_time_stats.total_points_for / all_time_stats.total_seasons).toFixed(2)} Avg Per Season`}
+                />
+                <StatCard
+                    title="Points Against"
+                    value={all_time_stats.total_points_against.toFixed(2)}
+                    subtitle={`${(all_time_stats.total_points_against / all_time_stats.total_seasons).toFixed(2)} Avg Per Season`}
                 />
             </div>
         </div>
