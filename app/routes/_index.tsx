@@ -5,8 +5,6 @@ import four from "../images/memoji_4.png";
 import five from "../images/memoji_5.png";
 import six from "../images/memoji_6.png";
 const memojis = [one, two, three, four, five, six];
-import Icon from "~/components/Icon";
-import { MetaFunction } from "@remix-run/node";
 import IconButton from "~/components/IconButton";
 
 export default function _index() {

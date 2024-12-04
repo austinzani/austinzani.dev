@@ -14,48 +14,89 @@ import {useFootballContext} from "~/routes/fantasy_football";
 import {id} from "postcss-selector-parser";
 import {Breadcrumbs, BreadcrumbItem} from "~/components/Breadcrumb";
 
-const AllTimeTable = ({allTime, showAll}: { allTime: Database["public"]["CompositeTypes"]["all_time_object"][], showAll: boolean }) => {
+const AllTimeTable = ({
+    allTime,
+    showAll
+}: {
+    allTime: Database["public"]["CompositeTypes"]["all_time_object"][],
+    showAll: boolean
+}) => {
     const navigate = useNavigate();
-    const {managers} = useFootballContext();
+    const { managers } = useFootballContext();
+
     return (
-        <table className={'table-fixed w-full'}>
-            <thead>
-            <tr>
-                <th className={'px-4 w-[155px] whitespace-nowrap cursor-default font-medium text-left'}>Manager</th>
-                <th className={'px-4 whitespace-nowrap cursor-default font-medium text-right'}>Winning %</th>
-                <th className={'px-4 whitespace-nowrap cursor-default font-medium text-right'}>Titles</th>
-                <th className={'px-4 hidden sm:table-cell whitespace-nowrap cursor-default font-medium text-right min-w-32'}>Playoff
-                    Berths
-                </th>
-                <th className={'px-4 hidden sm:table-cell whitespace-nowrap cursor-default font-medium text-right min-w-32'}>Playoff
-                    Record
-                </th>
-                <th className={'px-4 hidden lg:table-cell whitespace-nowrap cursor-default font-medium text-right'}>HP</th>
-                <th className={'px-4 hidden lg:table-cell whitespace-nowrap cursor-default font-medium text-right'}>LP</th>
-            </tr>
-            </thead>
-            <tbody>
-            {allTime?.map((manager) => {
-                const managerId = managers.find((m) => m.name === manager.name)?.id;
-                const row = (<tr onClick={() => navigate(`/fantasy_football/manager/${managerId}`)} className={'hover:bg-orange-500/60 rounded-md'} key={manager.name}>
-                    <td className={'px-4 cursor-pointer whitespace-nowrap py-1 font-light text-left rounded-l-lg'}>{capitalizeFirstLetter(manager.name)}</td>
-                    <td className={'px-4 cursor-pointer tabular-nums whitespace-nowrap py-1 font-light text-right'}>{(manager.total_wins / manager.total_games).toFixed(3)}</td>
-                    <td className={'px-4 cursor-pointer tabular-nums whitespace-nowrap py-1 font-light text-right rounded-r-lg sm:rounded-none'}>{manager.championships}</td>
-                    <td className={'px-4 cursor-pointer tabular-nums hidden sm:table-cell whitespace-nowrap py-1 font-light text-right'}>{manager.playoff_births}</td>
-                    <td className={'px-4 cursor-pointer tabular-nums hidden sm:table-cell whitespace-nowrap py-1 font-light text-right sm:rounded-r-lg lg:rounded-none'}>{manager.playoff_wins} - {manager.playoff_games - manager.playoff_wins}</td>
-                    <td className={'px-4 cursor-pointer tabular-nums hidden lg:table-cell whitespace-nowrap py-1 font-light text-right'}>{manager.high_point_weeks}</td>
-                    <td className={'px-4 cursor-pointer tabular-nums hidden lg:table-cell whitespace-nowrap py-1 font-light text-right rounded-r-lg'}>{manager.low_point_weeks}</td>
-                </tr>)
-                if (showAll || (!showAll && manager.is_active)) {
-                    return row;
-                } else {
-                    return null;
-                }
-            })}
-            </tbody>
-        </table>
-    )
-}
+        <div className="relative">
+            <table className="table-fixed w-full">
+                <thead>
+                    <tr className="border-b border-gray-200 dark:border-gray-700">
+                        <th className="px-4 w-[155px] whitespace-nowrap cursor-default font-medium text-left">Manager</th>
+                        <th className="px-4 whitespace-nowrap cursor-default font-medium text-right">Record</th>
+                        <th className="px-4 whitespace-nowrap cursor-default font-medium text-right min-w-32">
+                            Playoffs
+                        </th>
+                        <th className="px-4 hidden sm:table-cell whitespace-nowrap cursor-default font-medium text-right">
+                            High/Low Points
+                        </th>
+                    </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                    {allTime?.map((manager) => {
+                        const managerId = managers.find((m) => m.name === manager.name)?.id;
+                        const row = (
+                            <tr
+                                key={manager.name}
+                                onClick={() => navigate(`/fantasy_football/manager/${managerId}`)}
+                                className="hover:bg-orange-500/60 rounded-md group"
+                            >
+                                <td className="px-4 cursor-pointer whitespace-nowrap py-1 font-light text-left rounded-l-lg">
+                                    <div className="h-6">{capitalizeFirstLetter(manager.name)}</div>
+                                    <div className="h-5 text-amber-400 text-sm">
+                                        {manager.championships > 0 
+                                            ? Array(manager.championships).fill('🏆').join(' ')
+                                            : '\u00A0'}
+                                    </div>
+                                </td>
+                                <td className="px-4 cursor-pointer tabular-nums whitespace-nowrap py-1 text-right">
+                                    <div className="h-6 font-medium">
+                                        {(manager.total_wins / manager.total_games).toFixed(3)}
+                                    </div>
+                                    <div className="h-5 text-gray-400 text-sm">
+                                        {manager.total_wins}-{manager.total_games - manager.total_wins}
+                                    </div>
+                                </td>
+                                <td className="px-4 cursor-pointer whitespace-nowrap py-1 text-right">
+                                    <div className="h-6 font-medium">
+                                        {manager.playoff_births} Berths
+                                    </div>
+                                    <div className="h-5 text-gray-400 text-sm">
+                                        {manager.playoff_wins}-{manager.playoff_games - manager.playoff_wins}
+                                    </div>
+                                </td>
+                                <td className="px-4 cursor-pointer hidden sm:table-cell whitespace-nowrap py-1 text-right rounded-r-lg">
+                                    <div className="h-6">
+                                        <span className="text-emerald-400 font-medium">
+                                            {manager.high_point_weeks} High
+                                        </span>
+                                    </div>
+                                    <div className="h-5">
+                                        <span className="text-red-400 font-medium">
+                                            {manager.low_point_weeks} Low
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+                        );
+                        
+                        if (showAll || (!showAll && manager.is_active)) {
+                            return row;
+                        }
+                        return null;
+                    })}
+                </tbody>
+            </table>
+        </div>
+    );
+};
 
 
 export const mapYearNav = (years: { key: string, value: string }[]) => {

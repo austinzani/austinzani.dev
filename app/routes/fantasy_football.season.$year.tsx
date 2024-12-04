@@ -31,7 +31,13 @@ export const loader = async ({params}: LoaderFunctionArgs) => {
         const {data: seasonResponse, error: seasonError} = await supabase
             .rpc('season_details', {season_year: seasonInt})
 
-        seasonResponse?.sort((a, b) => b.total_wins - a.total_wins);
+        // Sort by total wins descending and use most points for as tie breaker
+        seasonResponse?.sort((a, b) => {
+            if (b.total_wins !== a.total_wins) {
+                return b.total_wins - a.total_wins;
+            }
+            return b.total_points_for - a.total_points_for;
+        })
 
         if (seasonError) {
             return {
@@ -54,38 +60,73 @@ export const loader = async ({params}: LoaderFunctionArgs) => {
 const SeasonTable = ({season}: { season: Database["public"]["CompositeTypes"]["season_details_object"][] }) => {
     const navigate = useNavigate();
     const {managers} = useFootballContext();
+
     return (
-        <table className='table-auto mt-3'>
-            <thead>
-            <tr>
-                <th className={'px-4 cursor-default font-medium text-left'}>Manager</th>
-                <th className={'px-4 cursor-default font-medium text-right'}>Record</th>
-                <th className={'px-4 cursor-default hidden sm:table-cell font-medium text-right'}>PF</th>
-                <th className={'px-4 cursor-default hidden sm:table-cell font-medium text-right'}>PA</th>
-                <th className={'px-4 cursor-default hidden lg:table-cell font-medium text-right'}>HP</th>
-                <th className={'px-4 cursor-default hidden lg:table-cell font-medium text-right'}>LP</th>
-                <th className={'px-4 cursor-default hidden lg:table-cell font-medium text-right'}>Playoff Record</th>
-            </tr>
-            </thead>
-            <tbody>
-            {season?.map((manager) =>{
-                const managerId = managers.find((m) => m.name === manager.manager_name)?.id;
-                return  (
-                    <tr onClick={() => navigate(`/fantasy_football/manager/${managerId}`)} className={'hover:bg-orange-500/60 rounded-md'} key={manager.manager_name}>
-                        <td className={'px-4 cursor-pointer tabular-nums py-1 font-light text-left rounded-l-lg'}>{capitalizeFirstLetter(manager.manager_name)}{manager.championships ? " 🏆" : ""}</td>
-                        <td className={'px-4 cursor-pointer tabular-nums py-1 font-light text-right rounded-r-lg sm:rounded-none'}>{manager.total_wins} - {manager.total_games - manager.total_wins}</td>
-                        <td className={'px-4 cursor-pointer tabular-nums hidden sm:table-cell py-1 font-light text-right'}>{manager.total_points_for.toFixed(2)}</td>
-                        <td className={'px-4 cursor-pointer tabular-nums hidden sm:table-cell py-1 font-light text-right sm:rounded-r-lg lg:rounded-none'}>{manager.total_points_against.toFixed(2)}</td>
-                        <td className={'px-4 cursor-pointer tabular-nums hidden lg:table-cell py-1 font-light text-right'}>{manager.high_point_weeks}</td>
-                        <td className={'px-4 cursor-pointer tabular-nums hidden lg:table-cell py-1 font-light text-right'}>{manager.low_point_weeks}</td>
-                        <td className={'px-4 cursor-pointer tabular-nums hidden lg:table-cell py-1 font-light text-right rounded-r-lg'}>{manager.playoff_wins} - {manager.playoff_games - manager.playoff_wins}</td>
+        <div className="relative">
+            <table className="table-fixed w-full">
+                <thead>
+                    <tr className="border-b border-gray-200 dark:border-gray-700">
+                        <th className="px-4 w-[155px] whitespace-nowrap cursor-default font-medium text-left">Manager</th>
+                        <th className="px-4 whitespace-nowrap cursor-default font-medium text-right">Record</th>
+                        <th className="px-4 whitespace-nowrap cursor-default font-medium text-right min-w-32">Points</th>
+                        <th className="px-4 hidden lg:table-cell whitespace-nowrap cursor-default font-medium text-right">High/Low Points</th>
                     </tr>
-                )
-            })}
-            </tbody>
-        </table>
-    )
-}
+                </thead>
+                <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                    {season?.map((manager) => {
+                        const managerId = managers.find((m) => m.name === manager.manager_name)?.id;
+                        return (
+                            <tr
+                                key={manager.manager_name}
+                                onClick={() => navigate(`/fantasy_football/manager/${managerId}`)}
+                                className="hover:bg-orange-500/60 rounded-md"
+                            >
+                                <td className="px-4 cursor-pointer whitespace-nowrap py-1 font-light text-left rounded-l-lg">
+                                    <div className="h-6">{capitalizeFirstLetter(manager.manager_name)}</div>
+                                    <div className="h-5 text-amber-400 text-sm">
+                                        {manager.championships ? "🏆" : "\u00A0"}
+                                    </div>
+                                </td>
+                                <td className="px-4 cursor-pointer tabular-nums whitespace-nowrap py-1 text-right">
+                                    <div className="h-6 font-medium">
+                                        {manager.total_wins}-{manager.total_games - manager.total_wins}
+                                    </div>
+                                    {manager.playoff_wins > 0 || manager.playoff_games > 0 ? (
+                                        <div className="h-5 text-gray-400 text-sm">
+                                            Playoffs: {manager.playoff_wins}-{manager.playoff_games - manager.playoff_wins}
+                                        </div>
+                                    ) : (
+                                        <div className="h-5">{"\u00A0"}</div>
+                                    )}
+                                </td>
+                                <td className="px-4 cursor-pointer whitespace-nowrap py-1 text-right">
+                                    <div className="h-6 font-medium">
+                                        PF: {manager.total_points_for.toFixed(2)}
+                                    </div>
+                                    <div className="h-5 text-gray-400 text-sm">
+                                        PA: {manager.total_points_against.toFixed(2)}
+                                    </div>
+                                </td>
+                                <td className="px-4 cursor-pointer hidden lg:table-cell whitespace-nowrap py-1 text-right rounded-r-lg">
+                                    <div className="h-6">
+                                        <span className="text-emerald-400 font-medium">
+                                            {manager.high_point_weeks} High
+                                        </span>
+                                    </div>
+                                    <div className="h-5">
+                                        <span className="text-red-400 font-medium">
+                                            {manager.low_point_weeks} Low
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+                        );
+                    })}
+                </tbody>
+            </table>
+        </div>
+    );
+};
 
 export default function Year() {
     const {error, season, year} = useLoaderData<typeof loader>()

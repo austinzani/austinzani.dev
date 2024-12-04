@@ -10,6 +10,7 @@ export interface NavigationButtonProps {
   internal?: boolean;
   label?: string;
   onClick?: () => void;
+  disabled?: boolean;
 }
 
 const IconButton = ({
@@ -18,7 +19,8 @@ const IconButton = ({
   icon,
   internal,
   iconPrefix,
-  label
+  label,
+  disabled,
 }: NavigationButtonProps) => {
   const baseStyles = `
     relative
@@ -28,8 +30,7 @@ const IconButton = ({
     transition-all duration-200
     focus:outline-none
     text-black dark:text-gray-200
-    hover:bg-orange-500 hover:text-white
-    active:scale-95
+    ${disabled ? '' : 'hover:bg-orange-500 hover:text-white active:scale-95'}
     group
   `;
 
@@ -37,7 +38,7 @@ const IconButton = ({
     flex items-center justify-center
     w-5 h-5
     transform transition-transform duration-200
-    group-hover:scale-110
+    ${disabled ? '' : 'group-hover:scale-110'}
   `;
 
   const tooltipStyles = `
@@ -47,7 +48,7 @@ const IconButton = ({
     bg-gray-800 dark:bg-zinc-800
     text-white
     text-sm rounded
-    opacity-0 group-hover:opacity-100
+    opacity-0 ${disabled ? '' : 'group-hover:opacity-100'}
     transition-opacity duration-200
     pointer-events-none
     whitespace-nowrap
@@ -58,20 +59,36 @@ const IconButton = ({
     before:rounded-lg
     before:transition-all before:duration-200
     before:opacity-0
-    hover:before:opacity-100
+    ${disabled ? '' : 'hover:before:opacity-100'}
     before:shadow-lg
   `;
+
+  const disabledStyles = disabled ? `
+    cursor-not-allowed
+    opacity-50
+    pointer-events-none
+    select-none
+    bg-gray-100 dark:bg-zinc-800
+  ` : '';
 
   const content = (
     <>
       <div className={iconWrapperStyles}>
         <Icon name={icon} prefix={iconPrefix} className="w-5 h-5" />
       </div>
-      {label && <span className={tooltipStyles}>{label}</span>}
+      {(label && !disabled) && <span className={tooltipStyles}>{label}</span>}
     </>
   );
 
-  const combinedStyles = `${baseStyles} ${shadowStyles}`;
+  const combinedStyles = `${baseStyles} ${shadowStyles} ${disabledStyles}`;
+
+  if (disabled) {
+    return (
+      <div className={combinedStyles}>
+        {content}
+      </div>
+    );
+  }
 
   if (onClick) {
     return (

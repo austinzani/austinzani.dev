@@ -63,68 +63,138 @@ type HeadToHeadAlt = Database['public']['CompositeTypes']['head_to_head_object']
     record: string,
     playoff_record: string
 }
-type statKey = keyof HeadToHeadAlt
-const StatRow = (props: { stat_key: statKey, head_to_head: HeadToHeadAlt[], stat: string, stat_helper?: string }) => {
-    const {stat_key, head_to_head, stat_helper, stat} = props;
 
-    return (<tr className={"hover:bg-orange-500/60"}>
-        <td className={'px-4 rounded-l-lg text-left font-light'}>{head_to_head[0][stat_key]}</td>
-        <td className={'px-4 text-center'}>{stat}</td>
-        <td className={'px-4 rounded-r-lg text-right font-light'}>{head_to_head[1][stat_key]}</td>
-    </tr>)
+type StatRowProps = {
+    leftValue: string | number;
+    rightValue: string | number;
+    label: string;
+    isHigherBetter?: boolean;
 }
 
-const HeadToHeadStats = ({head_to_head}: {
-    head_to_head: Database['public']['CompositeTypes']['head_to_head_object'][]
-}) => {
-    const team_one_manager = capitalizeFirstLetter(head_to_head[0].name)
-    const team_two_manager = capitalizeFirstLetter(head_to_head[1].name)
-    const {managers} = useFootballContext();
-    const team_one_id = managers.find((manager) => manager.name.toLowerCase() === team_one_manager.toLowerCase())?.id ?? 0;
-    const team_two_id = managers.find((manager) => manager.name.toLowerCase() === team_two_manager.toLowerCase())?.id ?? 0;
-    const head_to_head_alt: HeadToHeadAlt[] = head_to_head.map((manager) => {
-        return {
-            ...manager,
-            record: `${manager.total_wins} - ${manager.total_games - manager.total_wins}`,
-            playoff_record: `${manager.playoff_wins} - ${manager.playoff_games - manager.playoff_wins}`
-        }
-    })
-
+const StatRow = ({ leftValue, rightValue, label, isHigherBetter = true }: StatRowProps) => {
+    const leftNum = typeof leftValue === 'string' ? parseFloat(leftValue) : leftValue;
+    const rightNum = typeof rightValue === 'string' ? parseFloat(rightValue) : rightValue;
+    const leftWins = !isNaN(leftNum) && !isNaN(rightNum) && 
+        ((isHigherBetter && leftNum > rightNum) || (!isHigherBetter && leftNum < rightNum));
+    const rightWins = !isNaN(leftNum) && !isNaN(rightNum) && 
+        ((isHigherBetter && rightNum > leftNum) || (!isHigherBetter && rightNum < leftNum));
 
     return (
-        <div>
-            <div className={"flex justify-between items-center"}>
-                <Link className={"px-2 text-2xl hover:text-orange-500 max-w-[45%] min-w-[45%] hover:underline text-left"} to={`/fantasy_football/manager/${team_one_id}`} prefetch={"intent"}>
+        <div className="flex items-center py-2 hover:bg-orange-500/10 rounded-lg transition-colors">
+            <div className={`flex-1 text-right ${leftWins ? 'font-medium text-emerald-600 dark:text-emerald-400' : 'text-gray-600 dark:text-gray-400'}`}>
+                {leftValue}
+            </div>
+            <div className="w-32 text-center text-sm text-gray-600 dark:text-gray-400 px-2">
+                {label}
+            </div>
+            <div className={`flex-1 text-left ${rightWins ? 'font-medium text-emerald-600 dark:text-emerald-400' : 'text-gray-600 dark:text-gray-400'}`}>
+                {rightValue}
+            </div>
+        </div>
+    );
+};
+
+const HeadToHeadStats = ({ head_to_head }: {
+    head_to_head: Database['public']['CompositeTypes']['head_to_head_object'][]
+}) => {
+    const team_one_manager = capitalizeFirstLetter(head_to_head[0].name);
+    const team_two_manager = capitalizeFirstLetter(head_to_head[1].name);
+    const { managers } = useFootballContext();
+    
+    const team_one_id = managers.find((manager) => manager.name.toLowerCase() === team_one_manager.toLowerCase())?.id ?? 0;
+    const team_two_id = managers.find((manager) => manager.name.toLowerCase() === team_two_manager.toLowerCase())?.id ?? 0;
+    
+    const head_to_head_alt: HeadToHeadAlt[] = head_to_head.map((manager) => ({
+        ...manager,
+        record: `${manager.total_wins}-${manager.total_games - manager.total_wins}`,
+        playoff_record: `${manager.playoff_wins}-${manager.playoff_games - manager.playoff_wins}`
+    }));
+
+    const [team1, team2] = head_to_head_alt;
+    const calculateWinRate = (wins: number, games: number) => 
+        games > 0 ? ((wins / games) * 100).toFixed(1) + '%' : '0%';
+
+    return (
+        <div className="bg-gray-50 dark:bg-zinc-900 rounded-xl p-6">
+            {/* Manager Headers */}
+            <div className="flex items-center justify-between mb-4">
+                <Link 
+                    to={`/fantasy_football/manager/${team_one_id}`}
+                    className="text-2xl font-bold hover:text-orange-500 transition-colors hover:underline"
+                    prefetch="intent"
+                >
                     {team_one_manager}
                 </Link>
-                <div className={"text-xl max-w-[10%] min-w-[10%] italic text-center"}>vs.</div>
-                <Link className={"px-2 text-2xl hover:text-orange-500 max-w-[45%] min-w-[45%] hover:underline text-right"} to={`/fantasy_football/manager/${team_two_id}`} prefetch={"intent"}>
+                <div className="text-xl font-light text-gray-600 dark:text-gray-400">vs</div>
+                <Link 
+                    to={`/fantasy_football/manager/${team_two_id}`}
+                    className="text-2xl font-bold hover:text-orange-500 transition-colors hover:underline"
+                    prefetch="intent"
+                >
                     {team_two_manager}
                 </Link>
             </div>
-        <table className='table-auto'>
-            <thead>
-            <tr>
-                <th className={'overflow-x-hidden w-[45%] px-2 text-2xl text-left'}></th>
-                <th className={'overflow-x-hidden w-[10%] px-2 text-2xl text-center italic'}></th>
-                <th className={'overflow-x-hidden w-[45%] px-2 text-2xl text-right'}></th>
-            </tr>
-            </thead>
-            <tbody>
-            <StatRow stat_key={'record'} head_to_head={head_to_head_alt} stat={"Record"}/>
-            <StatRow stat_key={'playoff_record'} head_to_head={head_to_head_alt} stat={"Playoff Record"}/>
-            <StatRow stat_key={'total_points_for'} head_to_head={head_to_head_alt} stat={"PF"}/>
-            <StatRow stat_key={'total_points_against'} head_to_head={head_to_head_alt} stat={"PA"}/>
-            <StatRow stat_key={'high_point_weeks'} head_to_head={head_to_head_alt} stat={"HP"}/>
-            <StatRow stat_key={'low_point_weeks'} head_to_head={head_to_head_alt} stat={"LP"}/>
-            <StatRow stat_key={'total_seasons'} head_to_head={head_to_head_alt} stat={"Seasons"}/>
-            <StatRow stat_key={'playoff_births'} head_to_head={head_to_head_alt} stat={"Playoff Berths"}/>
-            <StatRow stat_key={"championships"} head_to_head={head_to_head_alt} stat={"Championships"}/>
-            </tbody>
-        </table>
+
+            {/* Records Section */}
+            <div className="space-y-1 mb-6">
+                <StatRow
+                    leftValue={team1.record}
+                    rightValue={team2.record}
+                    label="Record"
+                />
+                <div className="flex items-center text-sm text-gray-500 dark:text-gray-500">
+                    <div className="flex-1 text-right">
+                        {calculateWinRate(team1.total_wins, team1.total_games)} win rate
+                    </div>
+                    <div className="w-32" />
+                    <div className="flex-1 text-left">
+                        {calculateWinRate(team2.total_wins, team2.total_games)} win rate
+                    </div>
+                </div>
+            </div>
+
+            {/* Points Section */}
+            <div className="space-y-1 mb-6">
+                <StatRow
+                    leftValue={team1.total_points_for.toFixed(2)}
+                    rightValue={team2.total_points_for.toFixed(2)}
+                    label="Points Scored"
+                />
+                <StatRow
+                    leftValue={team1.high_point_weeks}
+                    rightValue={team2.high_point_weeks}
+                    label="High Points"
+                />
+                <StatRow
+                    leftValue={team1.low_point_weeks}
+                    rightValue={team2.low_point_weeks}
+                    label="Low Points"
+                    isHigherBetter={false}
+                />
+                <StatRow
+                    leftValue={team1.playoff_record}
+                    rightValue={team2.playoff_record}
+                    label="Playoffs"
+                />
+                <StatRow
+                    leftValue={team1.playoff_births}
+                    rightValue={team2.playoff_births}
+                    label="Berths"
+                />
+                <StatRow
+                    leftValue={team1.championships}
+                    rightValue={team2.championships}
+                    label="Titles"
+                />
+                <StatRow
+                    leftValue={team1.total_seasons}
+                    rightValue={team2.total_seasons}
+                    label="Seasons"
+                />
+            </div>
         </div>
-    )
-}
+    );
+};
 
 export default function Manager() {
     const {error, matchups, headToHead, team_one_id, team_two_id} = useLoaderData<loaderData>()

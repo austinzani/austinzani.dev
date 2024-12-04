@@ -7,6 +7,7 @@ import {Database} from "../../db_types";
 import {ScoreCardGroup} from "~/components/ScoreCard";
 import {ChevronLeftIcon, ChevronRightIcon} from "@heroicons/react/24/solid";
 import { Breadcrumbs, BreadcrumbItem} from "~/components/Breadcrumb";
+import IconButton from "~/components/IconButton";
 
 interface loaderData {
     error: string | null,
@@ -55,12 +56,11 @@ export const loader = async ({request}: LoaderFunctionArgs): Promise<loaderData>
 type paginationButtonProps = {
     to: string,
     disabled: boolean,
-    children: JSX.Element
+    icon: 'chevron-left' | 'chevron-right'
 }
 
-const PaginationButton = ({to, disabled, children}: paginationButtonProps) => {
-    if(disabled) return children
-    return <Link to={to} prefetch={"intent"}>{children}</Link>
+const PaginationButton = ({to, disabled, icon}: paginationButtonProps) => {
+    return <IconButton link={to} internal icon={icon} disabled={disabled} />
 }
 
 export default function WeekMatchups() {
@@ -79,10 +79,8 @@ export default function WeekMatchups() {
                     <div className={"flex w-full justify-between sm:justify-start sm:w-auto items-center"}>
                         <h1 className={"text-2xl pr-2"}>{`${year}: Week ${week}`}</h1>
                         <div className={"flex"}>
-                            <PaginationButton to={`?year=${year}&week=${week - 1}`} disabled={week === 1}><ChevronLeftIcon
-                                className={`h-10 w-10 p-2 rounded-xl ${week === 1 ? "dark:text-gray-700 text-gray-200" : "hover:bg-orange-500/60 dark:text-white"}`}/></PaginationButton>
-                            <PaginationButton to={`?year=${year}&week=${week + 1}`} disabled={week === season?.total_weeks}><ChevronRightIcon
-                                className={`h-10 w-10 p-2 rounded-xl ${week === season?.total_weeks ? "dark:text-gray-700 text-gray-200" : "hover:bg-orange-500/60 dark:text-white"}`}/></PaginationButton>
+                            <PaginationButton to={`?year=${year}&week=${week - 1}`} disabled={week === 1} icon="chevron-left"/>
+                            <PaginationButton to={`?year=${year}&week=${week + 1}`} disabled={week === season?.total_weeks} icon="chevron-right"/>
                         </div>
                     </div>
                     <h1>{"🚀= High Point    🚽= Low Point"}</h1>
