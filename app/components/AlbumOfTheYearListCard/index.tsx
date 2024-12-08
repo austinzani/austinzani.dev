@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect, useRef } from "react";
 import { Database } from "../../../db_types";
 import Icon from "../Icon";
 import Modal from "../Modal";
@@ -14,18 +14,38 @@ export type UpcomingAlbum = {
 const AlbumOfTheYearListCard = ({
   album,
   number,
+  shouldScroll = false,
 }: {
   album:
     | Database["public"]["Tables"]["albums_of_the_year"]["Row"]
     | UpcomingAlbum;
   number: number;
+  shouldScroll?: boolean;
 }) => {
+  const cardRef = useRef<HTMLDivElement>(null);
   let canShare = false;
   let shareObject = {};
+
+  useEffect(() => {
+    if (shouldScroll && cardRef.current) {
+      setTimeout(() => {
+        if (cardRef.current) {
+          const topOffset = cardRef.current.getBoundingClientRect().top + window.scrollY - 58;
+          window.scrollTo({
+            top: topOffset,
+            behavior: "smooth",
+          });
+        }
+      }, 100);
+    }
+  }, [shouldScroll]);
   try {
     if ("album" in album) {
       // First check if the Share API is supported at all
-      if (typeof navigator.share !== "undefined" && typeof navigator.canShare === "function") {
+      if (
+        typeof navigator.share !== "undefined" &&
+        typeof navigator.canShare === "function"
+      ) {
         shareObject = {
           title: `${album.album} by ${album.artist}`,
           text: album.blurb
@@ -33,17 +53,16 @@ const AlbumOfTheYearListCard = ({
             : `Check out ${album.album} by ${album.artist}!`,
           url: `https://austinzani.dev/music?year=${album.year}&album=${album.rank}`,
         };
-        
+
         // Check if this specific content can be shared
         canShare = navigator.canShare(shareObject);
-        console.log('Can share:', canShare);
+        console.log("Can share:", canShare);
       }
     }
   } catch (error) {
-    console.error('Share error:', error);
+    console.error("Share error:", error);
     canShare = false;
   }
-  
 
   if (!("upcoming" in album)) {
     return (
@@ -51,6 +70,7 @@ const AlbumOfTheYearListCard = ({
         className={
           "flex flex-col sm:flex-row w-full max-w-full sm:max-w-[40rem] relative border border-gray-300 dark:border-zinc-700 py-2 px-5 rounded bg-gray-100 dark:bg-zinc-900 m-2"
         }
+        ref={cardRef}
       >
         <div className={"pt-4 sm:pb-2"}>
           <div className={"sm:w-48 w-full min-w-[12rem] relative"}>
@@ -64,35 +84,33 @@ const AlbumOfTheYearListCard = ({
             </h1>
           </div>
           <div className={"flex flex-row justify-center mt-2"}>
-            
-              <IconButton
-                link={album.apple_link}
-                icon={"apple"}
-                iconPrefix="fab"
-                label="Apple Music"
-                />
             <IconButton
-                link={album.spotify_link}
-                icon={"spotify"}
-                iconPrefix="fab"
-                label="Spotify"
-                />
+              link={album.apple_link}
+              icon={"apple"}
+              iconPrefix="fab"
+              label="Apple Music"
+            />
+            <IconButton
+              link={album.spotify_link}
+              icon={"spotify"}
+              iconPrefix="fab"
+              label="Spotify"
+            />
             {album.vinyl_link && (
               <IconButton
                 link={album.vinyl_link}
                 icon={"record-vinyl"}
                 label="Vinyl"
-                />
+              />
             )}
             {canShare && (
-                <IconButton
+              <IconButton
                 onClick={() => {
                   navigator.share(shareObject);
                 }}
                 icon="share"
                 label="Share"
               />
-              
             )}
           </div>
         </div>
@@ -111,6 +129,7 @@ const AlbumOfTheYearListCard = ({
         className={
           "flex flex-col w-full sm:flex-row max-w-full sm:max-w-[40rem] relative border border-gray-300 dark:border-zinc-700 py-2 px-5 rounded bg-gray-100 dark:bg-zinc-900 m-2"
         }
+        ref={cardRef}
       >
         <div className={"pt-4 sm:pb-2"}>
           <div className={"sm:w-48 w-full min-w-[12rem] relative"}>

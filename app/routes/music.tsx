@@ -1,4 +1,4 @@
-import React, { SetStateAction, useMemo, useRef, useEffect } from "react";
+import React, { SetStateAction, useMemo } from "react";
 import { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import supabase from "~/utils/supabase";
 import { useLoaderData } from "@remix-run/react";
@@ -283,23 +283,6 @@ const Music = () => {
     () => sortTop100(top100!, top100Filter),
     [top100Filter]
   );
-  // Create a ref for the target album
-  const targetAlbumRef = useRef<HTMLDivElement>(null);
-
-  // Effect to handle initial scroll
-  useEffect(() => {
-    if (year && album && targetAlbumRef.current) {
-      // Wait a brief moment for the DOM to fully render
-      setTimeout(() => {
-        const offset = 56;
-        const top = targetAlbumRef.current?.getBoundingClientRect().top || 0;
-        window.scrollTo({
-          top: top + window.pageYOffset - offset,
-          behavior: "smooth",
-        });
-      }, 100);
-    }
-  }, [year, album]);
 
   // @ts-ignore
   return (
@@ -366,21 +349,12 @@ const Music = () => {
                     <div className={"flex flex-col items-center w-full"}>
                       {yearList![parseInt(year)].map((albumObject) => {
                         return (
-                          <div
-                            ref={
-                              year === yearTab &&
-                              albumObject.rank === parseInt(album ?? '0')
-                                ? targetAlbumRef
-                                : null
-                            }
-                            key={`${albumObject.year}-${albumObject.rank}`}
-                          >
                             <AlbumOfTheYearListCard
                               key={`${albumObject.year}-${albumObject.rank}`}
                               album={albumObject}
                               number={albumObject.rank}
+                              shouldScroll={year === yearTab && albumObject.rank === parseInt(album ?? "0")}
                             />
-                          </div>
                         );
                       })}
                     </div>
