@@ -14,6 +14,7 @@ import SideNavigation from "~/components/SideNavigation";
 import {useFootballContext} from "~/routes/fantasy_football";
 import {id} from "postcss-selector-parser";
 import {Breadcrumbs, BreadcrumbItem} from "~/components/Breadcrumb";
+import ScrollablePills from "~/components/ScrollablePills";
 
 const AllTimeSummary = ({
     allTime,
@@ -181,7 +182,6 @@ const AllTimeTable = ({
     );
 };
 
-
 export const mapYearNav = (years: { key: string, value: string }[]) => {
     return years.map((year) => {
         if (year.key === "all_time") {
@@ -205,35 +205,32 @@ export default function Fantasy_footballAll_time() {
     const [showAll, setShowAll] = useState(false);
     const navOptions = mapYearNav(years);
 
+    const handleYearChange = (yearKey: string) => {
+        setSelectedYear(yearKey);
+        if (yearKey === "all_time") {
+            navigate(`/fantasy_football/all_time`);
+        } else {
+            navigate(`/fantasy_football/season/${yearKey}`);
+        }
+    };
+
     return (
-        <React.Fragment>
-            <SideNavigation options={navOptions} className={'hidden lg:flex'}/>
-            <main className="absolute lg:pl-64 flex flex-col w-full">
-                <Breadcrumbs className={"pl-3 pt-3"}>
-                    <BreadcrumbItem href={"/fantasy_football/all_time"}>Season History</BreadcrumbItem>
+        <div className={'flex justify-center w-full'}>
+            <div className={'flex flex-col w-full max-w-[64rem]'}>
+                <Breadcrumbs className={"pt-3"}>
+                    <BreadcrumbItem href={"/fantasy_football/all_time"}>League History</BreadcrumbItem>
                 </Breadcrumbs>
-                <div className={'flex items-baseline'}>
-                    <h2 className={"text-xl m-3 mt-3 border-b w-fit"}>All Time Stats</h2>
+                <div className={'flex mb-2'}>
+                    <h1 className="text-2xl font-bold">All Time</h1>
                 </div>
-                <div className={'lg:hidden m-3 '}>
-                    <Select
-                        label="Pick Year"
-                        items={years}
-                        selectedKey={selectedYear}
-                        onSelectionChange={(selection) => {
-                            let yearString = selection as string;
-                            setSelectedYear(yearString);
-                            if (yearString === "all_time") {
-                                navigate(`/fantasy_football/all_time`)
-                            } else if (yearString !== "all_time") {
-                                navigate(`/fantasy_football/season/${selection}`)
-                            }
-                        }}
-                    >
-                        {years.map(year => <Item key={year.key}>{year.value}</Item>)}
-                    </Select>
-                </div>
-                <div className="mx-3">
+                
+                <ScrollablePills 
+                    items={years}
+                    selectedKey={selectedYear}
+                    onSelectionChange={handleYearChange}
+                />
+
+                <div>
                     <AllTimeSummary allTime={allTime} showAll={showAll} />
                 </div>
                 <AllTimeTable allTime={allTime} showAll={showAll}/>
@@ -245,7 +242,7 @@ export default function Fantasy_footballAll_time() {
                         Show All Teams
                     </button>
                 )}
-            </main>
-        </React.Fragment>
+            </div>
+        </div>
     );
 }

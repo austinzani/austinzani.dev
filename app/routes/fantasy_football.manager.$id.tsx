@@ -224,7 +224,7 @@ export default function Manager() {
         <div className="flex justify-center w-full">
             <div className="flex m-3 flex-col w-full max-w-[64rem]">
                 <Breadcrumbs className="pb-3">
-                    <BreadcrumbItem href="/fantasy_football/all_time">Season History</BreadcrumbItem>
+                    <BreadcrumbItem href="/fantasy_football/all_time">League History</BreadcrumbItem>
                     <BreadcrumbItem>{capitalizeFirstLetter(all_time_stats?.name ?? "")}</BreadcrumbItem>
                 </Breadcrumbs>
                 

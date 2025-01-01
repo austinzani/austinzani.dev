@@ -54,11 +54,18 @@ export default function Index() {
     const {managers, allTime, years} = useLoaderData<typeof loader>()
 
     return (
-        <Outlet context={{
-            managers,
-            allTime,
-            years
-        }} />
+        <div className="flex">
+            <div className="flex justify-center w-full">
+                <div className="w-full max-w-[64rem] mx-auto px-3">
+                    <Outlet context={{
+                        managers,
+                        allTime,
+                        years
+                    }} />
+                </div>
+            </div>
+        </div>
+
     );
 }
 

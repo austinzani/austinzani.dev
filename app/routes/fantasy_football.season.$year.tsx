@@ -16,6 +16,7 @@ import SideNavigation from "~/components/SideNavigation";
 import StatCard from "~/components/StatCard";
 import Icon from "~/components/Icon";
 import {BreadcrumbItem, Breadcrumbs} from "~/components/Breadcrumb";
+import ScrollablePills from "~/components/ScrollablePills";
 
 export const loader = async ({params}: LoaderFunctionArgs) => {
     const season = params.year;
@@ -89,7 +90,7 @@ const SeasonSummary = ({
     return (
         <div className="w-full bg-gray-100 dark:bg-zinc-900 rounded-xl p-4 mb-4">
             <h2 className="text-xl font-bold mb-4">Season Summary</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 <StatCard
                     title="Champion"
                     value={capitalizeFirstLetter(champion?.manager_name ?? "Unknown")}
@@ -197,50 +198,54 @@ const SeasonTable = ({season}: { season: Database["public"]["CompositeTypes"]["s
 };
 
 export default function Year() {
-    const {error, season, year} = useLoaderData<typeof loader>()
+    const {error, season, year} = useLoaderData<typeof loader>();
     const {years} = useFootballContext();
     const navigate = useNavigate();
-    let [selectedYear, setSelectedYear] = useState(`${year}`);
-    const navOptions = mapYearNav(years);
+    const [selectedYear, setSelectedYear] = useState(`${year}`);
+
+    const handleYearChange = (yearKey: string) => {
+        setSelectedYear(yearKey);
+        if (yearKey === "all_time") {
+            navigate(`/fantasy_football/all_time`);
+        } else {
+            navigate(`/fantasy_football/season/${yearKey}`);
+        }
+    };
 
     return (
-        <React.Fragment>
-            <SideNavigation options={navOptions} className={'hidden lg:flex'}/>
-            <main className="absolute lg:pl-64 flex flex-col w-full">
-                <Breadcrumbs className={"pl-3 pt-3"}>
-                    <BreadcrumbItem href={"/fantasy_football/all_time"}>Season History</BreadcrumbItem>
+        <div className={'flex justify-center w-full'}>
+            <div className={'flex flex-col w-full max-w-[64rem]'}>
+                <Breadcrumbs className={"pt-3"}>
+                    <BreadcrumbItem href={"/fantasy_football/all_time"}>League History</BreadcrumbItem>
                 </Breadcrumbs>
-                <div className={'flex items-baseline'}>
-                <h2 className={"text-xl m-3 mt-3 border-b w-fit"}>{`League History ${year}`}</h2>
-                <Link to={`/fantasy_football/matchups?year=${year}&week=1`} className={'mx-3 px-3 p-1 border rounded-xl border-orange-500 text-orange-500'}>{`View Schedule`}<Icon className={"ml-2"} name={"chevron-right"} /></Link>
-                </div>
-                <div className={'lg:hidden m-3 '}>
-                    <Select
-                        label="Pick Year"
-                        items={years}
-                        selectedKey={selectedYear}
-                        onSelectionChange={(selection) => {
-                            let yearString = selection as string;
-                            setSelectedYear(yearString);
-                            if (yearString === "all_time") {
-                                navigate(`/fantasy_football/all_time`)
-                            } else if (yearString !== `${year}`) {
-                                navigate(`/fantasy_football/season/${selection}`)
-                            }
-                        }}
+                <div className={'flex items-baseline justify-between mb-3'}>
+                    <h1 className="text-2xl font-bold">{`${year} Season`}</h1>
+                    <Link 
+                        to={`/fantasy_football/matchups?year=${year}&week=1`} 
+                        className={'px-3 py-1 border rounded-xl border-orange-500 text-orange-500'}
                     >
-                        {years.map(year => <Item key={year.key}>{year.value}</Item>)}
-                    </Select>
+                        View Schedule
+                        <Icon className={"ml-2"} name={"chevron-right"} />
+                    </Link>
                 </div>
-                {(season?.length && season.length > 0) && (
+
+                <ScrollablePills 
+                    items={years}
+                    selectedKey={selectedYear}
+                    onSelectionChange={handleYearChange}
+                />
+
+                {(error || !season) ? (
+                    <div>Error: {error || "No data found"}</div>
+                ) : (
                     <>
-                        <div className="mx-3">
+                        <div>
                             <SeasonSummary season={season} />
                         </div>
                         <SeasonTable season={season}/>
                     </>
                 )}
-            </main>
-        </React.Fragment>
+            </div>
+        </div>
     );
 }
