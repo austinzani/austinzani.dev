@@ -12,7 +12,7 @@ export default function Football() {
         {/* Header and Image Section */}
         <div className="mb-8">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
-            Matt's League to Lose
+            Zak's League to Lose
           </h1>
           <div className="relative w-full aspect-[3/2]">
             <img
