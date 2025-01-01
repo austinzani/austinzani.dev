@@ -82,13 +82,13 @@ const AllTimeSummary = ({
                     getSubtitle={(item) => `${item.low_point_weeks} weeks`}
                 />
                 <StatList
-                    title="Most Transactions"
+                    title="Most Transactions Per Season"
                     data={byTransactionsPerSeason.slice(0, 5)}
                     getValue={(item) => capitalizeFirstLetter(item.name)}
                     getSubtitle={(item) => `${(item.transactions / item.total_seasons).toFixed(2)}`}
                 />
                 <StatList
-                    title="Least Transactions"
+                    title="Least Transactions Per Season"
                     data={byTransactionsPerSeason.slice(-5).reverse()}
                     getValue={(item) => capitalizeFirstLetter(item.name)}
                     getSubtitle={(item) => `${(item.transactions / item.total_seasons).toFixed(2)}`}
