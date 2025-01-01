@@ -24,7 +24,7 @@ const ScoreCard = ({
     return (
         <div className="max-w-md w-full mb-3">
             {showDate && (
-                <div className="mb-1.5 px-2">
+                <div className="mb-1.5 px-3">
                     <span className="text-sm font-medium">
                         Week {matchup.week}, {matchup.year}
                     </span>
@@ -39,7 +39,7 @@ const ScoreCard = ({
                 </div>
             )}
             
-            <div className="flex flex-col gap-2 p-2 border border-gray-200 dark:border-zinc-700 rounded-lg bg-white dark:bg-zinc-800 shadow-sm">
+            <div className="flex flex-col gap-2 p-3 rounded-lg bg-gray-50 dark:bg-zinc-900 shadow-sm dark:shadow-none">
                 {/* Home Team */}
                 <div className="flex items-center justify-between group">
                     <div className="flex items-center gap-2">
@@ -52,12 +52,12 @@ const ScoreCard = ({
                             <div className="w-10 h-10 flex items-center justify-center">
                                 {matchup.home_logo ? (
                                     <img 
-                                        className="w-10 h-10 rounded-lg object-cover border border-gray-200 dark:border-zinc-700" 
+                                        className="w-10 h-10 rounded-lg object-cover" 
                                         src={matchup.home_logo} 
                                         alt={`${matchup.home_team} logo`}
                                     />
                                 ) : (
-                                    <div className="w-10 h-10 rounded-lg bg-gray-100 dark:bg-zinc-700 flex items-center justify-center">
+                                    <div className="w-10 h-10 rounded-lg bg-gray-100 dark:bg-zinc-800 flex items-center justify-center">
                                         <Icon 
                                             name="football-ball" 
                                             className="w-6 h-6"
@@ -88,7 +88,7 @@ const ScoreCard = ({
                 </div>
 
                 {/* Divider */}
-                <div className="border-t border-gray-200 dark:border-zinc-700" />
+                <div className="border-t border-gray-100 dark:border-zinc-800" />
 
                 {/* Away Team */}
                 <div className="flex items-center justify-between group">
@@ -102,12 +102,12 @@ const ScoreCard = ({
                             <div className="w-10 h-10 flex items-center justify-center">
                                 {matchup.away_logo && !matchup.is_bye_week ? (
                                     <img 
-                                        className="w-10 h-10 rounded-lg object-cover border border-gray-200 dark:border-zinc-700" 
+                                        className="w-10 h-10 rounded-lg object-cover" 
                                         src={matchup.away_logo} 
                                         alt={`${matchup.away_team} logo`}
                                     />
                                 ) : (
-                                    <div className="w-10 h-10 rounded-lg bg-gray-100 dark:bg-zinc-700 flex items-center justify-center">
+                                    <div className="w-10 h-10 rounded-lg bg-gray-100 dark:bg-zinc-800 flex items-center justify-center">
                                         <Icon 
                                             name="football-ball" 
                                             className="w-6 h-6"
