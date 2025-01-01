@@ -117,18 +117,20 @@ const HeadToHeadStats = ({ head_to_head }: {
     return (
         <div className="bg-gray-50 dark:bg-zinc-900 rounded-xl p-6">
             {/* Manager Headers */}
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center mb-4">
                 <Link 
                     to={`/fantasy_football/manager/${team_one_id}`}
-                    className="text-2xl font-bold hover:text-orange-500 transition-colors hover:underline"
+                    className="flex-1 text-2xl font-bold hover:text-orange-500 transition-colors hover:underline text-right pr-4"
                     prefetch="intent"
                 >
                     {team_one_manager}
                 </Link>
-                <div className="text-xl font-light text-gray-600 dark:text-gray-400">vs</div>
+                <div className="w-16 text-xl font-light text-gray-600 dark:text-gray-400 text-center">
+                    vs
+                </div>
                 <Link 
                     to={`/fantasy_football/manager/${team_two_id}`}
-                    className="text-2xl font-bold hover:text-orange-500 transition-colors hover:underline"
+                    className="flex-1 text-2xl font-bold hover:text-orange-500 transition-colors hover:underline text-left pl-4"
                     prefetch="intent"
                 >
                     {team_two_manager}

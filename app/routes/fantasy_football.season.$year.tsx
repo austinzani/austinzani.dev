@@ -13,6 +13,7 @@ import {Item, Select} from "~/components/Select";
 
 import {mapYearNav} from "~/routes/fantasy_football.all_time";
 import SideNavigation from "~/components/SideNavigation";
+import StatCard from "~/components/StatCard";
 import Icon from "~/components/Icon";
 import {BreadcrumbItem, Breadcrumbs} from "~/components/Breadcrumb";
 
@@ -56,6 +57,73 @@ export const loader = async ({params}: LoaderFunctionArgs) => {
         // TODO: Route them back to the all time page
     }
 }
+
+const SeasonSummary = ({
+    season
+}: {
+    season: Database["public"]["CompositeTypes"]["season_details_object"][]
+}) => {
+    // Find champion (player with championship = 1)
+    const champion = season.find(player => player.championships === 1);
+    
+    // Find highest scoring player
+    const highestScorer = season.reduce((prev, current) => 
+        prev.total_points_for > current.total_points_for ? prev : current
+    );
+
+    // Find player with the most points scored against them
+    const mostPointsAgainst = season.reduce((prev, current) => 
+        prev.total_points_against > current.total_points_against ? prev : current
+    );
+    
+    // Find player with most high point weeks
+    const mostHighPoints = season.reduce((prev, current) => 
+        prev.high_point_weeks > current.high_point_weeks ? prev : current
+    );
+    
+    // Find player with most low point weeks
+    const mostLowPoints = season.reduce((prev, current) => 
+        prev.low_point_weeks > current.low_point_weeks ? prev : current
+    );
+
+    return (
+        <div className="w-full bg-gray-100 dark:bg-zinc-900 rounded-xl p-4 mb-4">
+            <h2 className="text-xl font-bold mb-4">Season Summary</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+                <StatCard
+                    title="Champion"
+                    value={capitalizeFirstLetter(champion?.manager_name ?? "Unknown")}
+                    subtitle="🏆"
+                />
+                <StatCard
+                    title="Highest Scorer"
+                    value={capitalizeFirstLetter(highestScorer.manager_name ?? "Unknown")}
+                    subtitle={`${highestScorer.total_points_for.toFixed(2)} points`}
+                />
+                <StatCard
+                    title="Most Points Against"
+                    value={capitalizeFirstLetter(mostPointsAgainst.manager_name ?? "Unknown")}
+                    subtitle={`${mostPointsAgainst.total_points_against.toFixed(2)} points`}
+                />
+                <StatCard
+                    title="Most High Points"
+                    value={capitalizeFirstLetter(mostHighPoints.manager_name ?? "Unknown")}
+                    subtitle={`${mostHighPoints.high_point_weeks} weeks`}
+                />
+                <StatCard
+                    title="Most Low Points"
+                    value={capitalizeFirstLetter(mostLowPoints.manager_name ?? "Unknown")}
+                    subtitle={`${mostLowPoints.low_point_weeks} weeks`}
+                />
+                <StatCard
+                    title="Average Total Points"
+                    value={(season.reduce((sum, player) => sum + player.total_points_for, 0).toFixed(2) / season.length).toFixed(2)}
+                    subtitle="League Total"
+                />
+            </div>
+        </div>
+    );
+};
 
 const SeasonTable = ({season}: { season: Database["public"]["CompositeTypes"]["season_details_object"][] }) => {
     const navigate = useNavigate();
@@ -164,7 +232,14 @@ export default function Year() {
                         {years.map(year => <Item key={year.key}>{year.value}</Item>)}
                     </Select>
                 </div>
-                {(season?.length && season.length > 0) && <SeasonTable season={season}/>}
+                {(season?.length && season.length > 0) && (
+                    <>
+                        <div className="mx-3">
+                            <SeasonSummary season={season} />
+                        </div>
+                        <SeasonTable season={season}/>
+                    </>
+                )}
             </main>
         </React.Fragment>
     );

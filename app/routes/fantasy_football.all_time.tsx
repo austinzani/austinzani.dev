@@ -8,11 +8,94 @@ import type {Database} from "../../db_types";
 import {Item, Select} from "~/components/Select";
 
 import Switch from "~/components/Switch";
+import StatCard from "~/components/StatCard";
 import SideNavigation from "~/components/SideNavigation";
 
 import {useFootballContext} from "~/routes/fantasy_football";
 import {id} from "postcss-selector-parser";
 import {Breadcrumbs, BreadcrumbItem} from "~/components/Breadcrumb";
+
+const AllTimeSummary = ({
+    allTime,
+    showAll
+}: {
+    allTime: Database["public"]["CompositeTypes"]["all_time_object"][]
+    showAll: boolean
+}) => {
+    if (!showAll) {
+        allTime = allTime.filter((item) => item.is_active);
+    }
+    // Sort players by different categories
+    const byChampionships = [...allTime].sort((a, b) => b.championships - a.championships).slice(0, 5);
+    const byTransactionsPerSeason = [...allTime].sort((a, b) => (b.transactions / b.total_seasons) - (a.transactions / a.total_seasons));
+    const byPlayoffs = [...allTime].sort((a, b) => b.playoff_births - a.playoff_births).slice(0, 5);
+    const byHighPoints = [...allTime].sort((a, b) => b.high_point_weeks - a.high_point_weeks).slice(0, 5);
+    const byLowPoints = [...allTime].sort((a, b) => b.low_point_weeks - a.low_point_weeks).slice(0, 5);
+
+    const StatList = ({ title, data, getValue, getSubtitle }: {
+        title: string,
+        data: typeof allTime,
+        getValue: (item: typeof data[0]) => string,
+        getSubtitle: (item: typeof data[0]) => string
+    }) => (
+        <div className="flex flex-col p-3 rounded-lg bg-gray-50 dark:bg-zinc-800">
+            <div className="text-sm text-gray-600 dark:text-gray-400 mb-2">{title}</div>
+            {data.map((item, index) => (
+                <div key={item.name} className="flex justify-between items-center mb-1 last:mb-0">
+                    <div className="flex items-center">
+                        <span className="text-sm font-medium w-4 text-gray-500">{index + 1}.</span>
+                        <span className="text-sm font-medium ml-2">{capitalizeFirstLetter(item.name)}</span>
+                    </div>
+                    <span className="text-sm text-gray-600 dark:text-gray-400">{getSubtitle(item)}</span>
+                </div>
+            ))}
+        </div>
+    );
+
+    return (
+        <div className="w-full bg-gray-100 dark:bg-zinc-900 rounded-xl p-4 mb-4">
+            <h2 className="text-xl font-bold mb-4">League Records</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <StatList
+                    title="Championships"
+                    data={byChampionships}
+                    getValue={(item) => capitalizeFirstLetter(item.name)}
+                    getSubtitle={(item) => `${item.championships} titles`}
+                />
+                <StatList
+                    title="Playoff Appearances"
+                    data={byPlayoffs}
+                    getValue={(item) => capitalizeFirstLetter(item.name)}
+                    getSubtitle={(item) => `${item.playoff_births} times`}
+                />
+                <StatList
+                    title="High Points"
+                    data={byHighPoints}
+                    getValue={(item) => capitalizeFirstLetter(item.name)}
+                    getSubtitle={(item) => `${item.high_point_weeks} weeks`}
+                />
+                <StatList
+                    title="Low Points"
+                    data={byLowPoints}
+                    getValue={(item) => capitalizeFirstLetter(item.name)}
+                    getSubtitle={(item) => `${item.low_point_weeks} weeks`}
+                />
+                <StatList
+                    title="Most Transactions"
+                    data={byTransactionsPerSeason.slice(0, 5)}
+                    getValue={(item) => capitalizeFirstLetter(item.name)}
+                    getSubtitle={(item) => `${(item.transactions / item.total_seasons).toFixed(2)}`}
+                />
+                <StatList
+                    title="Least Transactions"
+                    data={byTransactionsPerSeason.slice(-5).reverse()}
+                    getValue={(item) => capitalizeFirstLetter(item.name)}
+                    getSubtitle={(item) => `${(item.transactions / item.total_seasons).toFixed(2)}`}
+                />
+            </div>
+        </div>
+    );
+};
 
 const AllTimeTable = ({
     allTime,
@@ -119,7 +202,7 @@ export default function Fantasy_footballAll_time() {
     const {allTime, years} = useFootballContext();
     const navigate = useNavigate();
     const [selectedYear, setSelectedYear] = useState("all_time");
-    const [selected, setSelected] = useState(false);
+    const [showAll, setShowAll] = useState(false);
     const navOptions = mapYearNav(years);
 
     return (
@@ -129,29 +212,39 @@ export default function Fantasy_footballAll_time() {
                 <Breadcrumbs className={"pl-3 pt-3"}>
                     <BreadcrumbItem href={"/fantasy_football/all_time"}>Season History</BreadcrumbItem>
                 </Breadcrumbs>
-                <h2 className={"text-xl m-3 mt-3 border-b w-fit"}>{`League History All Time`}</h2>
-                <div className={"mx-3 flex items-center"}>
-                    <div className={'lg:hidden my-3 '}>
-                        <Select
-                            label="Pick Year"
-                            items={years}
-                            selectedKey={selectedYear}
-                            onSelectionChange={(selection) => {
-                                let yearString = selection as string;
-                                setSelectedYear(yearString);
-                                if (yearString !== "all_time") {
-                                    navigate(`/fantasy_football/season/${selection}`)
-                                }
-                            }}
-                        >
-                            {years.map(year => <Item key={year.key}>{year.value}</Item>)}
-                        </Select>
-                    </div>
-                    <Switch onChange={setSelected}>Show All Managers</Switch>
+                <div className={'flex items-baseline'}>
+                    <h2 className={"text-xl m-3 mt-3 border-b w-fit"}>All Time Stats</h2>
                 </div>
-                <div className={"my-3 w-fit"}>
-                    {allTime.length > 0 && <AllTimeTable allTime={allTime} showAll={selected}/>}
+                <div className={'lg:hidden m-3 '}>
+                    <Select
+                        label="Pick Year"
+                        items={years}
+                        selectedKey={selectedYear}
+                        onSelectionChange={(selection) => {
+                            let yearString = selection as string;
+                            setSelectedYear(yearString);
+                            if (yearString === "all_time") {
+                                navigate(`/fantasy_football/all_time`)
+                            } else if (yearString !== "all_time") {
+                                navigate(`/fantasy_football/season/${selection}`)
+                            }
+                        }}
+                    >
+                        {years.map(year => <Item key={year.key}>{year.value}</Item>)}
+                    </Select>
                 </div>
+                <div className="mx-3">
+                    <AllTimeSummary allTime={allTime} showAll={showAll} />
+                </div>
+                <AllTimeTable allTime={allTime} showAll={showAll}/>
+                {!showAll && allTime.length > 10 && (
+                    <button
+                        onClick={() => setShowAll(true)}
+                        className="mx-auto my-4 px-4 py-2 text-orange-500 border border-orange-500 rounded-xl hover:bg-orange-500 hover:text-white transition-colors"
+                    >
+                        Show All Teams
+                    </button>
+                )}
             </main>
         </React.Fragment>
     );
