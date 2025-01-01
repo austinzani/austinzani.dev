@@ -15,9 +15,11 @@ export const Tabs = (props: TabsProps) => {
         width: 0,
         transform: "translateX(0)"
     });
+    let [showRightScroll, setShowRightScroll] = useState(false);
+    let [showLeftScroll, setShowLeftScroll] = useState(false);
 
-    useEffect(() => { //@ts-ignore
-        let activeTab = ref.current.querySelector(
+    useEffect(() => {
+        let activeTab = ref.current?.querySelector(
             '[role="tab"][aria-selected="true"]'
         );
         let tabContainer = tabContainerRef.current;
@@ -25,32 +27,43 @@ export const Tabs = (props: TabsProps) => {
             width: activeTab?.offsetWidth,
             transform: `translateX(${activeTab?.offsetLeft}px)`
         });
-        const childOffset = activeTab?.offsetLeft; // @ts-ignore
-        const containerWidth = tabContainer?.offsetWidth;
-        const childWidth = activeTab?.offsetWidth;
-        console.log(childOffset - (containerWidth - childWidth) / 2, tabContainer)
-
-        // @ts-ignore
-        tabContainer.scrollLeft = childOffset - (containerWidth - childWidth) / 2;
+        
+        if (tabContainer) {
+            const { scrollLeft, scrollWidth, clientWidth } = tabContainer;
+            setShowLeftScroll(scrollLeft > 0);
+            setShowRightScroll(scrollLeft < scrollWidth - clientWidth - 1);
+        }
     }, [state.selectedKey]);
 
     let { focusProps, isFocusVisible } = useFocusRing({
         within: true
     });
 
-    const afterStyle = "after:absolute after:top-[-4px] after:left-[-4px] after:right-[-4px] after:bottom-[-4px] after:border-2 after:border-orange-500 after:rounded-full after:z-3"
+    const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+        const { scrollLeft, scrollWidth, clientWidth } = e.currentTarget;
+        setShowLeftScroll(scrollLeft > 0);
+        setShowRightScroll(scrollLeft < scrollWidth - clientWidth - 1);
+    };
 
     return (
-        <div>
-            <div ref={tabContainerRef} className={`inline-block relative border-2 border-lightgray py-1 px-1 rounded-full z-0 max-w-full overflow-x-auto no-scrollbar scroll-smooth ${props.tabListClassName}`}>
-                <div
-                    className={`absolute top-1 bottom-1 left-0 rounded-full bg-orange-500 transform will-change-[transform,width] transition-transform transition-width duration-100 -z-10 ${isFocusVisible ? afterStyle : ""}`}
-                    style={activeTabStyle}
-                />
-                <div {...mergeProps(tabListProps, focusProps)} ref={ref} className={`inline-flex`}>
-                    {[...state.collection].map((item) => (
-                        <Tab key={item.key} item={item} state={state} />
-                    ))}
+        <div className="w-fit">
+            <div className="relative">
+                {showLeftScroll && (
+                    <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white dark:from-black to-transparent z-10" />
+                )}
+                {showRightScroll && (
+                    <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white dark:from-black to-transparent z-10" />
+                )}
+                <div 
+                    ref={tabContainerRef}
+                    onScroll={handleScroll}
+                    className={`relative py-1.5 px-1.5 z-0 overflow-x-auto no-scrollbar scroll-smooth ${props.tabListClassName}`}
+                >
+                    <div {...mergeProps(tabListProps, focusProps)} ref={ref} className="inline-flex">
+                        {[...state.collection].map((item) => (
+                            <Tab key={item.key} item={item} state={state} />
+                        ))}
+                    </div>
                 </div>
             </div>
             <TabPanel key={state.selectedItem?.key} state={state} />
@@ -63,7 +76,14 @@ const Tab = ({ item, state }: {item: Node<object>, state: TabListState<any>}) =>
     let ref = useRef(null);
     let { tabProps } = useTab({ key }, state, ref);
     return (
-        <div {...tabProps} ref={ref} className={`px-8 py-2 text-sm font-semibold cursor-default outline-none rounded-full transition-color duration-150 ${tabProps["aria-selected"] ? 'text-white' : ''}`}>
+        <div 
+            {...tabProps} 
+            ref={ref} 
+            className={`relative px-4 py-1.5 text-sm font-medium cursor-default outline-none rounded-md transition-colors duration-200 
+                ${tabProps["aria-selected"] 
+                    ? 'text-orange-600 dark:text-orange-500 bg-orange-50 dark:bg-orange-500/10 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-orange-500' 
+                    : 'text-zinc-600 dark:text-zinc-400 hover:text-orange-600 dark:hover:text-orange-500 bg-gray-100/50 dark:bg-zinc-800/50'}`}
+        >
             {rendered}
         </div>
     );
@@ -73,7 +93,7 @@ const TabPanel = ({ state, ...props }: AriaTabPanelProps & {state: TabListState<
     let ref = useRef(null);
     let { tabPanelProps } = useTabPanel(props, state, ref);
     return (
-        <div {...tabPanelProps} ref={ref}>
+        <div {...tabPanelProps} ref={ref} className="mt-4">
             {state.selectedItem?.props.children}
         </div>
     );

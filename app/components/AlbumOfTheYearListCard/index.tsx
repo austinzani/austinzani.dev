@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Database } from "../../../db_types";
 import Icon from "../Icon";
 import Modal from "../Modal";
@@ -23,6 +23,7 @@ const AlbumOfTheYearListCard = ({
   shouldScroll?: boolean;
 }) => {
   const cardRef = useRef<HTMLDivElement>(null);
+  const [imageLoaded, setImageLoaded] = useState(false);
   let canShare = false;
   let shareObject = {};
 
@@ -68,16 +69,26 @@ const AlbumOfTheYearListCard = ({
     return (
       <div
         className={
-          "flex flex-col sm:flex-row w-full max-w-full sm:max-w-[40rem] relative border border-gray-300 dark:border-zinc-700 py-2 px-5 rounded bg-gray-100 dark:bg-zinc-900 m-2"
+          "flex flex-col sm:flex-row w-full max-w-full sm:max-w-[40rem] relative py-4 px-6 rounded-lg bg-gray-50 dark:bg-zinc-900 m-2 shadow-sm dark:shadow-none"
         }
         ref={cardRef}
       >
-        <div className={"pt-4 sm:pb-2"}>
+        <div className={"pt-2 sm:pb-2"}>
           <div className={"sm:w-48 w-full min-w-[12rem] relative"}>
-            <img className={"min-h-48 min-w-48"} src={album.album_art_url} />
+            <div className="aspect-square relative">
+              {!imageLoaded && (
+                <div className="absolute inset-0 bg-gray-200 dark:bg-zinc-800 rounded-lg animate-pulse" />
+              )}
+              <img 
+                className={`min-h-48 min-w-48 rounded-lg shadow-sm ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+                src={album.album_art_url}
+                onLoad={() => setImageLoaded(true)}
+                alt={`${album.album} album artwork`}
+              />
+            </div>
             <h1
               className={
-                "absolute -top-2 -left-2 w-8 h-8 text-xl bg-orange-500 rounded-full flex items-center justify-center text-white"
+                "absolute -top-3 -left-3 w-10 h-10 text-xl bg-orange-500 rounded-md flex items-center justify-center text-white font-bold shadow-sm"
               }
             >
               {number}
@@ -114,11 +125,11 @@ const AlbumOfTheYearListCard = ({
             )}
           </div>
         </div>
-        <div className={"flex flex-col sm: p-4"}>
-          <h1 className={"text-2xl"}>{album.album}</h1>
-          <h3 className={"text-md text-zinc-400"}>{album.artist}</h3>
+        <div className={"flex flex-col sm:p-4 sm:pl-6"}>
+          <h1 className={"text-2xl font-medium"}>{album.album}</h1>
+          <h3 className={"text-sm text-gray-600 dark:text-gray-400"}>{album.artist}</h3>
           {album.blurb && (
-            <p className={"text-sm mt-3 dark:text-gray-400"}>{album.blurb}</p>
+            <p className={"text-sm mt-4 text-gray-600 dark:text-gray-400 leading-relaxed"}>{album.blurb}</p>
           )}
         </div>
       </div>
@@ -127,7 +138,7 @@ const AlbumOfTheYearListCard = ({
     return (
       <div
         className={
-          "flex flex-col w-full sm:flex-row max-w-full sm:max-w-[40rem] relative border border-gray-300 dark:border-zinc-700 py-2 px-5 rounded bg-gray-100 dark:bg-zinc-900 m-2"
+          "flex flex-col sm:flex-row w-full max-w-full sm:max-w-[40rem] relative py-4 px-6 rounded-lg bg-gray-50 dark:bg-zinc-900 m-2 shadow-sm dark:shadow-none"
         }
         ref={cardRef}
       >

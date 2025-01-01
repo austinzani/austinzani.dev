@@ -2,7 +2,6 @@ import React, { SetStateAction, useMemo } from "react";
 import { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import supabase from "~/utils/supabase";
 import { useLoaderData } from "@remix-run/react";
-import RecentMusicCard from "~/components/RecentMusicCard";
 import AlbumOfTheYearListCard from "~/components/AlbumOfTheYearListCard";
 import Top100Card from "~/components/Top100Card";
 import { Tabs } from "~/components/Tabs";
@@ -11,7 +10,7 @@ import { Database } from "../../db_types";
 import six from "~/images/memoji_6.png";
 import { createNewDateInTimeZone } from "~/utils/helpers";
 import StickySectionHeader from "~/components/StickyHeader";
-import { parse } from "postcss";
+import ScrollablePills from "~/components/ScrollablePills";
 
 export const meta: MetaFunction<typeof loader> = ({ matches, data }) => {
   const parentMeta = matches
@@ -194,8 +193,13 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   };
 };
 
-const top100Filters = ["Tier", "Artist", "Date", "Genre"];
-type Filter = (typeof top100Filters)[number];
+// Update the filters to be objects with key/value
+const top100Filters = [
+  { key: "Tier", value: "Tier" },
+  { key: "Artist", value: "Artist" },
+  { key: "Date", value: "Date" },
+  { key: "Genre", value: "Genre" }
+];
 
 const tierLabels = [
   "GOAT Tier",
@@ -271,14 +275,13 @@ const sortTop100 = (
 
 const Music = () => {
   const { album, top100, year, yearList } = useLoaderData<typeof loader>();
-  const yearTabs = Object.keys(yearList!).sort(
-    (a, b) => parseInt(b) - parseInt(a)
-  );
+  const yearTabs = Object.keys(yearList!)
+    .sort((a, b) => parseInt(b) - parseInt(a))
+    .map(year => ({ key: year, value: year }));  // Convert years to key/value objects
+
   const [mainTab, setMainTab] = React.useState(year ? "year" : "top-100");
-  const [yearTab, setYearTab] = React.useState(year ? year : yearTabs[0]);
-  const [top100Filter, setTop100Filter] = React.useState<Filter>(
-    top100Filters[0]
-  );
+  const [yearTab, setYearTab] = React.useState(year ? year : yearTabs[0].key);
+  const [top100Filter, setTop100Filter] = React.useState<Filter>(top100Filters[0].key);
   const sortedTop100 = useMemo(
     () => sortTop100(top100!, top100Filter),
     [top100Filter]
@@ -289,28 +292,23 @@ const Music = () => {
     <div className={"flex justify-center w-full px-2"}>
       <div className={"flex m-3 flex-col w-full max-w-[64rem]"}>
         <h1 className={"text-4xl font-['Outfit'] font-medium mb-2"}>Music</h1>
-        {/*@ts-ignore*/}
         <Tabs
           aria-label="Music"
           selectedKey={mainTab}
           onSelectionChange={(key) => setMainTab(key as SetStateAction<string>)}
         >
           <Item key="top-100" title="Top 100">
-            <p className={"font-['Outfit'] py-2"}>My Personal Top 100 Albums</p>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+            <p className={"font-['Outfit'] py-2 font-light"}>
+              My Personal Top 100 Albums
+            </p>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
               Order By:
             </p>
-            {/*@ts-ignore*/}
-            <Tabs
+            <ScrollablePills
+              items={top100Filters}
               selectedKey={top100Filter}
-              onSelectionChange={(key) =>
-                setTop100Filter(key as SetStateAction<string>)
-              }
-            >
-              {top100Filters.map((filter) => (
-                <Item key={filter} title={filter} children={undefined} />
-              ))}
-            </Tabs>
+              onSelectionChange={(key: string) => setTop100Filter(key)}
+            />
             <div className={"flex flex-col items-center"}>
               {Object.keys(sortedTop100).map((tier) => {
                 const showLabel = Object.keys(sortedTop100).length > 1;
@@ -336,41 +334,22 @@ const Music = () => {
             <p className={"font-['Outfit'] py-2 font-light"}>
               My top 25 albums from the end of every year.
             </p>
-            {/*@ts-ignore*/}
-            <Tabs
+            <ScrollablePills
+              items={yearTabs}
               selectedKey={yearTab}
-              onSelectionChange={(key) =>
-                setYearTab(key as SetStateAction<string>)
-              }
-            >
-              {yearTabs.map((year) => {
-                return (
-                  <Item key={year} title={year}>
-                    <div className={"flex flex-col items-center w-full"}>
-                      {yearList![parseInt(year)].map((albumObject) => {
-                        return (
-                            <AlbumOfTheYearListCard
-                              key={`${albumObject.year}-${albumObject.rank}`}
-                              album={albumObject}
-                              number={albumObject.rank}
-                              shouldScroll={year === yearTab && albumObject.rank === parseInt(album ?? "0")}
-                            />
-                        );
-                      })}
-                    </div>
-                  </Item>
-                );
-              })}
-            </Tabs>
+              onSelectionChange={(key: string) => setYearTab(key)}
+            />
+            <div className={"flex flex-col items-center w-full"}>
+              {yearList![parseInt(yearTab)].map((albumObject) => (
+                <AlbumOfTheYearListCard
+                  key={`${albumObject.year}-${albumObject.rank}`}
+                  album={albumObject}
+                  number={albumObject.rank}
+                  shouldScroll={yearTab === year && albumObject.rank === parseInt(album ?? "0")}
+                />
+              ))}
+            </div>
           </Item>
-          {/* <Item key="feed" title="What's Hot">
-                        <p className={"font-['Outfit'] py-2 font-light"}>Some recent tunes I have been vibing with.</p>
-                        <div className={"flex flex-col items-center"}>
-                            {music?.map((song, index) => {
-                                return <RecentMusicCard recentObject={song} key={index}/>
-                            })}
-                        </div>
-                    </Item> */}
         </Tabs>
       </div>
     </div>
