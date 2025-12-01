@@ -1,6 +1,6 @@
 import { Database } from "../../../db_types";
-import Icon from "../Icon";
 import IconButton from "../IconButton";
+import LazyImage from "../LazyImage";
 
 const Top100Card = ({
   album,
@@ -15,10 +15,11 @@ const Top100Card = ({
   };
   return (
     <div className="relative w-full max-w-md flex mb-2 p-3 items-center rounded-lg bg-gray-50 dark:bg-zinc-900 shadow-sm dark:shadow-none">
-      <img 
-        className="h-28 w-28 rounded-lg shadow-sm" 
+      <LazyImage
         src={album.artwork_url}
         alt={`${album.album} album artwork`}
+        className="h-28 w-28 rounded-lg shadow-sm"
+        containerClassName="h-28 w-28 rounded-lg"
       />
       <div className="h-full flex justify-between w-full pl-4">
         <div className="h-full flex flex-col">

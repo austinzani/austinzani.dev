@@ -1,4 +1,4 @@
-import React, { SetStateAction, useMemo } from "react";
+import React, { SetStateAction, useMemo, useRef, useEffect } from "react";
 import { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import supabase from "~/utils/supabase";
 import { useLoaderData } from "@remix-run/react";
@@ -11,6 +11,7 @@ import six from "~/images/memoji_6.png";
 import { createNewDateInTimeZone } from "~/utils/helpers";
 import StickySectionHeader from "~/components/StickyHeader";
 import ScrollablePills from "~/components/ScrollablePills";
+import { Virtuoso, VirtuosoHandle } from "react-virtuoso";
 
 export const meta: MetaFunction<typeof loader> = ({ matches, data }) => {
   const parentMeta = matches
@@ -287,6 +288,30 @@ const Music = () => {
     [top100Filter]
   );
 
+  const virtuosoRef = useRef<VirtuosoHandle>(null);
+
+  // Handle scroll to specific album when shared link is used
+  const scrollTargetIndex = useMemo(() => {
+    if (yearTab === year && album) {
+      const targetRank = parseInt(album);
+      const albums = yearList![parseInt(yearTab)];
+      return albums.findIndex((a) => a.rank === targetRank);
+    }
+    return -1;
+  }, [yearTab, year, album, yearList]);
+
+  useEffect(() => {
+    if (scrollTargetIndex >= 0 && virtuosoRef.current) {
+      setTimeout(() => {
+        virtuosoRef.current?.scrollToIndex({
+          index: scrollTargetIndex,
+          align: "start",
+          behavior: "smooth",
+        });
+      }, 100);
+    }
+  }, [scrollTargetIndex]);
+
   // @ts-ignore
   return (
     <div className={"flex justify-center w-full px-2"}>
@@ -313,7 +338,7 @@ const Music = () => {
               {Object.keys(sortedTop100).map((tier) => {
                 const showLabel = Object.keys(sortedTop100).length > 1;
                 return (
-                  <div className="w-full">
+                  <div className="w-full" key={tier}>
                     {<StickySectionHeader title={showLabel ? tier : " "} />}
                     <div className="flex flex-wrap justify-center min-[945px]:justify-between">
                       {sortedTop100[tier]?.map((album, index) => {
@@ -339,16 +364,22 @@ const Music = () => {
               selectedKey={yearTab}
               onSelectionChange={(key: string) => setYearTab(key)}
             />
-            <div className={"flex flex-col items-center w-full"}>
-              {yearList![parseInt(yearTab)].map((albumObject) => (
-                <AlbumOfTheYearListCard
-                  key={`${albumObject.year}-${albumObject.rank}`}
-                  album={albumObject}
-                  number={albumObject.rank}
-                  shouldScroll={yearTab === year && albumObject.rank === parseInt(album ?? "0")}
-                />
-              ))}
-            </div>
+            <Virtuoso
+              ref={virtuosoRef}
+              data={yearList![parseInt(yearTab)]}
+              useWindowScroll
+              style={{ width: "100%" }}
+              itemContent={(_index, albumObject) => (
+                <div className="flex flex-col items-center w-full">
+                  <AlbumOfTheYearListCard
+                    key={`${albumObject.year}-${albumObject.rank}`}
+                    album={albumObject}
+                    number={albumObject.rank}
+                    shouldScroll={false}
+                  />
+                </div>
+              )}
+            />
           </Item>
         </Tabs>
       </div>

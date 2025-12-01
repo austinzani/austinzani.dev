@@ -1,8 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { Database } from "../../../db_types";
-import Icon from "../Icon";
-import Modal from "../Modal";
 import IconButton from "../IconButton";
+import LazyImage from "../LazyImage";
 
 export type UpcomingAlbum = {
   upcoming: true;
@@ -23,7 +22,6 @@ const AlbumOfTheYearListCard = ({
   shouldScroll?: boolean;
 }) => {
   const cardRef = useRef<HTMLDivElement>(null);
-  const [imageLoaded, setImageLoaded] = useState(false);
   let canShare = false;
   let shareObject = {};
 
@@ -75,17 +73,12 @@ const AlbumOfTheYearListCard = ({
       >
         <div className={"pt-2 sm:pb-2"}>
           <div className={"sm:w-48 w-full min-w-[12rem] relative"}>
-            <div className="aspect-square relative">
-              {!imageLoaded && (
-                <div className="absolute inset-0 bg-gray-200 dark:bg-zinc-800 rounded-lg animate-pulse" />
-              )}
-              <img 
-                className={`min-h-48 min-w-48 rounded-lg shadow-sm ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
-                src={album.album_art_url}
-                onLoad={() => setImageLoaded(true)}
-                alt={`${album.album} album artwork`}
-              />
-            </div>
+            <LazyImage
+              src={album.album_art_url}
+              alt={`${album.album} album artwork`}
+              className="min-h-48 min-w-48 rounded-lg shadow-sm"
+              containerClassName="aspect-square rounded-lg"
+            />
             <h1
               className={
                 "absolute -top-3 -left-3 w-10 h-10 text-xl bg-orange-500 rounded-md flex items-center justify-center text-white font-bold shadow-sm"
@@ -144,7 +137,7 @@ const AlbumOfTheYearListCard = ({
       >
         <div className={"pt-4 sm:pb-2"}>
           <div className={"sm:w-48 w-full min-w-[12rem] relative"}>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" className="rounded-lg">
               <rect width="400" height="400" fill="#c41e3a" />
 
               <pattern
@@ -225,7 +218,7 @@ const AlbumOfTheYearListCard = ({
             </svg>
             <h1
               className={
-                "absolute -top-2 -left-2 w-8 h-8 text-xl bg-orange-500 rounded-full flex items-center justify-center text-white"
+                "absolute -top-3 -left-3 w-10 h-10 text-xl bg-orange-500 rounded-md flex items-center justify-center text-white font-bold shadow-sm"
               }
             >
               {number}

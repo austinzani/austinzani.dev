@@ -46,7 +46,7 @@ export const Tabs = (props: TabsProps) => {
     };
 
     return (
-        <div className="w-fit">
+        <div className="w-full">
             <div className="relative">
                 {showLeftScroll && (
                     <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white dark:from-black to-transparent z-10" />
