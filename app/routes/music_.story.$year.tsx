@@ -41,26 +41,43 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
   if (!data || !data.currentAlbum) {
     return [
       { title: "Austin's Music" },
-      { name: "og:title", content: "Austin's Music" },
-      { name: "og:description", content: "Some of the music that I love" },
+      { property: "og:title", content: "Austin's Music" },
+      { property: "og:description", content: "Some of the music that I love" },
+      { property: "og:type", content: "website" },
     ];
   }
 
   const album = data.currentAlbum;
+  const baseUrl = "https://austinzani.dev";
+
   if ("upcoming" in album) {
+    const url = `${baseUrl}/music/story/${data.year}`;
     return [
       { title: `Coming Soon - Austin's ${data.year} Top 25` },
-      { name: "og:title", content: `Coming Soon - Austin's ${data.year} Top 25` },
-      { name: "og:description", content: "Check back soon for the next album reveal!" },
+      { property: "og:title", content: `Coming Soon - Austin's ${data.year} Top 25` },
+      { property: "og:description", content: "Check back soon for the next album reveal!" },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: url },
     ];
   }
 
   const title = `#${album.rank} - ${album.album} by ${album.artist}`;
+  const description = album.blurb || `Check out ${album.album} by ${album.artist}!`;
+  const url = `${baseUrl}/music/story/${album.year}?album=${album.rank}`;
+
   return [
     { title: `${title} | Austin's ${data.year} Top 25` },
-    { name: "og:title", content: title },
-    { name: "og:image", content: album.album_art_url },
-    { name: "og:description", content: album.blurb || `Check out ${album.album} by ${album.artist}!` },
+    // Open Graph tags
+    { property: "og:title", content: title },
+    { property: "og:description", content: description },
+    { property: "og:image", content: album.album_art_url },
+    { property: "og:url", content: url },
+    { property: "og:type", content: "article" },
+    // Twitter Card tags (also used by iMessage and other platforms)
+    { name: "twitter:card", content: "summary_large_image" },
+    { name: "twitter:title", content: title },
+    { name: "twitter:description", content: description },
+    { name: "twitter:image", content: album.album_art_url },
   ];
 };
 
@@ -288,14 +305,12 @@ export default function MusicStory() {
 
         {/* Slide content - higher z-index than tap zones */}
         <div className="flex-1 flex items-center justify-center px-4 py-6 relative z-20 pointer-events-none">
-          <div className="pointer-events-auto">
-            <AlbumStorySlide
-              album={currentAlbum}
-              isComingSoon={isOnComingSoonSlide}
-              nextToReveal={nextToReveal}
-              year={year}
-            />
-          </div>
+          <AlbumStorySlide
+            album={currentAlbum}
+            isComingSoon={isOnComingSoonSlide}
+            nextToReveal={nextToReveal}
+            year={year}
+          />
         </div>
 
         {/* Tap zones for navigation - lower z-index */}

@@ -18,13 +18,15 @@ export const meta: MetaFunction<typeof loader> = ({ matches, data }) => {
     .flatMap((match) => match.meta ?? []) //@ts-ignore
     .filter(
       (meta) =>
-        !["og:title", "og:image", "og:description"].includes(meta.name) &&
+        !["og:title", "og:image", "og:description"].includes(meta.property || meta.name) &&
         !("title" in meta)
     );
 
   let title = "Austin's Music";
   let description = "Some of the music that I love";
-  let image;
+  let image = six;
+  let url = "https://austinzani.dev/music";
+
   // If we have a year and album, we can use that to generate the title, description, and image
   if (data && data.year && data.album) {
     if (data.year in data.yearList) {
@@ -35,6 +37,7 @@ export const meta: MetaFunction<typeof loader> = ({ matches, data }) => {
       if (album && "artist" in album) {
         title = `#${album.rank} - ${album.album} by ${album.artist}`;
         image = album.album_art_url;
+        url = `https://austinzani.dev/music?year=${year}&album=${album.rank}`;
         if (album.blurb) {
           description = album.blurb;
         }
@@ -44,9 +47,17 @@ export const meta: MetaFunction<typeof loader> = ({ matches, data }) => {
 
   return [
     { title: title },
-    { name: "og:title", content: title },
-    { name: "og:image", content: image || six },
-    { name: "og:description", content: description },
+    // Open Graph tags
+    { property: "og:title", content: title },
+    { property: "og:image", content: image },
+    { property: "og:description", content: description },
+    { property: "og:url", content: url },
+    { property: "og:type", content: "website" },
+    // Twitter Card tags
+    { name: "twitter:card", content: "summary_large_image" },
+    { name: "twitter:title", content: title },
+    { name: "twitter:description", content: description },
+    { name: "twitter:image", content: image },
     ...parentMeta,
   ];
 };
@@ -199,7 +210,7 @@ const top100Filters = [
   { key: "Tier", value: "Tier" },
   { key: "Artist", value: "Artist" },
   { key: "Date", value: "Date" },
-  { key: "Genre", value: "Genre" }
+  { key: "Genre", value: "Genre" },
 ];
 
 const tierLabels = [
@@ -278,11 +289,13 @@ const Music = () => {
   const { album, top100, year, yearList } = useLoaderData<typeof loader>();
   const yearTabs = Object.keys(yearList!)
     .sort((a, b) => parseInt(b) - parseInt(a))
-    .map(year => ({ key: year, value: year }));  // Convert years to key/value objects
+    .map((year) => ({ key: year, value: year })); // Convert years to key/value objects
 
   const [mainTab, setMainTab] = React.useState(year ? "year" : "top-100");
   const [yearTab, setYearTab] = React.useState(year ? year : yearTabs[0].key);
-  const [top100Filter, setTop100Filter] = React.useState<Filter>(top100Filters[0].key);
+  const [top100Filter, setTop100Filter] = React.useState<Filter>(
+    top100Filters[0].key
+  );
   const sortedTop100 = useMemo(
     () => sortTop100(top100!, top100Filter),
     [top100Filter]
@@ -378,7 +391,7 @@ const Music = () => {
                     d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z"
                   />
                 </svg>
-                Story Mode
+                Story
               </Link>
             </div>
             <ScrollablePills

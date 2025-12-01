@@ -41,9 +41,6 @@ const AlbumStorySlide = ({
         ) {
           const shareData = {
             title: `${album.album} by ${album.artist}`,
-            text: album.blurb
-              ? album.blurb
-              : `Check out ${album.album} by ${album.artist}!`,
             url: `https://austinzani.dev/music/story/${album.year}?album=${album.rank}`,
           };
           setShareObject(shareData);
@@ -164,7 +161,7 @@ const AlbumStorySlide = ({
   }
 
   return (
-    <div className="w-full max-w-[400px] flex flex-col items-center">
+    <div className="w-full max-w-[400px] flex flex-col items-center pointer-events-none">
       {/* Card - contains only artwork, artist, album, platform label */}
       <div className="w-[75%] max-w-[320px] bg-white dark:bg-zinc-900 rounded-2xl shadow-xl overflow-hidden p-4">
         {/* Album artwork */}
@@ -204,7 +201,7 @@ const AlbumStorySlide = ({
                 e.stopPropagation();
                 setShowBlurbModal(true);
               }}
-              className="text-blue-400 text-sm mt-2 font-medium hover:underline"
+              className="text-blue-400 text-sm mt-2 font-medium hover:underline pointer-events-auto"
             >
               Read more
             </button>
@@ -213,7 +210,7 @@ const AlbumStorySlide = ({
       )}
 
       {/* Action buttons */}
-      <div className="flex justify-center gap-2">
+      <div className="flex justify-center gap-2 pointer-events-auto">
         <IconButton
           link={album.apple_link}
           icon="apple"
@@ -251,7 +248,7 @@ const AlbumStorySlide = ({
       {/* Read More Modal */}
       {showBlurbModal && (
         <div
-          className="fixed inset-0 z-[60] flex items-end justify-center"
+          className="fixed inset-0 z-[60] flex items-end justify-center pointer-events-auto"
           onClick={() => setShowBlurbModal(false)}
         >
           {/* Backdrop */}

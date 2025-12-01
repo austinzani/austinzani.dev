@@ -47,9 +47,6 @@ const AlbumOfTheYearListCard = ({
       ) {
         shareObject = {
           title: `${album.album} by ${album.artist}`,
-          text: album.blurb
-            ? album.blurb
-            : `Check out ${album.album} by ${album.artist}!`,
           url: `https://austinzani.dev/music?year=${album.year}&album=${album.rank}`,
         };
 
