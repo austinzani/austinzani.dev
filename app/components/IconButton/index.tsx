@@ -11,6 +11,7 @@ export interface NavigationButtonProps {
   label?: string;
   onClick?: () => void;
   disabled?: boolean;
+  className?: string;
 }
 
 const IconButton = ({
@@ -21,6 +22,7 @@ const IconButton = ({
   iconPrefix,
   label,
   disabled,
+  className,
 }: NavigationButtonProps) => {
   const baseStyles = `
     relative
@@ -29,7 +31,7 @@ const IconButton = ({
     rounded-lg
     transition-all duration-200
     focus:outline-none
-    text-black dark:text-gray-200
+    ${className ? className : 'text-black dark:text-gray-200'}
     ${disabled ? '' : 'hover:bg-orange-500 hover:text-white active:scale-95'}
     group
   `;

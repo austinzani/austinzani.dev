@@ -1,7 +1,7 @@
 import React, { SetStateAction, useMemo, useRef, useEffect } from "react";
 import { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import supabase from "~/utils/supabase";
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData, Link } from "@remix-run/react";
 import AlbumOfTheYearListCard from "~/components/AlbumOfTheYearListCard";
 import Top100Card from "~/components/Top100Card";
 import { Tabs } from "~/components/Tabs";
@@ -356,9 +356,31 @@ const Music = () => {
             </div>
           </Item>
           <Item key="year" title="Annual Top 25">
-            <p className={"font-['Outfit'] py-2 font-light"}>
-              My top 25 albums from the end of every year.
-            </p>
+            <div className="flex items-center justify-between py-2">
+              <p className={"font-['Outfit'] font-light"}>
+                My top 25 albums from the end of every year.
+              </p>
+              <Link
+                to={`/music/story/${yearTab}`}
+                className="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-zinc-800 hover:bg-gray-200 dark:hover:bg-zinc-700 rounded-full text-sm font-medium transition-colors"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={2}
+                  stroke="currentColor"
+                  className="w-4 h-4"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z"
+                  />
+                </svg>
+                Story Mode
+              </Link>
+            </div>
             <ScrollablePills
               items={yearTabs}
               selectedKey={yearTab}
