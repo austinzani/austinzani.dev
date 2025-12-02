@@ -73,7 +73,7 @@ const AlbumOfTheYearListCard = ({
             <LazyImage
               src={album.album_art_url}
               alt={`${album.album} album artwork`}
-              className="min-h-48 min-w-48 rounded-lg shadow-sm"
+              className="w-full h-full object-cover rounded-lg shadow-sm"
               containerClassName="aspect-square rounded-lg"
             />
             <h1
@@ -134,85 +134,11 @@ const AlbumOfTheYearListCard = ({
       >
         <div className={"pt-4 sm:pb-2"}>
           <div className={"sm:w-48 w-full min-w-[12rem] relative"}>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" className="rounded-lg">
-              <rect width="400" height="400" fill="#c41e3a" />
-
-              <pattern
-                id="snowflakes"
-                x="0"
-                y="0"
-                width="50"
-                height="50"
-                patternUnits="userSpaceOnUse"
-              >
-                <path
-                  d="M25,10 L25,40 M15,20 L35,20 M20,15 L30,25 M20,25 L30,15"
-                  stroke="#d42f4a"
-                  stroke-width="2"
-                  fill="none"
-                />
-              </pattern>
-              <rect width="400" height="400" fill="url(#snowflakes)" />
-
-              <circle
-                cx="200"
-                cy="200"
-                r="150"
-                fill="none"
-                stroke="#a01830"
-                stroke-width="8"
-              />
-
-              <circle
-                cx="200"
-                cy="200"
-                r="50"
-                fill="none"
-                stroke="#a01830"
-                stroke-width="8"
-              />
-
-              <rect x="0" y="175" width="400" height="50" fill="#2f8f3f" />
-              <rect x="0" y="180" width="400" height="40" fill="#3aa14f" />
-              <rect x="175" y="0" width="50" height="400" fill="#2f8f3f" />
-              <rect x="180" y="0" width="40" height="400" fill="#3aa14f" />
-
-              <g transform="translate(200,200)">
-                <path
-                  d="M-30,-20 C-60,-20 -60,20 -30,20 C-15,20 -15,-20 -30,-20"
-                  fill="#3aa14f"
-                />
-                <path
-                  d="M30,-20 C60,-20 60,20 30,20 C15,20 15,-20 30,-20"
-                  fill="#3aa14f"
-                />
-                <rect
-                  x="-15"
-                  y="-25"
-                  width="30"
-                  height="50"
-                  fill="#2f8f3f"
-                  rx="5"
-                />
-                <path d="M-10,25 L-20,70 L0,70 Z" fill="#3aa14f" />
-                <path d="M10,25 L20,70 L0,70 Z" fill="#3aa14f" />
-              </g>
-
-              <rect
-                x="0"
-                y="175"
-                width="400"
-                height="2"
-                fill="rgba(0,0,0,0.1)"
-              />
-              <rect
-                x="175"
-                y="0"
-                width="2"
-                height="400"
-                fill="rgba(0,0,0,0.1)"
-              />
-            </svg>
+            <img
+              src="/images/christmas-present.svg"
+              alt="Coming soon gift"
+              className="aspect-square rounded-lg"
+            />
             <h1
               className={
                 "absolute -top-3 -left-3 w-10 h-10 text-xl bg-orange-500 rounded-md flex items-center justify-center text-white font-bold shadow-sm"

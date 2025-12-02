@@ -54,104 +54,35 @@ const AlbumStorySlide = ({
 
   if (isComingSoon) {
     return (
-      <div className="w-full max-w-[400px] bg-white dark:bg-zinc-900 rounded-2xl shadow-xl overflow-hidden">
-        <div className="p-6">
-          {/* Festive placeholder SVG */}
-          <div className="w-full aspect-square mb-4">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 400 400"
+      <div className="w-full max-w-[400px] flex flex-col items-center pointer-events-none">
+        {/* Card - matches revealed album card style */}
+        <div className="w-[75%] max-w-[320px] bg-white dark:bg-zinc-900 rounded-2xl shadow-xl overflow-hidden p-4">
+          {/* Festive placeholder */}
+          <div className="w-full aspect-square mb-3 relative">
+            <img
+              src="/images/christmas-present.svg"
+              alt="Coming soon gift"
               className="rounded-lg w-full h-full"
-            >
-              <rect width="400" height="400" fill="#c41e3a" />
-              <pattern
-                id="snowflakes-story"
-                x="0"
-                y="0"
-                width="50"
-                height="50"
-                patternUnits="userSpaceOnUse"
-              >
-                <path
-                  d="M25,10 L25,40 M15,20 L35,20 M20,15 L30,25 M20,25 L30,15"
-                  stroke="#d42f4a"
-                  strokeWidth="2"
-                  fill="none"
-                />
-              </pattern>
-              <rect width="400" height="400" fill="url(#snowflakes-story)" />
-              <circle
-                cx="200"
-                cy="200"
-                r="150"
-                fill="none"
-                stroke="#a01830"
-                strokeWidth="8"
-              />
-              <circle
-                cx="200"
-                cy="200"
-                r="50"
-                fill="none"
-                stroke="#a01830"
-                strokeWidth="8"
-              />
-              <rect x="0" y="175" width="400" height="50" fill="#2f8f3f" />
-              <rect x="0" y="180" width="400" height="40" fill="#3aa14f" />
-              <rect x="175" y="0" width="50" height="400" fill="#2f8f3f" />
-              <rect x="180" y="0" width="40" height="400" fill="#3aa14f" />
-              <g transform="translate(200,200)">
-                <path
-                  d="M-30,-20 C-60,-20 -60,20 -30,20 C-15,20 -15,-20 -30,-20"
-                  fill="#3aa14f"
-                />
-                <path
-                  d="M30,-20 C60,-20 60,20 30,20 C15,20 15,-20 30,-20"
-                  fill="#3aa14f"
-                />
-                <rect
-                  x="-15"
-                  y="-25"
-                  width="30"
-                  height="50"
-                  fill="#2f8f3f"
-                  rx="5"
-                />
-                <path d="M-10,25 L-20,70 L0,70 Z" fill="#3aa14f" />
-                <path d="M10,25 L20,70 L0,70 Z" fill="#3aa14f" />
-              </g>
-              <rect
-                x="0"
-                y="175"
-                width="400"
-                height="2"
-                fill="rgba(0,0,0,0.1)"
-              />
-              <rect
-                x="175"
-                y="0"
-                width="2"
-                height="400"
-                fill="rgba(0,0,0,0.1)"
-              />
-            </svg>
+            />
           </div>
 
-          {/* Coming soon text */}
+          {/* Coming soon text inside card */}
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+            <h2 className="text-lg font-medium text-gray-900 dark:text-white">
               Coming Soon!
-            </h1>
-            {nextToReveal && (
-              <p className="text-gray-600 dark:text-gray-400">
-                Come back tomorrow for album #{nextToReveal}
-              </p>
-            )}
-            <p className="text-sm text-gray-500 dark:text-gray-500 mt-4">
-              {year} Top 25
-            </p>
+            </h2>
           </div>
         </div>
+
+        {/* Outside card text - matches revealed album style */}
+        {nextToReveal && (
+          <h1 className="text-xl font-bold text-center text-white mt-4 mb-2 drop-shadow-lg">
+            Album #{nextToReveal}
+          </h1>
+        )}
+        <p className="text-white/90 text-sm text-center drop-shadow">
+          Come back tomorrow to see the next album in Austin's {year} advent
+        </p>
       </div>
     );
   }

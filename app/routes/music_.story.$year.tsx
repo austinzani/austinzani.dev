@@ -135,9 +135,9 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     }
   }
 
-  // Find next album to reveal (lowest rank among upcoming)
+  // Find next album to reveal (highest rank among upcoming, since we reveal 25->1)
   const nextToReveal = upcomingAlbums.length > 0
-    ? Math.min(...upcomingAlbums.map((a) => a.rank))
+    ? Math.max(...upcomingAlbums.map((a) => a.rank))
     : null;
 
   // Determine current album for meta tags

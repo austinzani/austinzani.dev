@@ -18,8 +18,8 @@ const Top100Card = ({
       <LazyImage
         src={album.artwork_url}
         alt={`${album.album} album artwork`}
-        className="h-28 w-28 rounded-lg shadow-sm"
-        containerClassName="h-28 w-28 rounded-lg"
+        className="w-full h-full object-cover rounded-lg shadow-sm"
+        containerClassName="h-28 w-28 aspect-square rounded-lg flex-shrink-0"
       />
       <div className="h-full flex justify-between w-full pl-4">
         <div className="h-full flex flex-col">
