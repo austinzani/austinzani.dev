@@ -329,7 +329,29 @@ const Music = () => {
   return (
     <div className={"flex justify-center w-full px-2"}>
       <div className={"flex m-3 flex-col w-full max-w-[64rem]"}>
-        <h1 className={"text-4xl font-['Outfit'] font-medium mb-2"}>Music</h1>
+        <div className="flex items-center justify-between mb-2">
+          <h1 className={"text-4xl font-['Outfit'] font-medium"}>Music</h1>
+          <Link
+            to="/random_album"
+            className="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-zinc-800 hover:bg-gray-200 dark:hover:bg-zinc-700 rounded-full text-sm font-medium transition-colors"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={2}
+              stroke="currentColor"
+              className="w-4 h-4"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 0 0-3.7-3.7 48.678 48.678 0 0 0-7.324 0 4.006 4.006 0 0 0-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 0 0 3.7 3.7 48.656 48.656 0 0 0 7.324 0 4.006 4.006 0 0 0 3.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3-3 3"
+              />
+            </svg>
+            Shuffle
+          </Link>
+        </div>
         <Tabs
           aria-label="Music"
           selectedKey={mainTab}
