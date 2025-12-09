@@ -303,8 +303,8 @@ export default function MusicStory() {
           />
         </div>
 
-        {/* Slide content - higher z-index than tap zones */}
-        <div className="flex-1 flex items-center justify-center px-4 py-6 relative z-20 pointer-events-none">
+        {/* Slide content - higher z-index than tap zones, constrained to not overflow */}
+        <div className="flex-1 flex items-center justify-center px-4 py-6 relative z-20 pointer-events-none min-h-0 overflow-hidden">
           <AlbumStorySlide
             album={currentAlbum}
             isComingSoon={isOnComingSoonSlide}

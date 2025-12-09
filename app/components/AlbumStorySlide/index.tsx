@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Database } from "../../../db_types";
 import IconButton from "../IconButton";
 
@@ -11,8 +11,6 @@ interface AlbumStorySlideProps {
   year: number;
 }
 
-const BLURB_TRUNCATE_LENGTH = 450;
-
 const AlbumStorySlide = ({
   album,
   isComingSoon,
@@ -23,13 +21,23 @@ const AlbumStorySlide = ({
   const [canShare, setCanShare] = useState(false);
   const [shareObject, setShareObject] = useState<ShareData>({});
   const [showBlurbModal, setShowBlurbModal] = useState(false);
+  const [isBlurbClamped, setIsBlurbClamped] = useState(false);
+  const blurbRef = useRef<HTMLParagraphElement>(null);
 
-  // Truncation logic for blurbs
-  const shouldTruncate =
-    album?.blurb && album.blurb.length > BLURB_TRUNCATE_LENGTH;
-  const displayBlurb = shouldTruncate
-    ? album!.blurb!.slice(0, BLURB_TRUNCATE_LENGTH) + "..."
-    : album?.blurb;
+  // Check if the blurb text is actually clamped (overflowing)
+  useEffect(() => {
+    const checkClamped = () => {
+      if (blurbRef.current) {
+        const isClamped = blurbRef.current.scrollHeight > blurbRef.current.clientHeight;
+        setIsBlurbClamped(isClamped);
+      }
+    };
+
+    checkClamped();
+    // Recheck on resize
+    window.addEventListener("resize", checkClamped);
+    return () => window.removeEventListener("resize", checkClamped);
+  }, [album?.blurb]);
 
   useEffect(() => {
     if (album) {
@@ -120,13 +128,16 @@ const AlbumStorySlide = ({
         {album.rank}. {album.artist}: {album.album}
       </h1>
 
-      {/* Blurb with Read More */}
+      {/* Blurb with Read More - uses CSS line-clamp for consistent height */}
       {album.blurb && (
         <div className="text-center mb-4 px-2">
-          <p className="text-white/90 text-sm leading-relaxed drop-shadow">
-            {displayBlurb}
+          <p
+            ref={blurbRef}
+            className="text-white/90 text-sm leading-relaxed drop-shadow line-clamp-6"
+          >
+            {album.blurb}
           </p>
-          {shouldTruncate && (
+          {isBlurbClamped && (
             <button
               onClick={(e) => {
                 e.stopPropagation();
