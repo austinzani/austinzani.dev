@@ -195,28 +195,37 @@ export type Database = {
           album_art_url: string
           apple_music_url: string
           artist: string
+          blurb: string | null
           created_at: string
           id: number
+          spotify_url: string | null
           title: string
           type: string
+          vinyl_url: string | null
         }
         Insert: {
           album_art_url: string
           apple_music_url: string
           artist: string
+          blurb?: string | null
           created_at?: string
           id?: number
+          spotify_url?: string | null
           title: string
           type: string
+          vinyl_url?: string | null
         }
         Update: {
           album_art_url?: string
           apple_music_url?: string
           artist?: string
+          blurb?: string | null
           created_at?: string
           id?: number
+          spotify_url?: string | null
           title?: string
           type?: string
+          vinyl_url?: string | null
         }
         Relationships: []
       }
