@@ -58,13 +58,15 @@ export const BreadcrumbItem = (props: BreadcrumbItemProps) => {
                 >
                     {props.children}
                 </Link>
-                <span aria-hidden="true" className={"py-0 px-1.5 text-orange-500"}><Icon className="h-4 w-4" name={"chevron-right"} /></span>
+                <span aria-hidden="true" className={"inline-flex items-center py-0 px-1.5 text-orange-500"}>
+                    <Icon className="inline-block h-4 w-4" name={"chevron-right"} />
+                </span>
             </>
         );
     }
 
     return (
-        <li>
+        <li className="inline-flex items-center">
             {breadcrumbContent}
         </li>
     );

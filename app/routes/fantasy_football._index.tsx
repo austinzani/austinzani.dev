@@ -72,14 +72,16 @@ export default function Football() {
             records, analyze head-to-head stats, and celebrate our league.
           </p>
 
-          <Link
-            to={"/fantasy_football/all_time"}
-            prefetch="intent"
-            className="bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-6 rounded-lg flex items-center justify-center w-full md:w-auto transition-colors"
-          >
-            View League Data
-            <Icon className={"pl-3"} name={"chevron-right"} />
-          </Link>
+          <div className="grid grid-cols-1 gap-3">
+            <Link
+              to={"/fantasy_football/all_time"}
+              prefetch="intent"
+              className="bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-6 rounded-lg flex items-center justify-center transition-colors"
+            >
+              View League Data
+              <Icon className={"pl-3"} name={"chevron-right"} />
+            </Link>
+          </div>
         </div>
       </div>
     </div>
