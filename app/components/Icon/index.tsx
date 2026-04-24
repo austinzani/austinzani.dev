@@ -1,6 +1,6 @@
 import type {IconName, IconPrefix} from '@fortawesome/fontawesome-svg-core';
 import { icon, library } from '@fortawesome/fontawesome-svg-core';
-import { faFootball, faHouse, faMusic, faUser, faChevronLeft, faChevronRight, faEnvelope, faFootballBall, faSun, faMoon, faRecordVinyl, faShare } from '@fortawesome/free-solid-svg-icons';
+import { faFootball, faHouse, faMusic, faUser, faChevronLeft, faChevronRight, faEnvelope, faFootballBall, faSun, faMoon, faRecordVinyl, faShare, faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { faMastodon, faLinkedin, faGithub, faApple, faSpotify } from '@fortawesome/free-brands-svg-icons';
 
 library.add(
@@ -20,7 +20,9 @@ library.add(
     faApple,
     faSpotify,
     faRecordVinyl,
-    faShare
+    faShare,
+    faPenToSquare,
+    faTrashCan
 );
 
 
