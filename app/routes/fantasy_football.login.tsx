@@ -7,7 +7,7 @@ import {
   useLoaderData,
   useSubmit,
 } from "@remix-run/react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import {
   clearSupabaseAuthSession,
@@ -30,6 +30,57 @@ type ActionData = {
   message?: string;
   redirectTo: string;
 };
+
+function normalizeOrigin(rawOrigin: string | null) {
+  if (!rawOrigin) {
+    return null;
+  }
+
+  try {
+    const url = new URL(rawOrigin);
+    if (url.protocol !== "http:" && url.protocol !== "https:") {
+      return null;
+    }
+
+    return url.origin;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Uses the submitting browser origin for auth redirects when available.
+ * Falls back to forwarded headers/request URL for non-JS clients or proxies.
+ */
+function resolveMagicLinkOrigin(request: Request, submittedOrigin: string | null) {
+  const normalizedSubmittedOrigin = normalizeOrigin(submittedOrigin);
+  if (normalizedSubmittedOrigin) {
+    return normalizedSubmittedOrigin;
+  }
+
+  const requestUrl = new URL(request.url);
+  const forwardedProto = request.headers
+    .get("x-forwarded-proto")
+    ?.split(",")[0]
+    ?.trim();
+  const forwardedHost = request.headers
+    .get("x-forwarded-host")
+    ?.split(",")[0]
+    ?.trim();
+  const host = request.headers
+    .get("host")
+    ?.split(",")[0]
+    ?.trim();
+
+  const protocol = forwardedProto || requestUrl.protocol.replace(":", "");
+  const hostname = forwardedHost || host;
+
+  if (hostname) {
+    return `${protocol}://${hostname}`;
+  }
+
+  return requestUrl.origin;
+}
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
@@ -128,8 +179,9 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   if (intent === "send_code") {
     const email = String(formData.get("email") ?? "").trim().toLowerCase();
-    const requestUrl = new URL(request.url);
-    const emailRedirect = new URL("/fantasy_football/login", requestUrl.origin);
+    const submittedOrigin = String(formData.get("origin") ?? "");
+    const emailRedirectOrigin = resolveMagicLinkOrigin(request, submittedOrigin);
+    const emailRedirect = new URL("/fantasy_football/login", emailRedirectOrigin);
     emailRedirect.searchParams.set("redirectTo", redirectTo);
 
     if (!email) {
@@ -271,6 +323,15 @@ export default function FantasyFootballLoginRoute() {
   const actionData = useActionData<typeof action>();
   const submit = useSubmit();
   const hashConsumptionTriggered = useRef(false);
+  const [browserOrigin, setBrowserOrigin] = useState("");
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    setBrowserOrigin(window.location.origin);
+  }, []);
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -362,6 +423,7 @@ export default function FantasyFootballLoginRoute() {
           <Form method="post" className="mt-6 space-y-3">
             <input type="hidden" name="intent" value="send_code" />
             <input type="hidden" name="redirectTo" value={redirectTo} />
+            <input type="hidden" name="origin" value={browserOrigin} />
             <label className="block text-sm font-medium" htmlFor="send-email">
               Email
             </label>
