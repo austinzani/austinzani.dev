@@ -11,10 +11,10 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
         .from('manager')
         .select('id, name')
 
-    // Fetch all years for use in all FF pages
+    // Fetch all years + champion ids for use in all FF pages
     const {data:yearsData, error:yearsError} = await supabase
         .from('season')
-        .select( 'year')
+        .select( 'year, champ')
         .order('year', {ascending: false})
 
 
@@ -27,9 +27,19 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
             managers: [],
             allTime: [],
             years: [],
+            latestChampionFirstName: null,
         }
     }
     allTimeResponse?.sort((a, b) => (b.total_wins / b.total_games) - (a.total_wins / a.total_games))
+
+    const latestChamp = yearsData?.[0]
+    const latestChampManager = latestChamp
+        ? managerData?.find(m => m.id === latestChamp.champ)
+        : null
+    const rawFirstName = latestChampManager?.name?.trim().split(/\s+/)[0] ?? null
+    const latestChampionFirstName = rawFirstName
+        ? rawFirstName.charAt(0).toUpperCase() + rawFirstName.slice(1)
+        : null
 
     // Adding key to years data and All Time as an option
     const years = yearsData?.map(year => {
@@ -44,14 +54,15 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
         error: null,
         managers: managerData ?? [],
         allTime: allTimeResponse ?? [],
-        years: years ?? []
+        years: years ?? [],
+        latestChampionFirstName,
     }
 }
-type ContextType = { managers: {id: number, name: string}[], allTime: Database["public"]["CompositeTypes"]["all_time_object"][], years: {key: string, value: string}[] }
+type ContextType = { managers: {id: number, name: string}[], allTime: Database["public"]["CompositeTypes"]["all_time_object"][], years: {key: string, value: string}[], latestChampionFirstName: string | null }
 
 
 export default function Index() {
-    const {managers, allTime, years} = useLoaderData<typeof loader>()
+    const {managers, allTime, years, latestChampionFirstName} = useLoaderData<typeof loader>()
 
     return (
         <div className="flex">
@@ -60,7 +71,8 @@ export default function Index() {
                     <Outlet context={{
                         managers,
                         allTime,
-                        years
+                        years,
+                        latestChampionFirstName
                     }} />
                 </div>
             </div>

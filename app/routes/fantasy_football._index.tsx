@@ -3,8 +3,9 @@ import { useFootballContext } from "~/routes/fantasy_football";
 import { Link } from "@remix-run/react";
 
 export default function Football() {
-  const { years, managers, allTime } = useFootballContext();
+  const { years, managers, allTime, latestChampionFirstName } = useFootballContext();
   const activeMembers = allTime.filter((manager) => manager.is_active);
+  const titleHolder = latestChampionFirstName ?? "Zak";
 
   return (
     <div className="min-h-screen flex justify-center ">
@@ -12,7 +13,7 @@ export default function Football() {
         {/* Header and Image Section */}
         <div className="mb-8">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
-            Zak's League to Lose
+            {titleHolder}&apos;s League to Lose
           </h1>
           <div className="relative w-full aspect-[3/2]">
             <img
