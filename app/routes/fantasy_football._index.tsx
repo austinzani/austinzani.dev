@@ -85,6 +85,7 @@ export default function Football() {
         </div>
 
         <div className="mt-3 flex justify-end gap-3 pr-1 text-xs text-gray-500 dark:text-gray-400">
+          <span>austinzani.dev</span>
           <Link className="hover:underline" to="/privacy">
             Privacy
           </Link>
