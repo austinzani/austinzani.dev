@@ -82,8 +82,10 @@ type LoaderData = {
   hasSubmittedCurrentOpenBallot: boolean;
   isCommissioner: boolean;
   leagueName: string;
+  openLiveResults: QuestionResults[];
   openBallotQuestions: Question[];
   selectedOptionsByQuestion: Record<number, number>;
+  showCommissionerOpenResults: boolean;
   submittedAt: string | null;
   userEmail: string | null;
 };
@@ -335,6 +337,69 @@ function PieChart({ result }: { result: QuestionResults }) {
         backgroundImage: `conic-gradient(${stops.join(", ")})`,
       }}
     />
+  );
+}
+
+function OpenLiveResultCards({ questionResults }: { questionResults: QuestionResults[] }) {
+  const grouped = new Map<string, QuestionResults[]>();
+
+  for (const result of questionResults) {
+    const current = grouped.get(result.questionSection) ?? [];
+    current.push(result);
+    grouped.set(result.questionSection, current);
+  }
+
+  return (
+    <div className="rounded-xl bg-gray-100 dark:bg-zinc-900 p-6 space-y-6">
+      <div>
+        <h3 className="text-lg font-semibold">Live Results (Commissioner)</h3>
+        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+          Live totals update as votes are submitted while voting is open.
+        </p>
+      </div>
+
+      {Array.from(grouped.entries()).map(([section, sectionResults]) => (
+        <div key={section} className="space-y-4">
+          <h4 className="text-lg font-semibold">{section}</h4>
+          {sectionResults.map((result) => (
+            <div
+              key={result.questionId}
+              className="rounded-lg border border-gray-200 bg-white/70 p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-950/40"
+            >
+              <p className="font-semibold">{result.questionPrompt}</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                Total votes: {result.totalVotes}
+              </p>
+
+              <div className="mt-4 flex flex-col gap-4 md:flex-row md:items-center">
+                <PieChart result={result} />
+                <ul className="space-y-2 w-full">
+                  {result.options.map((option, index) => (
+                    <li
+                      key={option.id}
+                      className="flex items-center justify-between gap-3 rounded-lg border border-gray-200 bg-white px-3 py-2 dark:border-zinc-800 dark:bg-zinc-950"
+                    >
+                      <div className="flex items-center gap-2">
+                        <span
+                          className="h-3 w-3 rounded-full"
+                          style={{
+                            backgroundColor: PIE_COLORS[index % PIE_COLORS.length],
+                          }}
+                        />
+                        <span>{option.label}</span>
+                      </div>
+                      <span className="text-sm text-gray-600 dark:text-gray-400 tabular-nums">
+                        {option.count} ({option.percentage.toFixed(1)}%)
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
   );
 }
 
@@ -660,7 +725,9 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     openBallot ?? upcomingBallot ?? (finishedBallots.length > 0 ? finishedBallots[0] : null);
 
   let openBallotQuestions: Question[] = [];
+  let openLiveResults: QuestionResults[] = [];
   let selectedOptionsByQuestion: Record<number, number> = {};
+  let showCommissionerOpenResults = false;
   let hasSubmittedCurrentOpenBallot = false;
   let submittedAt: string | null = null;
 
@@ -718,6 +785,26 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
         responses.map((response) => [response.question_id, response.option_id])
       );
       submittedAt = responses.length > 0 ? responses[0].created_at : null;
+      showCommissionerOpenResults = member.isCommissioner && hasSubmittedCurrentOpenBallot;
+
+      if (showCommissionerOpenResults) {
+        const { data: liveResultRows, error: liveResultError } = await member.supabase
+          .from("town_hall_responses")
+          .select("question_id, option_id")
+          .eq("ballot_id", currentBallot.id);
+
+        if (liveResultError) {
+          throw new Response("Failed to load live town hall results.", {
+            status: 500,
+            headers: member.headers,
+          });
+        }
+
+        openLiveResults = computeQuestionResults(
+          openBallotQuestions,
+          (liveResultRows ?? []) as Array<{ option_id: number; question_id: number }>
+        );
+      }
     }
   }
 
@@ -826,8 +913,10 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       hasSubmittedCurrentOpenBallot,
       isCommissioner: member.isCommissioner,
       leagueName: member.league.name,
+      openLiveResults,
       openBallotQuestions,
       selectedOptionsByQuestion,
+      showCommissionerOpenResults,
       submittedAt,
       userEmail: member.user.email,
     },
@@ -1351,6 +1440,12 @@ export default function FantasyFootballTownHallRoute() {
                     })}
                   </div>
                 ))}
+              </div>
+            ) : null}
+
+            {data.currentMode === "open" && data.showCommissionerOpenResults ? (
+              <div className="mt-6">
+                <OpenLiveResultCards questionResults={data.openLiveResults} />
               </div>
             ) : null}
 
