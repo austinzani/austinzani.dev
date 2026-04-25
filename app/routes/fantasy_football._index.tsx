@@ -83,6 +83,15 @@ export default function Football() {
             </Link>
           </div>
         </div>
+
+        <div className="mt-3 flex justify-end gap-3 pr-1 text-xs text-gray-500 dark:text-gray-400">
+          <Link className="hover:underline" to="/privacy">
+            Privacy
+          </Link>
+          <Link className="hover:underline" to="/terms">
+            Terms
+          </Link>
+        </div>
       </div>
     </div>
   );
