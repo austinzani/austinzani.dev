@@ -20,6 +20,7 @@ import { createSupabaseServerClient } from "~/utils/supabase.server";
 type LoaderData = {
   isAuthenticated: boolean;
   errorCode: string | null;
+  googleEnabled: boolean;
   redirectTo: string;
   userEmail: string | null;
 };
@@ -29,6 +30,11 @@ type ActionData = {
   error?: string;
   message?: string;
   redirectTo: string;
+};
+
+type AuthExternalProviders = {
+  [provider: string]: boolean | undefined;
+  google?: boolean;
 };
 
 function normalizeOrigin(rawOrigin: string | null) {
@@ -52,7 +58,7 @@ function normalizeOrigin(rawOrigin: string | null) {
  * Uses the submitting browser origin for auth redirects when available.
  * Falls back to forwarded headers/request URL for non-JS clients or proxies.
  */
-function resolveMagicLinkOrigin(request: Request, submittedOrigin: string | null) {
+function resolveAuthOrigin(request: Request, submittedOrigin: string | null) {
   const normalizedSubmittedOrigin = normalizeOrigin(submittedOrigin);
   if (normalizedSubmittedOrigin) {
     return normalizedSubmittedOrigin;
@@ -80,6 +86,44 @@ function resolveMagicLinkOrigin(request: Request, submittedOrigin: string | null
   }
 
   return requestUrl.origin;
+}
+
+/**
+ * Reads Supabase auth provider availability from the hosted auth settings API.
+ */
+async function getAuthExternalProviders(): Promise<AuthExternalProviders> {
+  const supabaseUrl = process.env.SUPABASE_URL;
+  const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
+
+  if (!supabaseUrl || !supabaseAnonKey) {
+    return {};
+  }
+
+  try {
+    const settingsResponse = await fetch(`${supabaseUrl}/auth/v1/settings`, {
+      headers: {
+        apikey: supabaseAnonKey,
+        authorization: `Bearer ${supabaseAnonKey}`,
+      },
+    });
+
+    if (!settingsResponse.ok) {
+      return {};
+    }
+
+    const settings = (await settingsResponse.json()) as {
+      external?: AuthExternalProviders;
+    };
+
+    return settings.external ?? {};
+  } catch {
+    return {};
+  }
+}
+
+async function isGoogleAuthEnabled() {
+  const externalProviders = await getAuthExternalProviders();
+  return Boolean(externalProviders.google);
 }
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -136,6 +180,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   }
 
   const auth = await getAuthenticatedUser(request);
+  const googleEnabled = await isGoogleAuthEnabled();
 
   if (auth.user && errorCode !== "not_member") {
     throw redirect(redirectTo, {
@@ -146,6 +191,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   return json<LoaderData>(
     {
       errorCode,
+      googleEnabled,
       isAuthenticated: Boolean(auth.user),
       redirectTo,
       userEmail: auth.user?.email ?? null,
@@ -177,43 +223,42 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   const supabase = createSupabaseServerClient();
 
-  if (intent === "send_code") {
-    const email = String(formData.get("email") ?? "").trim().toLowerCase();
-    const submittedOrigin = String(formData.get("origin") ?? "");
-    const emailRedirectOrigin = resolveMagicLinkOrigin(request, submittedOrigin);
-    const emailRedirect = new URL("/fantasy_football/login", emailRedirectOrigin);
-    emailRedirect.searchParams.set("redirectTo", redirectTo);
-
-    if (!email) {
+  if (intent === "oauth_google") {
+    const googleEnabled = await isGoogleAuthEnabled();
+    if (!googleEnabled) {
       return json<ActionData>(
         {
-          error: "Enter the email tied to your league account.",
+          error:
+            "Google sign-in is not enabled yet. Use email + password for now.",
           redirectTo,
         },
         { status: 400 }
       );
     }
 
-    const { error } = await supabase.auth.signInWithOtp({
-      email,
+    const submittedOrigin = String(formData.get("origin") ?? "");
+    const authOrigin = resolveAuthOrigin(request, submittedOrigin);
+    const callbackUrl = new URL("/fantasy_football/login", authOrigin);
+    callbackUrl.searchParams.set("redirectTo", redirectTo);
+
+    const { data, error } = await supabase.auth.signInWithOAuth({
       options: {
-        emailRedirectTo: emailRedirect.toString(),
-        shouldCreateUser: false,
+        redirectTo: callbackUrl.toString(),
+        skipBrowserRedirect: true,
       },
+      provider: "google",
     });
 
     if (error) {
-      // Business rule: unknown league emails should show a commissioner-directed message.
       const normalizedError = error.message.toLowerCase();
-      const isUnknownLeagueEmail =
-        normalizedError.includes("signups not allowed for otp") ||
-        normalizedError.includes("user not found");
+      const isProviderNotConfigured =
+        normalizedError.includes("provider is not enabled") ||
+        normalizedError.includes("unsupported provider");
 
       return json<ActionData>(
         {
-          email,
-          error: isUnknownLeagueEmail
-            ? "Unknown email. Reach out to commissioner with questions."
+          error: isProviderNotConfigured
+            ? "Google sign-in is not configured yet. Use email + password for now."
             : error.message,
           redirectTo,
         },
@@ -221,40 +266,51 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       );
     }
 
-    return json<ActionData>({
-      email,
-      message:
-        "Sign-in link sent. Check your email and click the magic link to continue.",
-      redirectTo,
-    });
+    if (!data.url) {
+      return json<ActionData>(
+        {
+          error: "Unable to start Google sign-in right now.",
+          redirectTo,
+        },
+        { status: 500 }
+      );
+    }
+
+    return redirect(data.url);
   }
 
-  if (intent === "verify_code") {
+  if (intent === "password_sign_in") {
     const email = String(formData.get("email") ?? "").trim().toLowerCase();
-    const token = String(formData.get("token") ?? "").trim();
+    const password = String(formData.get("password") ?? "");
 
-    if (!email || !token) {
+    if (!email || !password) {
       return json<ActionData>(
         {
           email,
-          error: "Enter both email and the code from your email.",
+          error: "Enter both email and password.",
           redirectTo,
         },
         { status: 400 }
       );
     }
 
-    const { data, error } = await supabase.auth.verifyOtp({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
-      token,
-      type: "email",
+      password,
     });
 
     if (error || !data.session) {
+      const normalizedError = error.message.toLowerCase();
+      const isInvalidCredentials =
+        normalizedError.includes("invalid login credentials") ||
+        normalizedError.includes("email not confirmed");
+
       return json<ActionData>(
         {
           email,
-          error: error?.message ?? "Unable to verify code.",
+          error: isInvalidCredentials
+            ? "Invalid email/password or email not confirmed."
+            : error.message,
           redirectTo,
         },
         { status: 400 }
@@ -262,11 +318,81 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     }
 
     const setCookie = await commitSupabaseAuthSession(request, data.session);
-
     return redirect(redirectTo, {
       headers: {
         "Set-Cookie": setCookie,
       },
+    });
+  }
+
+  if (intent === "password_sign_up") {
+    const email = String(formData.get("email") ?? "").trim().toLowerCase();
+    const password = String(formData.get("password") ?? "");
+    const submittedOrigin = String(formData.get("origin") ?? "");
+    const authOrigin = resolveAuthOrigin(request, submittedOrigin);
+    const callbackUrl = new URL("/fantasy_football/login", authOrigin);
+    callbackUrl.searchParams.set("redirectTo", redirectTo);
+
+    if (!email || !password) {
+      return json<ActionData>(
+        {
+          email,
+          error: "Enter both email and password to create an account.",
+          redirectTo,
+        },
+        { status: 400 }
+      );
+    }
+
+    if (password.length < 6) {
+      return json<ActionData>(
+        {
+          email,
+          error: "Password must be at least 6 characters.",
+          redirectTo,
+        },
+        { status: 400 }
+      );
+    }
+
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      options: {
+        emailRedirectTo: callbackUrl.toString(),
+      },
+      password,
+    });
+
+    if (error) {
+      const normalizedError = error.message.toLowerCase();
+      const isRateLimitError = normalizedError.includes("rate limit");
+
+      return json<ActionData>(
+        {
+          email,
+          error: isRateLimitError
+            ? "Too many auth emails sent recently. Please wait and try again."
+            : error?.message ?? "Unable to create account right now.",
+          redirectTo,
+        },
+        { status: 400 }
+      );
+    }
+
+    if (data.session) {
+      const setCookie = await commitSupabaseAuthSession(request, data.session);
+      return redirect(redirectTo, {
+        headers: {
+          "Set-Cookie": setCookie,
+        },
+      });
+    }
+
+    return json<ActionData>({
+      email,
+      message:
+        "Account created. Check your email to confirm your account, then sign in.",
+      redirectTo,
     });
   }
 
@@ -318,7 +444,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export default function FantasyFootballLoginRoute() {
-  const { errorCode, isAuthenticated, redirectTo, userEmail } =
+  const { errorCode, googleEnabled, isAuthenticated, redirectTo, userEmail } =
     useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const submit = useSubmit();
@@ -381,20 +507,21 @@ export default function FantasyFootballLoginRoute() {
           Sign in with your league email to access Town Hall and Rule Submission.
         </p>
         <p className="text-xs text-gray-500 dark:text-gray-500 mt-2">
-          Enter your email and we will send you a secure login link.
+          {googleEnabled
+            ? "Continue with Google or use email + password."
+            : "Use email + password to sign in."}
         </p>
 
         {errorCode === "not_member" ? (
           <p className="mt-4 text-sm text-red-500">
-            Your account is authenticated but not mapped to a league membership
-            yet.
+            You are signed in, but your league access is pending commissioner
+            approval.
           </p>
         ) : null}
 
         {errorCode === "magic_link_failed" ? (
           <p className="mt-4 text-sm text-red-500">
-            Magic link verification failed. Request a new code or link and try
-            again.
+            Sign-in callback failed. Start a new sign-in attempt and try again.
           </p>
         ) : null}
 
@@ -420,32 +547,87 @@ export default function FantasyFootballLoginRoute() {
         ) : null}
 
         {!isAuthenticated ? (
-          <Form method="post" className="mt-6 space-y-3">
-            <input type="hidden" name="intent" value="send_code" />
-            <input type="hidden" name="redirectTo" value={redirectTo} />
-            <input type="hidden" name="origin" value={browserOrigin} />
-            <label className="block text-sm font-medium" htmlFor="send-email">
-              Email
-            </label>
-            <input
-              id="send-email"
-              name="email"
-              type="email"
-              defaultValue={actionData?.email ?? ""}
-              className="w-full rounded-lg border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 px-3 py-2"
-              required
-            />
-            <button
-              type="submit"
-              className="w-full rounded-lg bg-orange-600 hover:bg-orange-700 text-white py-2 font-semibold transition-colors"
-            >
-              Send Sign-In Link
-            </button>
-          </Form>
+          <div className="mt-6 space-y-6">
+            {googleEnabled ? (
+              <>
+                <Form method="post" className="space-y-3">
+                  <input type="hidden" name="intent" value="oauth_google" />
+                  <input type="hidden" name="redirectTo" value={redirectTo} />
+                  <input type="hidden" name="origin" value={browserOrigin} />
+                  <button
+                    type="submit"
+                    className="w-full rounded-lg bg-orange-600 hover:bg-orange-700 text-white py-2 font-semibold transition-colors"
+                  >
+                    Continue with Google
+                  </button>
+                </Form>
+
+                <div className="flex items-center gap-3">
+                  <span className="h-px flex-1 bg-gray-300 dark:bg-zinc-700" />
+                  <span className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                    Or
+                  </span>
+                  <span className="h-px flex-1 bg-gray-300 dark:bg-zinc-700" />
+                </div>
+              </>
+            ) : (
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                Google sign-in is currently unavailable for this project.
+              </p>
+            )}
+
+            <Form method="post" className="space-y-3">
+              <input type="hidden" name="redirectTo" value={redirectTo} />
+              <input type="hidden" name="origin" value={browserOrigin} />
+              <label className="block text-sm font-medium" htmlFor="auth-email">
+                Email
+              </label>
+              <input
+                id="auth-email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                defaultValue={actionData?.email ?? ""}
+                className="w-full rounded-lg border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 px-3 py-2"
+                required
+              />
+              <label className="block text-sm font-medium" htmlFor="auth-password">
+                Password
+              </label>
+              <input
+                id="auth-password"
+                name="password"
+                type="password"
+                autoComplete="current-password"
+                className="w-full rounded-lg border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 px-3 py-2"
+                minLength={6}
+                required
+              />
+
+              <div className="grid gap-3 sm:grid-cols-2">
+                <button
+                  name="intent"
+                  value="password_sign_in"
+                  type="submit"
+                  className="w-full rounded-lg bg-orange-600 hover:bg-orange-700 text-white py-2 font-semibold transition-colors"
+                >
+                  Sign In
+                </button>
+                <button
+                  name="intent"
+                  value="password_sign_up"
+                  type="submit"
+                  className="w-full rounded-lg border border-orange-500 text-orange-600 dark:text-orange-400 hover:bg-orange-500 hover:text-white py-2 font-semibold transition-colors"
+                >
+                  Create Account
+                </button>
+              </div>
+            </Form>
+          </div>
         ) : (
           <p className="mt-6 text-sm text-gray-600 dark:text-gray-400">
-            Ask the commissioner to add your user to `league_memberships`, then
-            sign in again.
+            Your account is signed in, but league access is pending commissioner
+            approval.
           </p>
         )}
 
