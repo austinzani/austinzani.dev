@@ -37,6 +37,29 @@ type AuthExternalProviders = {
   google?: boolean;
 };
 
+function GoogleMarkIcon() {
+  return (
+    <svg aria-hidden="true" className="h-5 w-5" viewBox="0 0 18 18">
+      <path
+        d="M17.64 9.2045c0-.6382-.0573-1.2518-.1636-1.8409H9v3.4818h4.8436c-.2086 1.125-.8427 2.0795-1.7972 2.7177v2.2586h2.9086c1.7018-1.5668 2.685-3.8741 2.685-6.6172z"
+        fill="#4285F4"
+      />
+      <path
+        d="M9 18c2.43 0 4.4673-.8068 5.9564-2.1782l-2.9086-2.2586c-.8068.5409-1.84.8591-3.0477.8591-2.3441 0-4.3286-1.5832-5.0377-3.7105H.9573v2.3318C2.4382 15.9832 5.4818 18 9 18z"
+        fill="#34A853"
+      />
+      <path
+        d="M3.9627 10.7118c-.18-.5409-.2823-1.1186-.2823-1.7118 0-.5932.1023-1.1709.2823-1.7118V4.9568H.9573C.3477 6.1718 0 7.5482 0 9s.3477 2.8282.9573 4.0432l3.0054-2.3314z"
+        fill="#FBBC05"
+      />
+      <path
+        d="M9 3.5773c1.3214 0 2.5082.4541 3.4418 1.3459l2.5814-2.5814C13.4632.8918 11.4259 0 9 0 5.4818 0 2.4382 2.0168.9573 4.9568l3.0054 2.3318C4.6714 5.1605 6.6559 3.5773 9 3.5773z"
+        fill="#EA4335"
+      />
+    </svg>
+  );
+}
+
 function normalizeOrigin(rawOrigin: string | null) {
   if (!rawOrigin) {
     return null;
@@ -556,9 +579,10 @@ export default function FantasyFootballLoginRoute() {
                   <input type="hidden" name="origin" value={browserOrigin} />
                   <button
                     type="submit"
-                    className="w-full rounded-lg bg-orange-600 hover:bg-orange-700 text-white py-2 font-semibold transition-colors"
+                    className="w-full rounded-lg bg-white border border-[#DADCE0] text-[#3C4043] py-2.5 px-4 font-semibold transition-colors hover:bg-gray-50 flex items-center justify-center gap-3"
                   >
-                    Continue with Google
+                    <GoogleMarkIcon />
+                    <span>Sign in with Google</span>
                   </button>
                 </Form>
 
