@@ -9,6 +9,7 @@ import type {LoaderFunctionArgs} from "@remix-run/node";
 import {useFootballContext} from "~/routes/fantasy_football";
 import {Database} from "../../db_types";
 import {BreadcrumbItem, Breadcrumbs} from "~/components/Breadcrumb";
+import ManagerAvatar from "~/components/ManagerAvatar";
 
 interface loaderData {
     error: string | null,
@@ -52,22 +53,22 @@ export const loader = async ({params}: LoaderFunctionArgs): Promise<loaderData> 
 const SeasonTable = ({ seasons }: { seasons: Database['public']['CompositeTypes']['manager_season_object'][] }) => {
     const navigate = useNavigate();
     return (
-        <div className="relative">
-            <table className="table-fixed w-full">
-                <thead className="sticky top-0 z-[5] bg-white dark:bg-black">
-                    <tr className="border-b border-gray-200 dark:border-gray-700">
+        <div className="relative overflow-x-auto border-2 border-dashed border-line bg-surface p-2">
+            <table className="table-fixed w-full min-w-[42rem]">
+                <thead className="sticky top-0 z-[5] bg-surface">
+                    <tr className="border-b border-dashed border-line-muted font-mono text-xs uppercase tracking-wide text-ink-muted">
                         <th className="px-4 w-24 whitespace-nowrap cursor-default font-medium text-left">Year</th>
                         <th className="px-4 whitespace-nowrap cursor-default font-medium text-right">Record</th>
                         <th className="px-4 whitespace-nowrap cursor-default font-medium text-right">Points</th>
                         <th className="px-4 hidden sm:table-cell whitespace-nowrap cursor-default font-medium text-right">Weekly Records</th>
                     </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                <tbody className="divide-y divide-dashed divide-line-muted">
                     {seasons?.map((year) => (
                         <tr
                             key={year.year}
                             onClick={() => navigate(`/fantasy_football/season/${year.year}`)}
-                            className="hover:bg-orange-500/60 rounded-md"
+                            className="hover:bg-accent-soft"
                         >
                             <td className="px-4 cursor-pointer whitespace-nowrap py-1 text-left rounded-l-lg">
                                 <div className="h-6 font-medium">{year.year}</div>
@@ -79,7 +80,7 @@ const SeasonTable = ({ seasons }: { seasons: Database['public']['CompositeTypes'
                                 <div className="h-6 font-medium">
                                     {year.total_wins}-{year.total_games - year.total_wins}
                                 </div>
-                                <div className="h-5 text-gray-400 text-sm">
+                                <div className="h-5 text-ink-muted text-sm">
                                     {year.playoff_games ? `${year.playoff_wins}-${year.playoff_games - year.playoff_wins} Playoffs` : "\u00A0"}
                                 </div>
                             </td>
@@ -87,7 +88,7 @@ const SeasonTable = ({ seasons }: { seasons: Database['public']['CompositeTypes'
                                 <div className="h-6 font-medium">
                                     PF: {year.total_points_for.toFixed(2)}
                                 </div>
-                                <div className="h-5 text-gray-400 text-sm">
+                                <div className="h-5 text-ink-muted text-sm">
                                     PA: {year.total_points_against.toFixed(2)}
                                 </div>
                             </td>
@@ -116,31 +117,31 @@ const OpponentTable = ({
 }) => {
     const navigate = useNavigate();
     return (
-        <div className="relative">
-            <table className="table-fixed w-full">
-                <thead className="sticky top-0 z-[5] bg-white dark:bg-black">
-                    <tr className="border-b border-gray-200 dark:border-gray-700">
+        <div className="relative overflow-x-auto border-2 border-dashed border-line bg-surface p-2">
+            <table className="table-fixed w-full min-w-[32rem]">
+                <thead className="sticky top-0 z-[5] bg-surface">
+                    <tr className="border-b border-dashed border-line-muted font-mono text-xs uppercase tracking-wide text-ink-muted">
                         <th className="px-4 w-48 whitespace-nowrap cursor-default font-medium text-left">Opponent</th>
                         <th className="px-4 whitespace-nowrap cursor-default font-medium text-right">History</th>
                     </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                <tbody className="divide-y divide-dashed divide-line-muted">
                     {opponents?.map((opponent) => (
                         <tr
                             key={opponent.id}
                             onClick={() => navigate(`/fantasy_football/head_to_head?team_one=${manager_id}&team_two=${opponent.id}`)}
-                            className="hover:bg-orange-500/60 rounded-md"
+                            className="hover:bg-accent-soft"
                         >
                             <td className="px-4 cursor-pointer whitespace-nowrap py-1 text-left rounded-l-lg">
                                 <div className="h-6 font-medium">{capitalizeFirstLetter(opponent.name)}</div>
-                                <div className="h-5 text-gray-400 text-sm">{opponent.total_games} matchups</div>
+                                <div className="h-5 text-ink-muted text-sm">{opponent.total_games} matchups</div>
                             </td>
                             <td className="px-4 cursor-pointer tabular-nums whitespace-nowrap py-1 text-right rounded-r-lg">
                                 <div className="h-6 font-medium">
                                     {opponent.total_wins}-{opponent.total_games - opponent.total_wins}
                                 </div>
-                                <div className="h-5 text-gray-400 text-sm">
-                                    {((opponent.total_wins / opponent.total_games) * 100).toFixed(1)}% win rate
+                                <div className="h-5 text-ink-muted text-sm">
+                                    {opponent.total_games > 0 ? ((opponent.total_wins / opponent.total_games) * 100).toFixed(1) : "0.0"}% win rate
                                 </div>
                             </td>
                         </tr>
@@ -160,10 +161,10 @@ const StatCard = ({
     value: string | number;
     subtitle?: string;
 }) => (
-    <div className="flex flex-col items-center p-3 rounded-lg bg-gray-50 dark:bg-zinc-800">
-        <div className="text-sm text-gray-600 dark:text-gray-400">{title}</div>
-        <div className="text-xl font-medium mt-1">{value}</div>
-        {subtitle && <div className="text-xs text-gray-500 dark:text-gray-500 mt-1">{subtitle}</div>}
+    <div className="flex flex-col items-center border border-dashed border-line-muted bg-surface p-3">
+        <div className="font-mono text-xs uppercase tracking-wide text-ink-muted">{title}</div>
+        <div className="mt-1 font-display text-3xl italic">{value}</div>
+        {subtitle && <div className="mt-1 text-xs text-ink-muted">{subtitle}</div>}
     </div>
 );
 
@@ -172,12 +173,12 @@ const ManagerStats = ({
 }: {
     all_time_stats: Database['public']['CompositeTypes']['all_time_object']
 }) => {
-    const winPercentage = ((all_time_stats.total_wins / all_time_stats.total_games) * 100).toFixed(1);
-    const playoffWinPercentage = ((all_time_stats.playoff_wins / all_time_stats.playoff_games) * 100).toFixed(1);
+    const winPercentage = all_time_stats.total_games > 0 ? ((all_time_stats.total_wins / all_time_stats.total_games) * 100).toFixed(1) : "0.0";
+    const playoffWinPercentage = all_time_stats.playoff_games > 0 ? ((all_time_stats.playoff_wins / all_time_stats.playoff_games) * 100).toFixed(1) : "0.0";
 
     return (
-        <div className="w-full bg-gray-100 dark:bg-zinc-900 rounded-xl p-4 mt-4">
-            <h2 className="text-xl font-bold mb-4">All Time Stats</h2>
+        <div className="mt-4 w-full border-2 border-dashed border-line bg-paper-muted p-4">
+            <h2 className="mb-4 font-display text-4xl italic">All Time Stats</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 <StatCard
                     title="Record"
@@ -229,9 +230,12 @@ export default function Manager() {
                 </Breadcrumbs>
                 
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end">
-                    <div>
-                        <h1 className="text-2xl font-bold">{manager_name}</h1>
-                        <p className="text-md font-light">{all_time_stats?.total_seasons} Seasons</p>
+                    <div className="flex items-center gap-4">
+                        <ManagerAvatar id={manager_id} name={manager_name} className="h-14 w-14 text-lg" />
+                        <div>
+                            <h1 className="font-display text-5xl italic">{manager_name}</h1>
+                            <p className="font-mono text-xs uppercase tracking-wide text-ink-muted">{all_time_stats?.total_seasons} Seasons</p>
+                        </div>
                     </div>
                 </div>
 
@@ -239,14 +243,14 @@ export default function Manager() {
 
                 {seasons && (
                     <div className="mt-6">
-                        <h2 className="text-xl font-bold mb-3">Season History</h2>
+                        <h2 className="mb-3 font-display text-4xl italic">Season History</h2>
                         <SeasonTable seasons={seasons} />
                     </div>
                 )}
 
                 {opponents && (
                     <div className="mt-6">
-                        <h2 className="text-xl font-bold mb-3">Head-to-Head Records</h2>
+                        <h2 className="mb-3 font-display text-4xl italic">Head-to-Head Records</h2>
                         <OpponentTable opponents={opponents} manager_id={manager_id} />
                     </div>
                 )}

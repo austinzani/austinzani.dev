@@ -8,6 +8,7 @@ import {useFootballContext} from "~/routes/fantasy_football";
 import {Database} from "../../db_types";
 import {ScoreCardGroup} from "~/components/ScoreCard";
 import {BreadcrumbItem, Breadcrumbs} from "~/components/Breadcrumb";
+import ManagerAvatar from "~/components/ManagerAvatar";
 
 interface loaderData {
     error: string | null,
@@ -80,14 +81,14 @@ const StatRow = ({ leftValue, rightValue, label, isHigherBetter = true }: StatRo
         ((isHigherBetter && rightNum > leftNum) || (!isHigherBetter && rightNum < leftNum));
 
     return (
-        <div className="flex items-center py-2 hover:bg-orange-500/10 rounded-lg transition-colors">
-            <div className={`flex-1 text-right ${leftWins ? 'font-medium text-emerald-600 dark:text-emerald-400' : 'text-gray-600 dark:text-gray-400'}`}>
+        <div className="flex items-center py-2 transition-colors hover:bg-accent-soft">
+            <div className={`flex-1 text-right ${leftWins ? 'font-medium text-emerald-600 dark:text-emerald-400' : 'text-ink-muted'}`}>
                 {leftValue}
             </div>
-            <div className="w-32 text-center text-sm text-gray-600 dark:text-gray-400 px-2">
+            <div className="w-32 px-2 text-center font-mono text-xs uppercase tracking-wide text-ink-muted">
                 {label}
             </div>
-            <div className={`flex-1 text-left ${rightWins ? 'font-medium text-emerald-600 dark:text-emerald-400' : 'text-gray-600 dark:text-gray-400'}`}>
+            <div className={`flex-1 text-left ${rightWins ? 'font-medium text-emerald-600 dark:text-emerald-400' : 'text-ink-muted'}`}>
                 {rightValue}
             </div>
         </div>
@@ -115,24 +116,25 @@ const HeadToHeadStats = ({ head_to_head }: {
         games > 0 ? ((wins / games) * 100).toFixed(1) + '%' : '0%';
 
     return (
-        <div className="bg-gray-50 dark:bg-zinc-900 rounded-xl p-6">
-            {/* Manager Headers */}
+        <div className="border-2 border-dashed border-line bg-paper-muted p-6">
             <div className="flex items-center mb-4">
                 <Link 
                     to={`/fantasy_football/manager/${team_one_id}`}
-                    className="flex-1 text-2xl font-bold hover:text-orange-500 transition-colors hover:underline text-right pr-4"
+                    className="flex flex-1 items-center justify-end gap-3 pr-4 text-right font-display text-4xl italic transition-colors hover:text-accent hover:underline"
                     prefetch="intent"
                 >
-                    {team_one_manager}
+                    <span>{team_one_manager}</span>
+                    <ManagerAvatar id={team_one_id} name={team_one_manager} className="h-11 w-11 text-sm" />
                 </Link>
-                <div className="w-16 text-xl font-light text-gray-600 dark:text-gray-400 text-center">
+                <div className="w-16 text-center font-mono text-xs uppercase tracking-wide text-ink-muted">
                     vs
                 </div>
                 <Link 
                     to={`/fantasy_football/manager/${team_two_id}`}
-                    className="flex-1 text-2xl font-bold hover:text-orange-500 transition-colors hover:underline text-left pl-4"
+                    className="flex flex-1 items-center gap-3 pl-4 text-left font-display text-4xl italic transition-colors hover:text-accent hover:underline"
                     prefetch="intent"
                 >
+                    <ManagerAvatar id={team_two_id} name={team_two_manager} className="h-11 w-11 text-sm" />
                     {team_two_manager}
                 </Link>
             </div>
@@ -144,7 +146,7 @@ const HeadToHeadStats = ({ head_to_head }: {
                     rightValue={team2.record}
                     label="Record"
                 />
-                <div className="flex items-center text-sm text-gray-500 dark:text-gray-500">
+                <div className="flex items-center text-sm text-ink-muted">
                     <div className="flex-1 text-right">
                         {calculateWinRate(team1.total_wins, team1.total_games)} win rate
                     </div>
@@ -212,7 +214,7 @@ export default function Manager() {
                     <BreadcrumbItem>{`vs. ${capitalizeFirstLetter(team_two_manager)}`}</BreadcrumbItem>
                 </Breadcrumbs>
                 {headToHead && <HeadToHeadStats head_to_head={headToHead}/>}
-                <h1 className={"pt-4 pb-2 text-2xl"}>Matchup History</h1>
+                <h1 className={"pb-2 pt-4 font-display text-4xl italic"}>Matchup History</h1>
                 <div className={"flex flex-wrap justify-around"}>
                 {matchups && <ScoreCardGroup matchups={matchups} showDate={true}/>}
                 </div>
