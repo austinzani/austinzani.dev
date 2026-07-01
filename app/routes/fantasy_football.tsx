@@ -1,61 +1,27 @@
 import {Outlet, useLoaderData, useOutletContext} from "@remix-run/react";
-import React from "react";
-import supabase from "~/utils/supabase";
 
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import type { Database } from "../../db_types";
+import { getLeagueStats } from "~/utils/league-stats.server";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-    // Fetch all manager names and ids for use in all FF pages
-    const {data: managerData, error: managerError} = await supabase
-        .from('manager')
-        .select('id, name')
-
-    // Fetch all years + champion ids for use in all FF pages
-    const {data:yearsData, error:yearsError} = await supabase
-        .from('season')
-        .select( 'year, champ')
-        .order('year', {ascending: false})
-
-
-    const {data: allTimeResponse, error: allTimeError} = await supabase
-        .rpc('all_time')
-
-    if (managerError || allTimeError) {
+    const leagueStats = await getLeagueStats();
+    if (leagueStats.error) {
         return {
-            error: managerError || allTimeError,
+            error: leagueStats.error,
             managers: [],
             allTime: [],
             years: [],
             latestChampionFirstName: null,
         }
     }
-    allTimeResponse?.sort((a, b) => (b.total_wins / b.total_games) - (a.total_wins / a.total_games))
-
-    const latestChamp = yearsData?.[0]
-    const latestChampManager = latestChamp
-        ? managerData?.find(m => m.id === latestChamp.champ)
-        : null
-    const rawFirstName = latestChampManager?.name?.trim().split(/\s+/)[0] ?? null
-    const latestChampionFirstName = rawFirstName
-        ? rawFirstName.charAt(0).toUpperCase() + rawFirstName.slice(1)
-        : null
-
-    // Adding key to years data and All Time as an option
-    const years = yearsData?.map(year => {
-        return {
-            key: `${year.year}`,
-            value: `${year.year}`
-        }
-    })
-    years?.unshift({key: 'all_time', value: 'All Time'})
 
     return {
         error: null,
-        managers: managerData ?? [],
-        allTime: allTimeResponse ?? [],
-        years: years ?? [],
-        latestChampionFirstName,
+        managers: leagueStats.managers,
+        allTime: leagueStats.allTime,
+        years: leagueStats.years,
+        latestChampionFirstName: leagueStats.latestChampionFirstName,
     }
 }
 type ContextType = { managers: {id: number, name: string}[], allTime: Database["public"]["CompositeTypes"]["all_time_object"][], years: {key: string, value: string}[], latestChampionFirstName: string | null }
