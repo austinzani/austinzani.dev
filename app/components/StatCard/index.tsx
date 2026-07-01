@@ -11,10 +11,10 @@ const StatCard = ({
     value,
     subtitle
 }: StatCardProps) => (
-    <div className="flex flex-col items-center p-3 rounded-lg bg-gray-50 dark:bg-zinc-800">
-        <div className="text-sm text-gray-600 dark:text-gray-400">{title}</div>
-        <div className="text-xl font-medium mt-1 truncate w-full text-center">{value}</div>
-        {subtitle && <div className="text-xs text-gray-500 dark:text-gray-500 mt-1">{subtitle}</div>}
+    <div className="flex flex-col items-center border border-dashed border-line-muted bg-surface p-3">
+        <div className="font-mono text-xs uppercase tracking-wide text-ink-muted">{title}</div>
+        <div className="mt-1 w-full truncate text-center font-display text-3xl italic">{value}</div>
+        {subtitle && <div className="mt-1 text-xs text-ink-muted">{subtitle}</div>}
     </div>
 );
 

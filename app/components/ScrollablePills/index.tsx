@@ -29,13 +29,13 @@ export default function ScrollablePills({ items, selectedKey, onSelectionChange 
         <div className="relative mb-4 w-full overflow-hidden">
             {showLeftScroll && (
                 <div className="absolute left-0 top-0 bottom-0 flex items-center pointer-events-none z-10">
-                    <div className="w-8 h-full bg-gradient-to-r from-gray-100 dark:from-zinc-900 to-transparent" />
+                    <div className="w-8 h-full bg-gradient-to-r from-paper to-transparent" />
                 </div>
             )}
             
             {showRightScroll && (
                 <div className="absolute right-0 top-0 bottom-0 flex items-center pointer-events-none z-10">
-                    <div className="w-8 h-full bg-gradient-to-l from-gray-100 dark:from-zinc-900 to-transparent" />
+                    <div className="w-8 h-full bg-gradient-to-l from-paper to-transparent" />
                 </div>
             )}
             
@@ -48,10 +48,10 @@ export default function ScrollablePills({ items, selectedKey, onSelectionChange 
                     <button
                         key={item.key}
                         onClick={() => onSelectionChange(item.key)}
-                        className={`px-3 py-1 rounded-full text-sm whitespace-nowrap transition-colors
+                        className={`rounded-full border border-dashed px-3 py-1 font-mono text-xs uppercase tracking-wide whitespace-nowrap transition-colors
                             ${selectedKey === item.key 
-                                ? 'bg-orange-500 text-white' 
-                                : 'bg-gray-100 dark:bg-zinc-800 hover:bg-orange-500/20'
+                                ? 'border-accent bg-accent-soft text-ink' 
+                                : 'border-line-muted bg-surface text-ink-muted hover:border-accent hover:text-ink'
                             }`}
                     >
                         {item.value}

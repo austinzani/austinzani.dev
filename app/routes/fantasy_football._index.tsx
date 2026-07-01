@@ -8,59 +8,59 @@ export default function Football() {
   const titleHolder = latestChampionFirstName ?? "Zak";
 
   return (
-    <div className="min-h-screen flex justify-center ">
+    <div className="min-h-screen flex justify-center">
       <div className={"flex m-3 flex-col w-full max-w-[64rem]"}>
-        {/* Header and Image Section */}
         <div className="mb-8">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">
+          <p className="mb-3 font-mono text-xs font-semibold uppercase tracking-wide text-accent">
+            Fantasy Football
+          </p>
+          <h1 className="mb-6 font-display text-6xl italic leading-none md:text-7xl">
             {titleHolder}&apos;s League to Lose
           </h1>
-          <div className="relative w-full aspect-[3/2]">
+          <div className="relative w-full aspect-[3/2] border-2 border-dashed border-line bg-surface p-2">
             <img
-              className="w-full h-full rounded-xl shadow-sm dark:shadow-none absolute inset-0 object-cover"
+              className="h-full w-full object-cover"
               src="https://bvaxppgdleypbyzyjchu.supabase.co/storage/v1/object/public/images/league_pic.JPG"
               alt="League Members"
             />
           </div>
         </div>
 
-        {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <div className="bg-gray-100 dark:bg-zinc-900 rounded-lg p-6 flex items-center shadow-sm dark:shadow-none">
+          <div className="border-2 border-dashed border-line bg-surface p-6 flex items-center">
             <Icon name="house" className="w-8 h-8 text-orange-500 mr-4" />
             <div>
-              <p className="text-gray-600 dark:text-gray-400">Established</p>
-              <p className="text-xl font-bold">2009</p>
+              <p className="font-mono text-xs uppercase tracking-wide text-ink-muted">Established</p>
+              <p className="font-display text-3xl italic">2009</p>
             </div>
           </div>
 
-          <div className="bg-gray-100 dark:bg-zinc-900 rounded-lg p-6 flex items-center shadow-sm dark:shadow-none">
+          <div className="border-2 border-dashed border-line bg-surface p-6 flex items-center">
             <Icon name="user" className="w-8 h-8 text-orange-500 mr-4" />
             <div>
-              <p className="text-gray-600 dark:text-gray-400">League Members</p>
-              <p className="text-xl font-bold">{activeMembers.length} Teams</p>
+              <p className="font-mono text-xs uppercase tracking-wide text-ink-muted">League Members</p>
+              <p className="font-display text-3xl italic">{activeMembers.length} Teams</p>
             </div>
           </div>
 
-          <div className="bg-gray-100 dark:bg-zinc-900 rounded-lg p-6 flex items-center shadow-sm dark:shadow-none">
+          <div className="border-2 border-dashed border-line bg-surface p-6 flex items-center">
             <Icon name="football" className="w-8 h-8 text-orange-500 mr-4" />
             <div>
-              <p className="text-gray-600 dark:text-gray-400">Seasons</p>
-              <p className="text-xl font-bold">{years.length}</p>
+              <p className="font-mono text-xs uppercase tracking-wide text-ink-muted">Seasons</p>
+              <p className="font-display text-3xl italic">{Math.max(years.length - 1, 0)}</p>
             </div>
           </div>
 
-          <div className="bg-gray-100 dark:bg-zinc-900 rounded-lg p-6 flex items-center shadow-sm dark:shadow-none">
+          <div className="border-2 border-dashed border-line bg-surface p-6 flex items-center">
             <Icon name="share" className="w-8 h-8 text-orange-500 mr-4" />
             <div>
-              <p className="text-gray-600 dark:text-gray-400">Data Source</p>
-              <p className="text-xl font-bold">ESPN + Sleeper</p>
+              <p className="font-mono text-xs uppercase tracking-wide text-ink-muted">Data Source</p>
+              <p className="font-display text-3xl italic">ESPN + Sleeper</p>
             </div>
           </div>
         </div>
 
-        {/* Description */}
-        <div className="bg-gray-100 dark:bg-zinc-900 rounded-lg p-6 shadow-sm dark:shadow-none">
+        <div className="border-2 border-dashed border-line bg-paper-muted p-6">
           <p className="text-lg mb-6">
             This league has been going strong since 2009, with a core group of
             dedicated managers who've stuck together through the years. While
@@ -77,7 +77,7 @@ export default function Football() {
             <Link
               to={"/fantasy_football/all_time"}
               prefetch="intent"
-              className="bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-6 rounded-lg flex items-center justify-center transition-colors"
+              className="flex items-center justify-center border-2 border-dashed border-accent bg-accent px-6 py-3 font-mono text-xs font-bold uppercase tracking-wide text-accent-ink transition-colors hover:bg-accent-soft hover:text-ink"
             >
               View League Data
               <Icon className={"pl-3"} name={"chevron-right"} />

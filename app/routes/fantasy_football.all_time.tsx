@@ -5,16 +5,10 @@ import {capitalizeFirstLetter} from "~/utils/helpers";
 
 import type {Database} from "../../db_types";
 
-import {Item, Select} from "~/components/Select";
-
-import Switch from "~/components/Switch";
-import StatCard from "~/components/StatCard";
-import SideNavigation from "~/components/SideNavigation";
-
 import {useFootballContext} from "~/routes/fantasy_football";
-import {id} from "postcss-selector-parser";
 import {Breadcrumbs, BreadcrumbItem} from "~/components/Breadcrumb";
 import ScrollablePills from "~/components/ScrollablePills";
+import ManagerAvatar from "~/components/ManagerAvatar";
 
 const AllTimeSummary = ({
     allTime,
@@ -39,23 +33,23 @@ const AllTimeSummary = ({
         getValue: (item: typeof data[0]) => string,
         getSubtitle: (item: typeof data[0]) => string
     }) => (
-        <div className="flex flex-col p-3 rounded-lg bg-gray-50 dark:bg-zinc-800">
-            <div className="text-sm text-gray-600 dark:text-gray-400 mb-2">{title}</div>
+        <div className="flex flex-col border border-dashed border-line-muted bg-surface p-3">
+            <div className="mb-2 font-mono text-xs font-semibold uppercase tracking-wide text-accent">{title}</div>
             {data.map((item, index) => (
                 <div key={item.name} className="flex justify-between items-center mb-1 last:mb-0">
                     <div className="flex items-center">
-                        <span className="text-sm font-medium w-4 text-gray-500">{index + 1}.</span>
+                        <span className="w-4 font-mono text-xs text-ink-muted">{index + 1}.</span>
                         <span className="text-sm font-medium ml-2">{capitalizeFirstLetter(item.name)}</span>
                     </div>
-                    <span className="text-sm text-gray-600 dark:text-gray-400">{getSubtitle(item)}</span>
+                    <span className="text-sm text-ink-muted">{getSubtitle(item)}</span>
                 </div>
             ))}
         </div>
     );
 
     return (
-        <div className="w-full bg-gray-100 dark:bg-zinc-900 rounded-xl p-4 mb-4">
-            <h2 className="text-xl font-bold mb-4">League Records</h2>
+        <div className="mb-4 w-full border-2 border-dashed border-line bg-paper-muted p-4">
+            <h2 className="mb-4 font-display text-4xl italic">League Records</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 <StatList
                     title="Championships"
@@ -109,11 +103,11 @@ const AllTimeTable = ({
     const { managers } = useFootballContext();
 
     return (
-        <div className="relative">
-            <table className="table-fixed w-full">
+        <div className="relative overflow-x-auto border-2 border-dashed border-line bg-surface p-2">
+            <table className="table-fixed w-full min-w-[42rem]">
                 <thead>
-                    <tr className="border-b border-gray-200 dark:border-gray-700">
-                        <th className="px-4 w-[155px] whitespace-nowrap cursor-default font-medium text-left">Manager</th>
+                    <tr className="border-b border-dashed border-line-muted font-mono text-xs uppercase tracking-wide text-ink-muted">
+                        <th className="px-4 w-[185px] whitespace-nowrap cursor-default font-medium text-left">Manager</th>
                         <th className="px-4 whitespace-nowrap cursor-default font-medium text-right">Record</th>
                         <th className="px-4 whitespace-nowrap cursor-default font-medium text-right min-w-32">
                             Playoffs
@@ -123,28 +117,36 @@ const AllTimeTable = ({
                         </th>
                     </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                <tbody className="divide-y divide-dashed divide-line-muted">
                     {allTime?.map((manager) => {
                         const managerId = managers.find((m) => m.name === manager.name)?.id;
+                        const winPercentage = manager.total_games > 0
+                            ? (manager.total_wins / manager.total_games).toFixed(3)
+                            : ".000";
                         const row = (
                             <tr
                                 key={manager.name}
                                 onClick={() => navigate(`/fantasy_football/manager/${managerId}`)}
-                                className="hover:bg-orange-500/60 rounded-md group"
+                                className="group hover:bg-accent-soft"
                             >
-                                <td className="px-4 cursor-pointer whitespace-nowrap py-1 font-light text-left rounded-l-lg">
-                                    <div className="h-6">{capitalizeFirstLetter(manager.name)}</div>
-                                    <div className="h-5 text-amber-400 text-sm">
-                                        {manager.championships > 0 
-                                            ? Array(manager.championships).fill('🏆').join(' ')
-                                            : '\u00A0'}
+                                <td className="px-4 cursor-pointer whitespace-nowrap py-2 font-light text-left">
+                                    <div className="flex items-center gap-3">
+                                        <ManagerAvatar id={managerId} name={manager.name} className="h-9 w-9 text-xs" />
+                                        <div>
+                                            <div className="h-6 font-semibold">{capitalizeFirstLetter(manager.name)}</div>
+                                            <div className="h-5 text-amber-500 text-sm">
+                                                {manager.championships > 0 
+                                                    ? `${manager.championships} titles`
+                                                    : '\u00A0'}
+                                            </div>
+                                        </div>
                                     </div>
                                 </td>
                                 <td className="px-4 cursor-pointer tabular-nums whitespace-nowrap py-1 text-right">
                                     <div className="h-6 font-medium">
-                                        {(manager.total_wins / manager.total_games).toFixed(3)}
+                                        {winPercentage}
                                     </div>
-                                    <div className="h-5 text-gray-400 text-sm">
+                                    <div className="h-5 text-ink-muted text-sm">
                                         {manager.total_wins}-{manager.total_games - manager.total_wins}
                                     </div>
                                 </td>
@@ -152,7 +154,7 @@ const AllTimeTable = ({
                                     <div className="h-6 font-medium">
                                         {manager.playoff_births} Berths
                                     </div>
-                                    <div className="h-5 text-gray-400 text-sm">
+                                    <div className="h-5 text-ink-muted text-sm">
                                         {manager.playoff_wins}-{manager.playoff_games - manager.playoff_wins}
                                     </div>
                                 </td>
@@ -221,7 +223,7 @@ export default function Fantasy_footballAll_time() {
                     <BreadcrumbItem href={"/fantasy_football/all_time"}>League History</BreadcrumbItem>
                 </Breadcrumbs>
                 <div className={'flex mb-2'}>
-                    <h1 className="text-2xl font-bold">All Time</h1>
+                    <h1 className="font-display text-5xl italic">All Time</h1>
                 </div>
                 
                 <ScrollablePills 
@@ -237,7 +239,7 @@ export default function Fantasy_footballAll_time() {
                 {!showAll && allTime.length > 10 && (
                     <button
                         onClick={() => setShowAll(true)}
-                        className="mx-auto my-4 px-4 py-2 text-orange-500 border border-orange-500 rounded-xl hover:bg-orange-500 hover:text-white transition-colors"
+                        className="mx-auto my-4 border border-dashed border-accent px-4 py-2 font-mono text-xs font-semibold uppercase tracking-wide text-accent transition-colors hover:bg-accent hover:text-accent-ink"
                     >
                         Show All Teams
                     </button>
