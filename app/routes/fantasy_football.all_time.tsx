@@ -22,7 +22,9 @@ const AllTimeSummary = ({
     }
     // Sort players by different categories
     const byChampionships = [...allTime].sort((a, b) => b.championships - a.championships).slice(0, 5);
-    const byTransactionsPerSeason = [...allTime].sort((a, b) => (b.transactions / b.total_seasons) - (a.transactions / a.total_seasons));
+    const transactionsPerSeason = (item: typeof allTime[0]) =>
+        item.total_seasons ? (item.transactions ?? 0) / item.total_seasons : 0;
+    const byTransactionsPerSeason = [...allTime].sort((a, b) => transactionsPerSeason(b) - transactionsPerSeason(a));
     const byPlayoffs = [...allTime].sort((a, b) => b.playoff_births - a.playoff_births).slice(0, 5);
     const byHighPoints = [...allTime].sort((a, b) => b.high_point_weeks - a.high_point_weeks).slice(0, 5);
     const byLowPoints = [...allTime].sort((a, b) => b.low_point_weeks - a.low_point_weeks).slice(0, 5);
@@ -79,13 +81,13 @@ const AllTimeSummary = ({
                     title="Most Transactions Per Season"
                     data={byTransactionsPerSeason.slice(0, 5)}
                     getValue={(item) => capitalizeFirstLetter(item.name)}
-                    getSubtitle={(item) => `${(item.transactions / item.total_seasons).toFixed(2)}`}
+                    getSubtitle={(item) => `${transactionsPerSeason(item).toFixed(2)}`}
                 />
                 <StatList
                     title="Least Transactions Per Season"
                     data={byTransactionsPerSeason.slice(-5).reverse()}
                     getValue={(item) => capitalizeFirstLetter(item.name)}
-                    getSubtitle={(item) => `${(item.transactions / item.total_seasons).toFixed(2)}`}
+                    getSubtitle={(item) => `${transactionsPerSeason(item).toFixed(2)}`}
                 />
             </div>
         </div>
