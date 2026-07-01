@@ -15,20 +15,19 @@ export const loader = async () => {
   return {
     seasonCount: leagueStats.seasonCount,
     activeTeamCount: leagueStats.activeTeamCount,
+    memojiIndex: Math.floor(Math.random() * memojis.length),
   };
 };
 
 export default function _index() {
-  const { seasonCount, activeTeamCount } = useLoaderData<typeof loader>();
-  // Get a random number between 0 and 5
-  const random = Math.floor(Math.random() * 6);
+  const { seasonCount, activeTeamCount, memojiIndex } = useLoaderData<typeof loader>();
   return (
     <div className="flex min-h-[calc(100vh-4rem)] w-full items-center justify-center px-4 py-12">
       <div className="grid w-full max-w-6xl gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(22rem,1fr)] lg:items-center">
         <section className="flex flex-col items-center text-center lg:items-start lg:text-left">
       <img
         className="mb-5 h-52 w-52 rounded-full border-2 border-dashed border-line bg-accent-soft object-contain p-2"
-        src={memojis[random]}
+        src={memojis[memojiIndex]}
         alt="Random MeMoji of the site owner Austin Zani"
       />
       <p className="mb-3 font-mono text-xs font-semibold uppercase tracking-wide text-accent">
