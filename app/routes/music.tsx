@@ -329,11 +329,16 @@ const Music = () => {
   return (
     <div className={"flex justify-center w-full px-2"}>
       <div className={"flex m-3 flex-col w-full max-w-[64rem]"}>
-        <div className="flex items-center justify-between mb-2">
-          <h1 className={"text-4xl font-['Outfit'] font-medium"}>Music</h1>
+        <div className="mb-4 flex items-center justify-between">
+          <div>
+            <p className="font-mono text-xs font-semibold uppercase tracking-wide text-accent">
+              Listening Notes
+            </p>
+            <h1 className={"font-display text-6xl italic leading-none"}>Music</h1>
+          </div>
           <Link
             to="/random_album"
-            className="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-zinc-800 hover:bg-gray-200 dark:hover:bg-zinc-700 rounded-full text-sm font-medium transition-colors"
+            className="flex items-center gap-2 border border-dashed border-accent bg-accent-soft px-4 py-2 font-mono text-xs font-semibold uppercase tracking-wide text-accent transition-colors hover:bg-accent hover:text-accent-ink"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -358,10 +363,10 @@ const Music = () => {
           onSelectionChange={(key) => setMainTab(key as SetStateAction<string>)}
         >
           <Item key="top-100" title="Top 100">
-            <p className={"font-['Outfit'] py-2 font-light"}>
+            <p className={"py-2 text-ink-muted"}>
               My Personal Top 100 Albums
             </p>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
+            <p className="mb-2 font-mono text-xs font-semibold uppercase tracking-wide text-ink-muted">
               Order By:
             </p>
             <ScrollablePills

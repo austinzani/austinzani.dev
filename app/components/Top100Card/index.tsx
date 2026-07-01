@@ -14,18 +14,18 @@ const Top100Card = ({
     day: "numeric",
   };
   return (
-    <div className="relative w-full max-w-md flex mb-2 p-3 items-center rounded-lg bg-gray-50 dark:bg-zinc-900 shadow-sm dark:shadow-none">
+    <div className="relative mb-3 flex w-full max-w-md items-center border-2 border-dashed border-line bg-surface p-3">
       <LazyImage
         src={album.artwork_url}
         alt={`${album.album} album artwork`}
-        className="w-full h-full object-cover rounded-lg shadow-sm"
-        containerClassName="h-28 w-28 aspect-square rounded-lg flex-shrink-0"
+        className="h-full w-full object-cover"
+        containerClassName="h-28 w-28 aspect-square flex-shrink-0 border border-dashed border-line-muted bg-paper-muted"
       />
-      <div className="h-full flex justify-between w-full pl-4">
-        <div className="h-full flex flex-col">
-          <h1 className="text-xl font-medium">{album.album}</h1>
-          <h3 className="text-sm text-gray-600 dark:text-gray-400">{album.artist}</h3>
-          <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+      <div className="flex h-full w-full justify-between pl-4">
+        <div className="flex h-full flex-col">
+          <h1 className="font-display text-3xl italic leading-none">{album.album}</h1>
+          <h3 className="mt-1 text-sm text-ink-muted">{album.artist}</h3>
+          <p className="mt-2 font-mono text-xs uppercase tracking-wide text-ink-muted">
             Released: {releaseDate.toLocaleDateString("en-US", options)}
           </p>
         </div>
