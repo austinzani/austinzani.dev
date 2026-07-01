@@ -397,12 +397,12 @@ const Music = () => {
           </Item>
           <Item key="year" title="Annual Top 25">
             <div className="flex items-center justify-between py-2">
-              <p className={"font-['Outfit'] font-light"}>
+              <p className={"text-ink-muted"}>
                 My top 25 albums from the end of every year.
               </p>
               <Link
                 to={`/music/story/${yearTab}`}
-                className="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-zinc-800 hover:bg-gray-200 dark:hover:bg-zinc-700 rounded-full text-sm font-medium transition-colors"
+                className="flex items-center gap-2 border border-dashed border-accent bg-accent-soft px-4 py-2 font-mono text-xs font-semibold uppercase tracking-wide text-accent transition-colors hover:bg-accent hover:text-accent-ink"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

@@ -252,7 +252,7 @@ export default function MusicStory() {
 
   return (
     <div
-      className="fixed inset-0 z-50 bg-black overflow-hidden"
+      className="fixed inset-0 z-50 overflow-hidden bg-black"
       onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}
@@ -273,7 +273,7 @@ export default function MusicStory() {
       {/* Close button - positioned in top right of full screen */}
       <button
         onClick={() => navigate(`/music?year=${year}`)}
-        className="absolute top-4 right-4 z-30 w-10 h-10 flex items-center justify-center text-white/80 hover:text-white transition-colors bg-black/30 rounded-full"
+        className="absolute right-4 top-4 z-30 flex h-10 w-10 items-center justify-center rounded-full border border-dashed border-white/50 bg-black/30 text-white/80 transition-colors hover:border-white hover:text-white"
         aria-label="Close story"
       >
         <svg

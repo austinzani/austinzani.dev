@@ -64,7 +64,7 @@ const AlbumOfTheYearListCard = ({
     return (
       <div
         className={
-          "flex flex-col sm:flex-row w-full max-w-full sm:max-w-[40rem] relative py-4 px-6 rounded-lg bg-gray-50 dark:bg-zinc-900 m-2 shadow-sm dark:shadow-none"
+          "relative m-2 flex w-full max-w-full flex-col border-2 border-dashed border-line bg-surface px-6 py-4 sm:max-w-[40rem] sm:flex-row"
         }
         ref={cardRef}
       >
@@ -73,12 +73,12 @@ const AlbumOfTheYearListCard = ({
             <LazyImage
               src={album.album_art_url}
               alt={`${album.album} album artwork`}
-              className="w-full h-full object-cover rounded-lg shadow-sm"
-              containerClassName="aspect-square rounded-lg"
+              className="h-full w-full object-cover"
+              containerClassName="aspect-square border border-dashed border-line-muted bg-paper-muted"
             />
             <h1
               className={
-                "absolute -top-3 -left-3 w-10 h-10 text-xl bg-orange-500 rounded-md flex items-center justify-center text-white font-bold shadow-sm"
+                "absolute -left-3 -top-3 flex h-10 w-10 items-center justify-center border-2 border-dashed border-line bg-accent font-mono text-xl font-bold text-accent-ink"
               }
             >
               {number}
@@ -116,10 +116,10 @@ const AlbumOfTheYearListCard = ({
           </div>
         </div>
         <div className={"flex flex-col sm:p-4 sm:pl-6"}>
-          <h1 className={"text-2xl font-medium"}>{album.album}</h1>
-          <h3 className={"text-sm text-gray-600 dark:text-gray-400"}>{album.artist}</h3>
+          <h1 className={"font-display text-4xl italic leading-none"}>{album.album}</h1>
+          <h3 className={"mt-1 text-sm text-ink-muted"}>{album.artist}</h3>
           {album.blurb && (
-            <p className={"text-sm mt-4 text-gray-600 dark:text-gray-400 leading-relaxed"}>{album.blurb}</p>
+            <p className={"mt-4 text-sm leading-relaxed text-ink-muted"}>{album.blurb}</p>
           )}
         </div>
       </div>
@@ -128,7 +128,7 @@ const AlbumOfTheYearListCard = ({
     return (
       <div
         className={
-          "flex flex-col sm:flex-row w-full max-w-full sm:max-w-[40rem] relative py-4 px-6 rounded-lg bg-gray-50 dark:bg-zinc-900 m-2 shadow-sm dark:shadow-none"
+          "relative m-2 flex w-full max-w-full flex-col border-2 border-dashed border-line bg-surface px-6 py-4 sm:max-w-[40rem] sm:flex-row"
         }
         ref={cardRef}
       >
@@ -141,7 +141,7 @@ const AlbumOfTheYearListCard = ({
             />
             <h1
               className={
-                "absolute -top-3 -left-3 w-10 h-10 text-xl bg-orange-500 rounded-md flex items-center justify-center text-white font-bold shadow-sm"
+                "absolute -left-3 -top-3 flex h-10 w-10 items-center justify-center border-2 border-dashed border-line bg-accent font-mono text-xl font-bold text-accent-ink"
               }
             >
               {number}
@@ -149,8 +149,8 @@ const AlbumOfTheYearListCard = ({
           </div>
         </div>
         <div className={"flex flex-col sm: p-4"}>
-          <h1 className={"text-2xl"}>Coming Soon!</h1>
-          <h3 className={"text-md text-zinc-400"}>{album.reveal_date}</h3>
+          <h1 className={"font-display text-4xl italic"}>Coming Soon!</h1>
+          <h3 className={"font-mono text-xs uppercase tracking-wide text-ink-muted"}>{album.reveal_date}</h3>
         </div>
       </div>
     );
