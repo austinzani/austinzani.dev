@@ -18,6 +18,8 @@ import Icon from "~/components/Icon";
 import {BreadcrumbItem, Breadcrumbs} from "~/components/Breadcrumb";
 import ScrollablePills from "~/components/ScrollablePills";
 import ManagerAvatar from "~/components/ManagerAvatar";
+import EmptyState from "~/components/EmptyState";
+import ErrorState from "~/components/ErrorState";
 
 export const loader = async ({params}: LoaderFunctionArgs) => {
     const season = params.year;
@@ -251,7 +253,9 @@ export default function Year() {
                 />
 
                 {(error || !season) ? (
-                    <div>Error: {error || "No data found"}</div>
+                    <ErrorState message={typeof error === "string" ? error : "No season data found."} />
+                ) : season.length === 0 ? (
+                    <EmptyState title="No season data" message="This season does not have standings data yet." />
                 ) : (
                     <>
                         <div>

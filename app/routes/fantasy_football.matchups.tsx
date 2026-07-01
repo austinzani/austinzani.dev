@@ -8,6 +8,8 @@ import {ScoreCardGroup} from "~/components/ScoreCard";
 import {ChevronLeftIcon, ChevronRightIcon} from "@heroicons/react/24/solid";
 import { Breadcrumbs, BreadcrumbItem} from "~/components/Breadcrumb";
 import IconButton from "~/components/IconButton";
+import EmptyState from "~/components/EmptyState";
+import ErrorState from "~/components/ErrorState";
 
 interface loaderData {
     error: string | null,
@@ -85,7 +87,11 @@ export default function WeekMatchups() {
                     </div>
                     <p className="font-mono text-xs uppercase tracking-wide text-ink-muted">High point / low point markers shown on cards</p>
                 </div>
-                    {(matchups && !isPlayoffs) && <ScoreCardGroup matchups={matchups}/>}
+                    {error ? <ErrorState message={error} /> : null}
+                    {matchups && matchups.length === 0 ? (
+                        <EmptyState title="No matchups" message="No games are available for this week." />
+                    ) : null}
+                    {(matchups && matchups.length > 0 && !isPlayoffs) && <ScoreCardGroup matchups={matchups}/>}
                     {(matchups && isPlayoffs) && (
                         <div className="space-y-6">
                             <div>

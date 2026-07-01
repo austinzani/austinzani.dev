@@ -14,6 +14,8 @@ import { createNewDateInTimeZone } from "~/utils/helpers";
 import StickySectionHeader from "~/components/StickyHeader";
 import ScrollablePills from "~/components/ScrollablePills";
 import { Virtuoso, VirtuosoHandle } from "react-virtuoso";
+import EmptyState from "~/components/EmptyState";
+import ErrorState from "~/components/ErrorState";
 
 export const meta: MetaFunction<typeof loader> = ({ matches, data }) => {
   const parentMeta = matches
@@ -316,7 +318,16 @@ const sortTop100 = (
 };
 
 const Music = () => {
-  const { album, music, top100, year, yearList } = useLoaderData<typeof loader>();
+  const { album, error, music, top100, year, yearList } = useLoaderData<typeof loader>();
+  if (error || !top100 || !yearList) {
+    return (
+      <div className="flex w-full justify-center px-4 py-12">
+        <div className="w-full max-w-[64rem]">
+          <ErrorState message="Music data could not be loaded." />
+        </div>
+      </div>
+    );
+  }
   const yearTabs = Object.keys(yearList!)
     .sort((a, b) => parseInt(b) - parseInt(a))
     .map((year) => ({ key: year, value: year })); // Convert years to key/value objects
@@ -530,12 +541,10 @@ const Music = () => {
                 ))}
               </div>
             ) : (
-              <div className="border-2 border-dashed border-line bg-paper-muted p-6">
-                <h2 className="font-display text-4xl italic">No recent listens</h2>
-                <p className="mt-2 text-ink-muted">
-                  Music history will appear here once listening activity is available.
-                </p>
-              </div>
+              <EmptyState
+                title="No recent listens"
+                message="Music history will appear here once listening activity is available."
+              />
             )}
           </Item>
         </Tabs>
