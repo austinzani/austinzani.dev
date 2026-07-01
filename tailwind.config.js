@@ -21,8 +21,9 @@ module.exports = {
       },
     },
     fontFamily: {
-      'display': ['"Outfit"', 'sans-serif'],
-      'body': ['"Outfit"', 'sans-serif'],
+      'display': ['"Instrument Serif"', 'serif'],
+      'body': ['"Space Grotesk"', 'sans-serif'],
+      'mono': ['"IBM Plex Mono"', 'monospace'],
     }
   },
   plugins: [],

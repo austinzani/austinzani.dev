@@ -68,11 +68,7 @@ export const links: LinksFunction = () => {
     { rel: "stylesheet", href: globalStyles },
     {
       rel: "stylesheet",
-      href: "https://fonts.googleapis.com/css2?family=Outfit:wght@100;400;700&display=swap",
-    },
-    {
-      rel: "stylesheet",
-      href: "https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap",
+      href: "https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&family=Outfit:wght@100;400;700&display=swap",
     },
     { rel: "preconnect", href: "https://fonts.googleapis.com" },
     {
