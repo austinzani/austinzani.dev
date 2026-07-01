@@ -85,12 +85,12 @@ export default function Football() {
           </div>
         </div>
 
-        <div className="mt-3 flex justify-end gap-3 pr-1 text-xs text-gray-500 dark:text-gray-400">
-          <span>austinzani.dev</span>
-          <Link className="hover:underline" to="/privacy">
+        <div className="mt-4 flex flex-wrap justify-end gap-3 border-t-2 border-dashed border-line-muted pt-3 pr-1 font-mono text-xs uppercase tracking-wide text-ink-muted">
+          <span className="text-ink">austinzani.dev</span>
+          <Link className="hover:text-accent hover:underline" to="/privacy">
             Privacy
           </Link>
-          <Link className="hover:underline" to="/terms">
+          <Link className="hover:text-accent hover:underline" to="/terms">
             Terms
           </Link>
         </div>
