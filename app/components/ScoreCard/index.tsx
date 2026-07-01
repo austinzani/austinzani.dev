@@ -1,7 +1,7 @@
 import React from 'react';
 import { Database } from "../../../db_types";
 import { capitalizeFirstLetter } from "~/utils/helpers";
-import Icon from "~/components/Icon";
+import ManagerAvatar from "~/components/ManagerAvatar";
 
 const ScoreCard = ({
     matchup,
@@ -57,12 +57,10 @@ const ScoreCard = ({
                                         alt={`${matchup.home_team} logo`}
                                     />
                                 ) : (
-                                    <div className="w-10 h-10 rounded-lg bg-gray-100 dark:bg-zinc-800 flex items-center justify-center">
-                                        <Icon 
-                                            name="football-ball" 
-                                            className="w-6 h-6"
-                                        />
-                                    </div>
+                                    <ManagerAvatar
+                                        name={matchup.home_manager_name}
+                                        className="h-10 w-10 text-sm"
+                                    />
                                 )}
                             </div>
                         </div>
@@ -107,12 +105,10 @@ const ScoreCard = ({
                                         alt={`${matchup.away_team} logo`}
                                     />
                                 ) : (
-                                    <div className="w-10 h-10 rounded-lg bg-gray-100 dark:bg-zinc-800 flex items-center justify-center">
-                                        <Icon 
-                                            name="football-ball" 
-                                            className="w-6 h-6"
-                                        />
-                                    </div>
+                                    <ManagerAvatar
+                                        name={matchup.is_bye_week ? "Bye Week" : matchup.away_manager_name}
+                                        className="h-10 w-10 text-sm"
+                                    />
                                 )}
                             </div>
                         </div>
