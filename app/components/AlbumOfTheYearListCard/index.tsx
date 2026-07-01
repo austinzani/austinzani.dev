@@ -14,12 +14,14 @@ const AlbumOfTheYearListCard = ({
   album,
   number,
   shouldScroll = false,
+  onSelect,
 }: {
   album:
     | Database["public"]["Tables"]["albums_of_the_year"]["Row"]
     | UpcomingAlbum;
   number: number;
   shouldScroll?: boolean;
+  onSelect?: () => void;
 }) => {
   const cardRef = useRef<HTMLDivElement>(null);
   let canShare = false;
@@ -64,9 +66,10 @@ const AlbumOfTheYearListCard = ({
     return (
       <div
         className={
-          "relative m-2 flex w-full max-w-full flex-col border-2 border-dashed border-line bg-surface px-6 py-4 sm:max-w-[40rem] sm:flex-row"
+          "relative m-2 flex w-full max-w-full cursor-pointer flex-col border-2 border-dashed border-line bg-surface px-6 py-4 transition hover:bg-accent-soft sm:max-w-[40rem] sm:flex-row"
         }
         ref={cardRef}
+        onClick={onSelect}
       >
         <div className={"pt-2 sm:pb-2"}>
           <div className={"sm:w-48 w-full min-w-[12rem] relative"}>
@@ -84,7 +87,7 @@ const AlbumOfTheYearListCard = ({
               {number}
             </h1>
           </div>
-          <div className={"flex flex-row justify-center mt-2"}>
+          <div className={"mt-2 flex flex-row justify-center"} onClick={(event) => event.stopPropagation()}>
             <IconButton
               link={album.apple_link}
               icon={"apple"}

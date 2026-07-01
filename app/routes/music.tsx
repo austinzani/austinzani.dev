@@ -5,6 +5,7 @@ import { useLoaderData, Link } from "@remix-run/react";
 import AlbumOfTheYearListCard from "~/components/AlbumOfTheYearListCard";
 import Top100Card from "~/components/Top100Card";
 import RecentMusicCard from "~/components/RecentMusicCard";
+import AlbumModal, { AlbumModalDetails } from "~/components/AlbumModal";
 import { Tabs } from "~/components/Tabs";
 import { Item } from "react-stately";
 import { Database } from "../../db_types";
@@ -325,6 +326,8 @@ const Music = () => {
   const [top100Filter, setTop100Filter] = React.useState<Filter>(
     top100Filters[0].key
   );
+  const [selectedAlbum, setSelectedAlbum] =
+    React.useState<AlbumModalDetails | null>(null);
   const sortedTop100 = useMemo(
     () => sortTop100(top100!, top100Filter),
     [top100Filter]
@@ -358,6 +361,7 @@ const Music = () => {
   return (
     <div className={"flex justify-center w-full px-2"}>
       <div className={"flex m-3 flex-col w-full max-w-[64rem]"}>
+        <AlbumModal album={selectedAlbum} onClose={() => setSelectedAlbum(null)} />
         <div className="mb-4 flex items-center justify-between">
           <div>
             <p className="font-mono text-xs font-semibold uppercase tracking-wide text-accent">
@@ -415,6 +419,16 @@ const Music = () => {
                           <Top100Card
                             key={`${album.album}-${index}`}
                             album={album}
+                            onSelect={() =>
+                              setSelectedAlbum({
+                                title: album.album,
+                                artist: album.artist,
+                                artworkUrl: album.artwork_url,
+                                eyebrow: album.genre,
+                                appleMusicUrl: album.apple_music_url,
+                                spotifyUrl: album.spotify_url,
+                              })
+                            }
                           />
                         );
                       })}
@@ -467,6 +481,22 @@ const Music = () => {
                     album={albumObject}
                     number={albumObject.rank}
                     shouldScroll={false}
+                    onSelect={
+                      "upcoming" in albumObject
+                        ? undefined
+                        : () =>
+                            setSelectedAlbum({
+                              title: albumObject.album,
+                              artist: albumObject.artist,
+                              artworkUrl: albumObject.album_art_url,
+                              eyebrow: `#${albumObject.rank} / ${albumObject.year}`,
+                              blurb: albumObject.blurb,
+                              appleMusicUrl: albumObject.apple_link,
+                              spotifyUrl: albumObject.spotify_link,
+                              vinylUrl: albumObject.vinyl_link,
+                              shareUrl: `/music/story/${albumObject.year}?album=${albumObject.rank}`,
+                            })
+                    }
                   />
                 </div>
               )}
@@ -483,6 +513,19 @@ const Music = () => {
                     key={recentObject.id}
                     recentObject={recentObject}
                     relativeTime={formatRelativeTime(recentObject.created_at)}
+                    onSelect={() =>
+                      setSelectedAlbum({
+                        title: recentObject.title,
+                        artist: recentObject.artist,
+                        artworkUrl: recentObject.album_art_url,
+                        eyebrow: recentObject.type === "ALBUM" ? "Album" : "Song",
+                        blurb: recentObject.blurb,
+                        appleMusicUrl: recentObject.apple_music_url,
+                        spotifyUrl: recentObject.spotify_url,
+                        vinylUrl: recentObject.vinyl_url,
+                        shareUrl: `/music/share/${recentObject.id}`,
+                      })
+                    }
                   />
                 ))}
               </div>

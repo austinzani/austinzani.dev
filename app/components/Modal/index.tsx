@@ -31,7 +31,7 @@ const Modal = ({ isOpen, closeModal, children }: ModalProps) => {
                             onClick={closeModal}
                         ></div>
                     </div>
-                    <div className="relative z-50 bg-white border-1 border-gray-300 dark:border-zinc-700 dark:bg-zinc-800 p-4 rounded-lg shadow-lg max-w-[95%] max-h-[95%]">
+                    <div className="relative z-50 max-h-[95%] max-w-[95%] bg-surface p-2 shadow-2xl">
                         {children}
                     </div>
                 </div>

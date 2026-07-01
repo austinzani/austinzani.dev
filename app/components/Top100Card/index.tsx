@@ -4,8 +4,10 @@ import LazyImage from "../LazyImage";
 
 const Top100Card = ({
   album,
+  onSelect,
 }: {
   album: Database["public"]["Tables"]["top_100_albums"]["Row"];
+  onSelect?: () => void;
 }) => {
   const releaseDate = new Date(album.release_date);
   const options: Intl.DateTimeFormatOptions = {
@@ -14,7 +16,10 @@ const Top100Card = ({
     day: "numeric",
   };
   return (
-    <div className="relative mb-3 flex w-full max-w-md items-center border-2 border-dashed border-line bg-surface p-3">
+    <div
+      className="relative mb-3 flex w-full max-w-md cursor-pointer items-center border-2 border-dashed border-line bg-surface p-3 transition hover:bg-accent-soft"
+      onClick={onSelect}
+    >
       <LazyImage
         src={album.artwork_url}
         alt={`${album.album} album artwork`}
@@ -32,20 +37,24 @@ const Top100Card = ({
       </div>
       <div className="absolute flex bottom-2 right-2">
         {album.apple_music_url && (
+          <span onClick={(event) => event.stopPropagation()}>
           <IconButton
             link={album.apple_music_url}
             icon="apple"
             iconPrefix="fab"
             label="Apple Music"
           />
+          </span>
         )}
         {album.spotify_url && (
+          <span onClick={(event) => event.stopPropagation()}>
           <IconButton
             link={album.spotify_url}
             icon="spotify"
             iconPrefix="fab"
             label="Spotify"
           />
+          </span>
         )}
       </div>
     </div>

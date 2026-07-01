@@ -2,14 +2,15 @@ import { Database } from "../../../db_types";
 import IconButton from "../IconButton";
 import LazyImage from "../LazyImage";
 
-const RecentMusicCard = ({ recentObject, relativeTime }: {
+const RecentMusicCard = ({ recentObject, relativeTime, onSelect }: {
     recentObject: Database['public']['Tables']['music_history']['Row'];
     relativeTime?: string;
+    onSelect?: () => void;
 }) => {
     const isAlbum = recentObject.type === "ALBUM";
     
     return (
-        <div className="mb-3 w-full max-w-md border-2 border-dashed border-line bg-surface p-3">
+        <div className="mb-3 w-full max-w-md cursor-pointer border-2 border-dashed border-line bg-surface p-3 transition hover:bg-accent-soft" onClick={onSelect}>
             <div className="flex items-center">
                 <LazyImage
                     src={recentObject.album_art_url}
@@ -27,12 +28,14 @@ const RecentMusicCard = ({ recentObject, relativeTime }: {
                         </p>
                     </div>
                     <div className="flex items-start">
+                      <span onClick={(event) => event.stopPropagation()}>
                         <IconButton
                             link={recentObject.apple_music_url}
                             icon="apple"
                             iconPrefix="fab"
                             label="Apple Music"
                         />
+                      </span>
                     </div>
                 </div>
             </div>
