@@ -4,6 +4,7 @@ import supabase from "~/utils/supabase";
 import { useLoaderData, Link } from "@remix-run/react";
 import AlbumOfTheYearListCard from "~/components/AlbumOfTheYearListCard";
 import Top100Card from "~/components/Top100Card";
+import RecentMusicCard from "~/components/RecentMusicCard";
 import { Tabs } from "~/components/Tabs";
 import { Item } from "react-stately";
 import { Database } from "../../db_types";
@@ -213,6 +214,34 @@ const top100Filters = [
   { key: "Genre", value: "Genre" },
 ];
 
+const relativeTimeFormatter = new Intl.RelativeTimeFormat("en", {
+  numeric: "auto",
+});
+
+const formatRelativeTime = (dateString: string | null) => {
+  if (!dateString) return "";
+
+  const then = new Date(dateString).getTime();
+  const now = Date.now();
+  const diffSeconds = Math.round((then - now) / 1000);
+  const units: Array<[Intl.RelativeTimeFormatUnit, number]> = [
+    ["year", 60 * 60 * 24 * 365],
+    ["month", 60 * 60 * 24 * 30],
+    ["week", 60 * 60 * 24 * 7],
+    ["day", 60 * 60 * 24],
+    ["hour", 60 * 60],
+    ["minute", 60],
+  ];
+
+  for (const [unit, seconds] of units) {
+    if (Math.abs(diffSeconds) >= seconds) {
+      return relativeTimeFormatter.format(Math.round(diffSeconds / seconds), unit);
+    }
+  }
+
+  return relativeTimeFormatter.format(diffSeconds, "second");
+};
+
 const tierLabels = [
   "GOAT Tier",
   "Tier 1",
@@ -286,7 +315,7 @@ const sortTop100 = (
 };
 
 const Music = () => {
-  const { album, top100, year, yearList } = useLoaderData<typeof loader>();
+  const { album, music, top100, year, yearList } = useLoaderData<typeof loader>();
   const yearTabs = Object.keys(yearList!)
     .sort((a, b) => parseInt(b) - parseInt(a))
     .map((year) => ({ key: year, value: year })); // Convert years to key/value objects
@@ -442,6 +471,29 @@ const Music = () => {
                 </div>
               )}
             />
+          </Item>
+          <Item key="feed" title="Feed">
+            <p className="py-2 text-ink-muted">
+              Recent listens from the music history feed.
+            </p>
+            {music && music.length > 0 ? (
+              <div className="flex flex-wrap justify-center gap-3 min-[945px]:justify-between">
+                {music.map((recentObject) => (
+                  <RecentMusicCard
+                    key={recentObject.id}
+                    recentObject={recentObject}
+                    relativeTime={formatRelativeTime(recentObject.created_at)}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="border-2 border-dashed border-line bg-paper-muted p-6">
+                <h2 className="font-display text-4xl italic">No recent listens</h2>
+                <p className="mt-2 text-ink-muted">
+                  Music history will appear here once listening activity is available.
+                </p>
+              </div>
+            )}
           </Item>
         </Tabs>
       </div>

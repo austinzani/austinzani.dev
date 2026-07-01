@@ -1,27 +1,29 @@
-import React from 'react';
 import { Database } from "../../../db_types";
-import Icon from "../Icon";
 import IconButton from "../IconButton";
+import LazyImage from "../LazyImage";
 
-const RecentMusicCard = ({ recentObject }: {
-    recentObject: Database['public']['Tables']['music_history']['Row']
+const RecentMusicCard = ({ recentObject, relativeTime }: {
+    recentObject: Database['public']['Tables']['music_history']['Row'];
+    relativeTime?: string;
 }) => {
     const isAlbum = recentObject.type === "ALBUM";
     
     return (
-        <div className="max-w-md w-full mb-2 p-3 rounded-lg bg-gray-50 dark:bg-zinc-900 shadow-sm dark:shadow-none">
+        <div className="mb-3 w-full max-w-md border-2 border-dashed border-line bg-surface p-3">
             <div className="flex items-center">
-                <img 
-                    className="h-28 w-28 rounded-lg shadow-sm" 
+                <LazyImage
                     src={recentObject.album_art_url}
                     alt={`${recentObject.title} artwork`}
+                    className="h-full w-full object-cover"
+                    containerClassName="h-28 w-28 flex-shrink-0 border border-dashed border-line-muted bg-paper-muted"
                 />
                 <div className="h-full flex justify-between w-full pl-4">
                     <div className="h-full flex flex-col">
-                        <h1 className="text-xl font-medium">{recentObject.title}</h1>
-                        <h3 className="text-sm text-gray-600 dark:text-gray-400">{recentObject.artist}</h3>
-                        <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                        <h1 className="font-display text-3xl italic leading-none">{recentObject.title}</h1>
+                        <h3 className="mt-1 text-sm text-ink-muted">{recentObject.artist}</h3>
+                        <p className="mt-2 font-mono text-xs uppercase tracking-wide text-ink-muted">
                             {isAlbum ? "Album" : "Song"}
+                            {relativeTime ? ` / ${relativeTime}` : ""}
                         </p>
                     </div>
                     <div className="flex items-start">
@@ -39,4 +41,3 @@ const RecentMusicCard = ({ recentObject }: {
 };
 
 export default RecentMusicCard;
-
