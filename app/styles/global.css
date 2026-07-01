@@ -1,19 +1,132 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+:root {
+    --color-paper: #fffaf0;
+    --color-paper-muted: #f4ead8;
+    --color-ink: #19130d;
+    --color-ink-muted: #675d50;
+    --color-line: #2a2117;
+    --color-line-muted: #d8c9b4;
+    --color-surface: #fff6e6;
+    --color-surface-raised: #fffdf8;
+    --color-grid-dot: rgba(25, 19, 13, 0.16);
+    --color-accent: #ff8200;
+    --color-accent-soft: #ffe1bd;
+    --color-accent-ink: #19130d;
+}
 
-@layer utilities {
-    @variants responsive {
-        /* Hide scrollbar for Chrome, Safari, and Opera */
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
+.dark {
+    --color-paper: #15120f;
+    --color-paper-muted: #221d18;
+    --color-ink: #f6efe3;
+    --color-ink-muted: #b9aa96;
+    --color-line: #d8c9b4;
+    --color-line-muted: #40372e;
+    --color-surface: #1c1814;
+    --color-surface-raised: #272019;
+    --color-grid-dot: rgba(246, 239, 227, 0.12);
+    --color-accent-soft: #4a2a0a;
+    --color-accent-ink: #f6efe3;
+}
 
+[data-accent="blue"] {
+    --color-accent: #2f80ed;
+    --color-accent-soft: #d6e8ff;
+}
 
-        /* Hide scrollbar for IE, Edge, and Firefox */
-        .no-scrollbar {
-            -ms-overflow-style: none; /* IE and Edge */
-            scrollbar-width: none; /* Firefox */
-        }
-    }
+.dark[data-accent="blue"] {
+    --color-accent-soft: #17345e;
+}
+
+[data-accent="green"] {
+    --color-accent: #1aa36f;
+    --color-accent-soft: #cff4e4;
+}
+
+.dark[data-accent="green"] {
+    --color-accent-soft: #123f30;
+}
+
+[data-accent="pink"] {
+    --color-accent: #e84a8a;
+    --color-accent-soft: #ffd8e8;
+}
+
+.dark[data-accent="pink"] {
+    --color-accent-soft: #5b1834;
+}
+
+body.zine-page {
+    background-color: var(--color-paper);
+    background-image: radial-gradient(var(--color-grid-dot) 1px, transparent 1px);
+    background-size: 18px 18px;
+    color: var(--color-ink);
+}
+
+/* Compatibility layer while hardcoded orange utilities are migrated screen by screen. */
+.text-orange-300,
+.text-orange-400,
+.text-orange-500,
+.text-orange-600,
+.text-orange-700,
+.hover\:text-orange-400:hover,
+.hover\:text-orange-500:hover,
+.hover\:text-orange-600:hover,
+.dark .dark\:text-orange-300,
+.dark .dark\:text-orange-400,
+.dark .dark\:text-orange-500 {
+    color: var(--color-accent) !important;
+}
+
+.bg-orange-50,
+.bg-orange-100,
+.bg-orange-950,
+.hover\:bg-orange-500\/20:hover,
+.dark .dark\:bg-orange-500\/10,
+.dark .dark\:bg-orange-900\/40,
+.dark .dark\:bg-orange-950 {
+    background-color: var(--color-accent-soft) !important;
+}
+
+.bg-orange-500,
+.bg-orange-600,
+.hover\:bg-orange-500:hover,
+.hover\:bg-orange-600:hover,
+.hover\:bg-orange-700:hover,
+.peer:checked ~ .peer-checked\:bg-orange-50,
+.peer:checked ~ .peer-checked\:\[\&_\.radio-dot\]\:bg-orange-500 .radio-dot {
+    background-color: var(--color-accent) !important;
+}
+
+.fill-orange-500 {
+    fill: var(--color-accent) !important;
+}
+
+.border-orange-200,
+.border-orange-300,
+.border-orange-400,
+.border-orange-500,
+.border-orange-900,
+.hover\:border-orange-400:hover,
+.hover\:border-orange-500:hover,
+.dark .dark\:border-orange-400,
+.dark .dark\:border-orange-500,
+.dark .dark\:border-orange-900,
+.peer:checked ~ .peer-checked\:border-orange-500,
+.peer:checked ~ .peer-checked\:\[\&_\.radio-indicator\]\:border-orange-500 .radio-indicator {
+    border-color: var(--color-accent) !important;
+}
+
+.ring-orange-300,
+.ring-orange-400,
+.ring-orange-500,
+.focus-visible\:ring-orange-300:focus-visible,
+.peer:focus-visible ~ .peer-focus-visible\:ring-orange-300 {
+    --tw-ring-color: var(--color-accent) !important;
+}
+
+.after\:bg-orange-500::after {
+    background-color: var(--color-accent) !important;
+}
+
+.stroke-orange-500 {
+    stroke: var(--color-accent) !important;
 }

@@ -113,7 +113,7 @@ function App() {
       </head>
       <body
         className={
-          "min-h-screen w-full bg-white text-black dark:bg-black dark:text-white font-['Noto Sans']"
+          "zine-page min-h-screen w-full bg-paper text-ink font-body transition-colors"
         }
       >
         <NavHeader />
