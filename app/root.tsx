@@ -12,6 +12,8 @@ import React from "react";
 import { Theme } from "~/utils/theme-provider";
 import { getThemeSession } from "~/utils/theme.server";
 import { LoaderFunction } from "@remix-run/node";
+import { Accent, AccentProvider, useAccent } from "~/utils/accent-provider";
+import { getAccentSession } from "~/utils/accent.server";
 
 import {
   useTheme,
@@ -26,6 +28,7 @@ import NavHeader from "./components/NavHeader";
 
 export type LoaderData = {
   theme: Theme | null;
+  accent: Accent | null;
 };
 
 export const meta: MetaFunction = () => {
@@ -48,9 +51,11 @@ export const meta: MetaFunction = () => {
 
 export const loader: LoaderFunction = async ({ request }) => {
   const themeSession = await getThemeSession(request);
+  const accentSession = await getAccentSession(request);
 
   const data: LoaderData = {
     theme: themeSession.getTheme(),
+    accent: accentSession.getAccent(),
   };
 
   return data;
@@ -86,10 +91,15 @@ export const links: LinksFunction = () => {
 
 function App() {
   const [theme] = useTheme();
+  const [accent] = useAccent();
   const data = useLoaderData<LoaderData>();
 
   return (
-    <html lang="en" className={`w-full h-full ${theme || ""}`}>
+    <html
+      lang="en"
+      data-accent={accent}
+      className={`w-full h-full ${theme || ""}`}
+    >
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -123,7 +133,9 @@ export default function AppWithProviders() {
 
   return (
     <ThemeProvider specifiedTheme={data.theme}>
-      <App />
+      <AccentProvider specifiedAccent={data.accent}>
+        <App />
+      </AccentProvider>
     </ThemeProvider>
   );
 }
