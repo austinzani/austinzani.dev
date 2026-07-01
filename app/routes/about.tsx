@@ -1,40 +1,125 @@
-import React from "react";
+const sideProjects = [
+  {
+    name: "Spritz",
+    description:
+      "An iOS cocktail companion for tracking a home bar, matching available recipes, and getting unstuck with an AI mixologist.",
+    href: "https://apps.apple.com/us/search?term=Spritz%20Austin%20Zani",
+  },
+  {
+    name: "Tides",
+    description:
+      "A daily reflection app for noticing emotional rhythms through simple, intentional check-ins.",
+    href: "https://apps.apple.com/us/search?term=Tides%20Journal%20Austin%20Zani",
+  },
+];
 
+const teams = [
+  "Celtics",
+  "Bengals",
+  "Bearcats",
+  "UT Vols",
+  "FC Cincinnati",
+  "Reds",
+  "Newcastle United",
+];
 
 const About = () => {
-    return (
-        <div className={'flex justify-center w-full'}>
-            <div className={"h-full w-full max-w-xl flex flex-col items-center justify-center"}>
-                <div className="p-6 rounded-lg">
-                    <h1 className="text-3xl font-bold mb-8">Hello! I'm Austin Zani</h1>
-                    <p className={"pb-5"}>I'm a software developer based in Cincinnati, OH.
-                        I am a husband to my amazing wife Cath and father to our two lovely children, Anderson and Quinn.</p>
+  return (
+    <div className="flex w-full justify-center px-4 py-12">
+      <article className="grid w-full max-w-5xl gap-8 lg:grid-cols-[0.75fr_1fr]">
+        <aside className="h-fit border-2 border-dashed border-line bg-accent-soft p-6">
+          <p className="font-mono text-xs font-semibold uppercase tracking-wide text-accent">
+            About
+          </p>
+          <h1 className="mt-4 font-display text-6xl italic leading-none md:text-7xl">
+            Hello, I&apos;m Austin Zani.
+          </h1>
+          <p className="mt-6 text-lg leading-relaxed text-ink-muted">
+            Software developer in Cincinnati, husband to Cath, and dad to
+            Anderson, Quinn, and Callan.
+          </p>
+        </aside>
 
-                    <p className={"pb-5"}>Apart from coding, I am an avid sports fan. I am a proud <span className={"text-red-600"}>University of Cincinnati Bearcat</span> alumni,
-                        a <span className={"text-orange-500"}>Cincinnati Bengals</span> season ticket holder, and a die hard <span className={"text-green-600"}>Boston Celtics</span> fan.</p>
-
-                    <p className={"pb-5"}>Music plays a big part in my life.
-                        I love discovering new music and going to concerts. 
-                        I have been collecting vinyls for over 10 years and am very proud of my collection.</p>
-
-                    <p className={"pb-5"}>I am an outspoken Apple fanboy 👨🏼‍💻.
-                        I worked at the Apple Store when they were still selling the original iPhone 📱.
-                        The launch of the App Store and how it changed the way we interact with our phones is what inspired me to eventually become a developer</p>
-
-                    <p className={"pb-5"}>I completed <span className={"text-blue-300"}>Tech Elevator</span> Coding Bootcamp in 2020, and have since gained significant experience
-                        in various coding technologies. I am proficient in Javascript, Typescript, React, Python, AWS, Swift, and SwiftUI, and am always eager to learn more.</p>
-
-                    <p className={"pb-5"}>Currently, I work as a Developer at <span className={"text-purple-500"}>Pay Theory</span>. I get to be a part of building
-                        awesome payment solutions to help our partners enable inclusive payments in their platforms.</p>
-
-                    <p className={"pb-5"}>This website is my playground, where I experiment with new technologies and share my passions
-                        with the world. It was created using React, Typescript, Tailwind CSS, Remix, and Supabase.</p>
-
-                    <p>Thank you for stopping by and getting to know me better. I am excited to continue to grow this site.</p>
-                </div>
+        <div className="space-y-6">
+          <section className="border-2 border-dashed border-line bg-surface p-6">
+            <h2 className="font-mono text-sm font-semibold uppercase tracking-wide text-accent">
+              Life
+            </h2>
+            <div className="mt-4 space-y-4 text-lg leading-relaxed text-ink-muted">
+              <p>
+                I&apos;m a software developer based in Cincinnati, Ohio. I care
+                about building useful products with clear interfaces, durable
+                systems, and enough personality to feel made by a person.
+              </p>
+              <p>
+                Music is a big part of my life. I love discovering new artists,
+                going to concerts, and collecting vinyl.
+              </p>
             </div>
-        </div>
-    )
-}
+          </section>
 
-export default About
+          <section className="border-2 border-dashed border-line bg-surface p-6">
+            <h2 className="font-mono text-sm font-semibold uppercase tracking-wide text-accent">
+              Teams
+            </h2>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {teams.map((team) => (
+                <span
+                  key={team}
+                  className="rounded-full border border-dashed border-line-muted bg-paper-muted px-3 py-1 font-mono text-xs uppercase tracking-wide text-ink"
+                >
+                  {team}
+                </span>
+              ))}
+            </div>
+          </section>
+
+          <section className="border-2 border-dashed border-line bg-surface p-6">
+            <h2 className="font-mono text-sm font-semibold uppercase tracking-wide text-accent">
+              Work
+            </h2>
+            <div className="mt-4 space-y-4 text-lg leading-relaxed text-ink-muted">
+              <p>
+                I completed Tech Elevator in 2020 and have worked across
+                JavaScript, TypeScript, React, Python, AWS, Swift, and SwiftUI.
+              </p>
+              <p>
+                I currently work as a Developer at Pay Theory, building payment
+                tools that help platforms support more inclusive ways to pay.
+              </p>
+            </div>
+          </section>
+
+          <section className="border-2 border-dashed border-line bg-surface p-6">
+            <h2 className="font-mono text-sm font-semibold uppercase tracking-wide text-accent">
+              Side Projects
+            </h2>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              {sideProjects.map((project) => (
+                <a
+                  key={project.name}
+                  href={project.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group block border border-dashed border-line-muted bg-paper p-4 transition hover:border-accent hover:bg-accent-soft"
+                >
+                  <h3 className="font-display text-3xl italic text-ink">
+                    {project.name}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-ink-muted">
+                    {project.description}
+                  </p>
+                  <p className="mt-4 font-mono text-xs font-semibold uppercase tracking-wide text-accent">
+                    App Store
+                  </p>
+                </a>
+              ))}
+            </div>
+          </section>
+        </div>
+      </article>
+    </div>
+  );
+};
+
+export default About;
