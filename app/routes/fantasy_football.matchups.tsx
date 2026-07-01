@@ -75,25 +75,25 @@ export default function WeekMatchups() {
                     <BreadcrumbItem href={`/fantasy_football/season/${year}`}>Season History</BreadcrumbItem>
                     <BreadcrumbItem href={`/fantasy_football/season/${year}`}>Matchups</BreadcrumbItem>
                 </Breadcrumbs>
-                <div className={"flex flex-col sm:flex-row mb-2 w-full justify-between items-baseline"}>
+                <div className={"mb-4 flex flex-col gap-3 border-2 border-dashed border-line bg-paper-muted p-4 sm:flex-row sm:items-center sm:justify-between"}>
                     <div className={"flex w-full justify-between sm:justify-start sm:w-auto items-center"}>
-                        <h1 className={"text-2xl pr-2"}>{`${year}: Week ${week}`}</h1>
+                        <h1 className={"pr-2 font-display text-5xl italic"}>{`${year}: Week ${week}`}</h1>
                         <div className={"flex"}>
                             <PaginationButton to={`?year=${year}&week=${week - 1}`} disabled={week === 1} icon="chevron-left"/>
                             <PaginationButton to={`?year=${year}&week=${week + 1}`} disabled={week === season?.total_weeks} icon="chevron-right"/>
                         </div>
                     </div>
-                    <h1>{"🚀= High Point    🚽= Low Point"}</h1>
+                    <p className="font-mono text-xs uppercase tracking-wide text-ink-muted">High point / low point markers shown on cards</p>
                 </div>
                     {(matchups && !isPlayoffs) && <ScoreCardGroup matchups={matchups}/>}
                     {(matchups && isPlayoffs) && (
-                        <div>
+                        <div className="space-y-6">
                             <div>
-                                <h1>Winners Bracket</h1>
+                                <h2 className="font-display text-4xl italic">Winners Bracket</h2>
                                 <ScoreCardGroup matchups={winnersBracket!} />
                             </div>
                             <div>
-                                <h1>Consolation Matches</h1>
+                                <h2 className="font-display text-4xl italic">Consolation Matches</h2>
                                 <ScoreCardGroup matchups={losersBracket!}/>
                             </div>
                         </div>

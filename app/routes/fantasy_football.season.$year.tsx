@@ -17,6 +17,7 @@ import StatCard from "~/components/StatCard";
 import Icon from "~/components/Icon";
 import {BreadcrumbItem, Breadcrumbs} from "~/components/Breadcrumb";
 import ScrollablePills from "~/components/ScrollablePills";
+import ManagerAvatar from "~/components/ManagerAvatar";
 
 export const loader = async ({params}: LoaderFunctionArgs) => {
     const season = params.year;
@@ -64,6 +65,15 @@ const SeasonSummary = ({
 }: {
     season: Database["public"]["CompositeTypes"]["season_details_object"][]
 }) => {
+    if (!season.length) {
+        return (
+            <div className="mb-4 w-full border-2 border-dashed border-line bg-paper-muted p-4">
+                <h2 className="font-display text-4xl italic">Season Summary</h2>
+                <p className="mt-2 text-ink-muted">No season data is available.</p>
+            </div>
+        );
+    }
+
     // Find champion (player with championship = 1)
     const champion = season.find(player => player.championships === 1);
     
@@ -88,8 +98,8 @@ const SeasonSummary = ({
     );
 
     return (
-        <div className="w-full bg-gray-100 dark:bg-zinc-900 rounded-xl p-4 mb-4">
-            <h2 className="text-xl font-bold mb-4">Season Summary</h2>
+        <div className="mb-4 w-full border-2 border-dashed border-line bg-paper-muted p-4">
+            <h2 className="mb-4 font-display text-4xl italic">Season Summary</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 <StatCard
                     title="Champion"
@@ -131,29 +141,34 @@ const SeasonTable = ({season}: { season: Database["public"]["CompositeTypes"]["s
     const {managers} = useFootballContext();
 
     return (
-        <div className="relative">
-            <table className="table-fixed w-full">
+        <div className="relative overflow-x-auto border-2 border-dashed border-line bg-surface p-2">
+            <table className="table-fixed w-full min-w-[44rem]">
                 <thead>
-                    <tr className="border-b border-gray-200 dark:border-gray-700">
-                        <th className="px-4 w-[155px] whitespace-nowrap cursor-default font-medium text-left">Manager</th>
+                    <tr className="border-b border-dashed border-line-muted font-mono text-xs uppercase tracking-wide text-ink-muted">
+                        <th className="px-4 w-[185px] whitespace-nowrap cursor-default font-medium text-left">Manager</th>
                         <th className="px-4 whitespace-nowrap cursor-default font-medium text-right">Record</th>
                         <th className="px-4 whitespace-nowrap cursor-default font-medium text-right min-w-32">Points</th>
                         <th className="px-4 hidden lg:table-cell whitespace-nowrap cursor-default font-medium text-right">High/Low Points</th>
                     </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                <tbody className="divide-y divide-dashed divide-line-muted">
                     {season?.map((manager) => {
                         const managerId = managers.find((m) => m.name === manager.manager_name)?.id;
                         return (
                             <tr
                                 key={manager.manager_name}
                                 onClick={() => navigate(`/fantasy_football/manager/${managerId}`)}
-                                className="hover:bg-orange-500/60 rounded-md"
+                                className="hover:bg-accent-soft"
                             >
-                                <td className="px-4 cursor-pointer whitespace-nowrap py-1 font-light text-left rounded-l-lg">
-                                    <div className="h-6">{capitalizeFirstLetter(manager.manager_name)}</div>
-                                    <div className="h-5 text-amber-400 text-sm">
-                                        {manager.championships ? "🏆" : "\u00A0"}
+                                <td className="px-4 cursor-pointer whitespace-nowrap py-2 font-light text-left">
+                                    <div className="flex items-center gap-3">
+                                        <ManagerAvatar id={managerId} name={manager.manager_name} className="h-9 w-9 text-xs" />
+                                        <div>
+                                            <div className="h-6 font-semibold">{capitalizeFirstLetter(manager.manager_name)}</div>
+                                            <div className="h-5 text-amber-500 text-sm">
+                                                {manager.championships ? "Champion" : "\u00A0"}
+                                            </div>
+                                        </div>
                                     </div>
                                 </td>
                                 <td className="px-4 cursor-pointer tabular-nums whitespace-nowrap py-1 text-right">
@@ -161,7 +176,7 @@ const SeasonTable = ({season}: { season: Database["public"]["CompositeTypes"]["s
                                         {manager.total_wins}-{manager.total_games - manager.total_wins}
                                     </div>
                                     {manager.playoff_wins > 0 || manager.playoff_games > 0 ? (
-                                        <div className="h-5 text-gray-400 text-sm">
+                                        <div className="h-5 text-ink-muted text-sm">
                                             Playoffs: {manager.playoff_wins}-{manager.playoff_games - manager.playoff_wins}
                                         </div>
                                     ) : (
@@ -172,7 +187,7 @@ const SeasonTable = ({season}: { season: Database["public"]["CompositeTypes"]["s
                                     <div className="h-6 font-medium">
                                         PF: {manager.total_points_for.toFixed(2)}
                                     </div>
-                                    <div className="h-5 text-gray-400 text-sm">
+                                    <div className="h-5 text-ink-muted text-sm">
                                         PA: {manager.total_points_against.toFixed(2)}
                                     </div>
                                 </td>
@@ -219,10 +234,10 @@ export default function Year() {
                     <BreadcrumbItem href={"/fantasy_football/all_time"}>League History</BreadcrumbItem>
                 </Breadcrumbs>
                 <div className={'flex items-baseline justify-between mb-3'}>
-                    <h1 className="text-2xl font-bold">{`${year} Season`}</h1>
+                    <h1 className="font-display text-5xl italic">{`${year} Season`}</h1>
                     <Link 
                         to={`/fantasy_football/matchups?year=${year}&week=1`} 
-                        className={'px-3 py-1 border rounded-xl border-orange-500 text-orange-500'}
+                        className={'border border-dashed border-accent px-3 py-1 font-mono text-xs font-semibold uppercase tracking-wide text-accent hover:bg-accent hover:text-accent-ink'}
                     >
                         View Schedule
                         <Icon className={"ml-2"} name={"chevron-right"} />
