@@ -1,4 +1,3 @@
-import IconButton from "~/components/IconButton";
 import LazyImage from "~/components/LazyImage";
 import Modal from "~/components/Modal";
 
@@ -19,69 +18,86 @@ type AlbumModalProps = {
   onClose: () => void;
 };
 
+const modalActionClassName =
+  "block w-full rounded-lg px-4 py-3 text-center font-mono text-xs font-semibold uppercase tracking-[0.04em] text-white";
+
 const AlbumModal = ({ album, onClose }: AlbumModalProps) => {
+  const shareUrl = album?.shareUrl?.startsWith("http")
+    ? album.shareUrl
+    : album?.shareUrl
+      ? `https://austinzani.dev${album.shareUrl}`
+      : null;
+
   return (
     <Modal isOpen={Boolean(album)} closeModal={onClose}>
       {album ? (
-        <div className="w-[min(92vw,42rem)] border-2 border-dashed border-line bg-surface p-4">
+        <div className="relative max-h-[88vh] w-[min(88vw,24rem)] overflow-y-auto rounded-[10px] bg-surface p-6">
           <button
             type="button"
             onClick={onClose}
-            className="float-right ml-3 border border-dashed border-line-muted px-2 py-1 font-mono text-xs uppercase tracking-wide text-ink-muted hover:border-accent hover:text-accent"
+            className="absolute -right-3 -top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full border-2 border-surface bg-ink font-mono text-base font-bold text-paper shadow-lg transition hover:bg-accent hover:text-accent-ink"
+            aria-label="Close album details"
           >
-            Close
+            x
           </button>
-          <div className="grid gap-5 sm:grid-cols-[12rem_1fr]">
-            <LazyImage
-              src={album.artworkUrl}
-              alt={`${album.title} album artwork`}
-              className="h-full w-full object-cover"
-              containerClassName="aspect-square border border-dashed border-line-muted bg-paper-muted"
-            />
-            <div>
-              {album.eyebrow ? (
-                <p className="font-mono text-xs font-semibold uppercase tracking-wide text-accent">
-                  {album.eyebrow}
-                </p>
-              ) : null}
-              <h2 className="mt-2 font-display text-5xl italic leading-none">
-                {album.title}
-              </h2>
-              <p className="mt-2 text-lg text-ink-muted">{album.artist}</p>
-              {album.blurb ? (
-                <p className="mt-4 text-sm leading-relaxed text-ink-muted">
-                  {album.blurb}
-                </p>
-              ) : null}
-              <div className="mt-5 flex flex-wrap gap-1">
-                {album.appleMusicUrl ? (
-                  <IconButton
-                    link={album.appleMusicUrl}
-                    icon="apple"
-                    iconPrefix="fab"
-                    label="Apple Music"
-                  />
-                ) : null}
-                {album.spotifyUrl ? (
-                  <IconButton
-                    link={album.spotifyUrl}
-                    icon="spotify"
-                    iconPrefix="fab"
-                    label="Spotify"
-                  />
-                ) : null}
-                {album.vinylUrl ? (
-                  <IconButton
-                    link={album.vinylUrl}
-                    icon="record-vinyl"
-                    label="Vinyl"
-                  />
-                ) : null}
-                {album.shareUrl ? (
-                  <IconButton link={album.shareUrl} icon="share" label="Share" />
-                ) : null}
-              </div>
-            </div>
+          <LazyImage
+            src={album.artworkUrl}
+            alt={`${album.title} album artwork`}
+            className="h-full w-full object-cover"
+            containerClassName="mb-4 aspect-square overflow-hidden rounded-lg bg-paper-muted"
+          />
+          {album.eyebrow ? (
+            <p className="mb-2 font-mono text-xs font-semibold uppercase tracking-[0.06em] text-accent">
+              {album.eyebrow}
+            </p>
+          ) : null}
+          <h2 className="font-display text-4xl leading-none">{album.title}</h2>
+          <p className="mt-2 text-sm font-medium text-ink-muted">{album.artist}</p>
+          {album.blurb ? (
+            <p className="mt-4 border-l-2 border-accent pl-3 text-sm leading-relaxed text-ink-muted">
+              {album.blurb}
+            </p>
+          ) : null}
+          <div className="mt-5 flex flex-col gap-2">
+            {album.appleMusicUrl ? (
+              <a
+                href={album.appleMusicUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`${modalActionClassName} bg-gradient-to-r from-[#e64d70] to-[#a13a6f]`}
+              >
+                Listen on Apple Music
+              </a>
+            ) : null}
+            {album.spotifyUrl ? (
+              <a
+                href={album.spotifyUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`${modalActionClassName} bg-[#1DB954]`}
+              >
+                Listen on Spotify
+              </a>
+            ) : null}
+            {album.vinylUrl ? (
+              <a
+                href={album.vinylUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`${modalActionClassName} bg-ink`}
+              >
+                Buy on Vinyl
+              </a>
+            ) : null}
+            {shareUrl ? (
+              <button
+                type="button"
+                onClick={() => navigator.clipboard?.writeText(shareUrl)}
+                className="rounded-lg border-[1.5px] border-line px-4 py-3 text-center font-mono text-xs font-semibold uppercase tracking-[0.04em] text-ink hover:bg-paper-muted"
+              >
+                Copy Share Link
+              </button>
+            ) : null}
           </div>
         </div>
       ) : null}

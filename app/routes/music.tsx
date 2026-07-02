@@ -1,25 +1,22 @@
-import React, { SetStateAction, useMemo, useRef, useEffect } from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
+import { Link, useLoaderData } from "@remix-run/react";
 import { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
-import supabase from "~/utils/supabase";
-import { useLoaderData, Link } from "@remix-run/react";
-import AlbumOfTheYearListCard from "~/components/AlbumOfTheYearListCard";
-import Top100Card from "~/components/Top100Card";
-import RecentMusicCard from "~/components/RecentMusicCard";
 import AlbumModal, { AlbumModalDetails } from "~/components/AlbumModal";
-import { Tabs } from "~/components/Tabs";
-import { Item } from "react-stately";
-import { Database } from "../../db_types";
-import six from "~/images/memoji_6.png";
-import { createNewDateInTimeZone } from "~/utils/helpers";
-import StickySectionHeader from "~/components/StickyHeader";
-import ScrollablePills from "~/components/ScrollablePills";
-import { Virtuoso, VirtuosoHandle } from "react-virtuoso";
 import EmptyState from "~/components/EmptyState";
 import ErrorState from "~/components/ErrorState";
+import Modal from "~/components/Modal";
+import RecentMusicCard from "~/components/RecentMusicCard";
+import ScrollablePills from "~/components/ScrollablePills";
+import Top100Card from "~/components/Top100Card";
+import six from "~/images/memoji_6.png";
+import { createNewDateInTimeZone } from "~/utils/helpers";
+import supabase from "~/utils/supabase";
+import { Database } from "../../db_types";
 
 export const meta: MetaFunction<typeof loader> = ({ matches, data }) => {
   const parentMeta = matches
-    .flatMap((match) => match.meta ?? []) //@ts-ignore
+    .flatMap((match) => match.meta ?? [])
+    // @ts-ignore Remix's meta union does not narrow property/name consistently.
     .filter(
       (meta) =>
         !["og:title", "og:image", "og:description"].includes(meta.property || meta.name) &&
@@ -31,8 +28,7 @@ export const meta: MetaFunction<typeof loader> = ({ matches, data }) => {
   let image = six;
   let url = "https://austinzani.dev/music";
 
-  // If we have a year and album, we can use that to generate the title, description, and image
-  if (data && data.year && data.album) {
+  if (data && data.year && data.album && data.yearList) {
     if (data.year in data.yearList) {
       const year = data.year;
       const album = data.yearList[parseInt(year)].find(
@@ -50,14 +46,12 @@ export const meta: MetaFunction<typeof loader> = ({ matches, data }) => {
   }
 
   return [
-    { title: title },
-    // Open Graph tags
+    { title },
     { property: "og:title", content: title },
     { property: "og:image", content: image },
     { property: "og:description", content: description },
     { property: "og:url", content: url },
     { property: "og:type", content: "website" },
-    // Twitter Card tags
     { name: "twitter:card", content: "summary_large_image" },
     { name: "twitter:title", content: title },
     { name: "twitter:description", content: description },
@@ -73,11 +67,23 @@ type UpcomingAlbum = {
   year: number;
 };
 
-const hideUpcomingAlbums = (
-  album: Database["public"]["Tables"]["albums_of_the_year"]["Row"]
-):
-  | Database["public"]["Tables"]["albums_of_the_year"]["Row"]
-  | UpcomingAlbum => {
+type AnnualAlbum = Database["public"]["Tables"]["albums_of_the_year"]["Row"];
+type Top100Album = Database["public"]["Tables"]["top_100_albums"]["Row"];
+type MusicHistoryItem = Database["public"]["Tables"]["music_history"]["Row"];
+type Filter = "Tier" | "Artist" | "Date" | "Genre";
+type MainTab = "top-100" | "year" | "feed";
+type ShuffleService = "spotify" | "apple";
+type ShuffleStage = "closed" | "picker" | "spinning" | "result";
+
+type ShuffleAlbum = {
+  album: string;
+  artist: string;
+  spotifyUrl: string | null;
+  appleMusicUrl: string | null;
+  artworkUrl: string;
+};
+
+const hideUpcomingAlbums = (album: AnnualAlbum): AnnualAlbum | UpcomingAlbum => {
   const today = createNewDateInTimeZone("America/New_York");
   const todayDelta = 25 - today.getDate();
   const upcomingAlbum: UpcomingAlbum = {
@@ -86,20 +92,17 @@ const hideUpcomingAlbums = (
     reveal_date: `Dec ${26 - album.rank}`,
     year: album.year,
   };
-  // If the album is from the current year and it is not December, show the upcoming album
+
   if (today.getFullYear() == album.year && today.getMonth() != 11) {
     return upcomingAlbum;
-    // Else if the album rank is greater than the days left till Christmas, show the upcoming album
   } else if (album.rank > todayDelta) {
     return album;
-    // Else show the album
   } else {
     return upcomingAlbum;
   }
 };
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  // parse the search params for `?q=`
   const url = new URL(request.url);
   const year = url.searchParams.get("year") || "";
   const parsedYear = parseInt(year);
@@ -123,31 +126,10 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     .from("top_100_albums")
     .select("*")
     .limit(100);
-  console.log("top_response", top_error);
 
-  if (music_error) {
+  if (music_error || year_error || top_error) {
     return {
-      error: music_error,
-      music: null,
-      year: null,
-      album: null,
-      yearList: null,
-      top100: null,
-    };
-  }
-  if (year_error) {
-    return {
-      error: year_error,
-      music: null,
-      year: null,
-      album: null,
-      yearList: null,
-      top100: null,
-    };
-  }
-  if (top_error) {
-    return {
-      error: top_error,
+      error: music_error || year_error || top_error,
       music: null,
       year: null,
       album: null,
@@ -156,17 +138,12 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     };
   }
 
-  const topAlbums: {
-    [key: number]: Array<
-      Database["public"]["Tables"]["albums_of_the_year"]["Row"] | UpcomingAlbum
-    >;
-  } = {};
+  const topAlbums: Record<number, Array<AnnualAlbum | UpcomingAlbum>> = {};
 
   year_response?.forEach((album) => {
     const today = new Date();
-    const year = today.getFullYear();
     const filteredAlbum =
-      album.year === year ? hideUpcomingAlbums(album) : album;
+      album.year === today.getFullYear() ? hideUpcomingAlbums(album) : album;
     if (topAlbums[album.year]) {
       topAlbums[album.year].push(filteredAlbum);
     } else {
@@ -174,28 +151,9 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     }
   });
 
-  // Sort each year's albums by rank from lowest to highest
   Object.keys(topAlbums).forEach((year) => {
     topAlbums[parseInt(year)] = topAlbums[parseInt(year)].sort(
       (a, b) => b.rank - a.rank
-    );
-  });
-
-  // Create a map of the top 100 albums by tier
-  const tierMap: {
-    [key: string]: Array<Database["public"]["Tables"]["top_100_albums"]["Row"]>;
-  } = {};
-  top_response?.forEach((album) => {
-    if (tierMap[album.tier]) {
-      tierMap[album.tier].push(album);
-    } else {
-      tierMap[album.tier] = [album];
-    }
-  });
-
-  Object.keys(tierMap).forEach((tier) => {
-    tierMap[tier] = tierMap[tier].sort((a, b) =>
-      a.artist.localeCompare(b.artist)
     );
   });
 
@@ -209,12 +167,26 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   };
 };
 
-// Update the filters to be objects with key/value
-const top100Filters = [
+const mainTabs: Array<{ key: MainTab; value: string }> = [
+  { key: "top-100", value: "Top 100" },
+  { key: "year", value: "Annual Countdown" },
+  { key: "feed", value: "Feed" },
+];
+
+const top100Filters: Array<{ key: Filter; value: string }> = [
   { key: "Tier", value: "Tier" },
   { key: "Artist", value: "Artist" },
   { key: "Date", value: "Date" },
   { key: "Genre", value: "Genre" },
+];
+
+const tierLabels = [
+  "GOAT Tier",
+  "Tier 1",
+  "Tier 2",
+  "Tier 3",
+  "Tier 4",
+  "Tier 5",
 ];
 
 const relativeTimeFormatter = new Intl.RelativeTimeFormat("en", {
@@ -245,24 +217,8 @@ const formatRelativeTime = (dateString: string | null) => {
   return relativeTimeFormatter.format(diffSeconds, "second");
 };
 
-const tierLabels = [
-  "GOAT Tier",
-  "Tier 1",
-  "Tier 2",
-  "Tier 3",
-  "Tier 4",
-  "Tier 5",
-];
-
-const sortTop100 = (
-  top100: Array<Database["public"]["Tables"]["top_100_albums"]["Row"]>,
-  filter: Filter
-): {
-  [key: string]: Array<Database["public"]["Tables"]["top_100_albums"]["Row"]>;
-} => {
-  const sortedTop100: {
-    [key: string]: Array<Database["public"]["Tables"]["top_100_albums"]["Row"]>;
-  } = {};
+const sortTop100 = (top100: Top100Album[], filter: Filter): Record<string, Top100Album[]> => {
+  const sortedTop100: Record<string, Top100Album[]> = {};
 
   switch (filter) {
     case "Tier":
@@ -274,7 +230,6 @@ const sortTop100 = (
           sortedTop100[label] = [album];
         }
       });
-      // Make the tier keys sort by the tierLabels array
       tierLabels.forEach((label) => {
         const value = sortedTop100[label];
         delete sortedTop100[label];
@@ -282,7 +237,6 @@ const sortTop100 = (
       });
       break;
     case "Genre":
-      // Sort the top 100 albums by genre
       top100.forEach((album) => {
         if (sortedTop100[album.genre]) {
           sortedTop100[album.genre].push(album);
@@ -290,7 +244,6 @@ const sortTop100 = (
           sortedTop100[album.genre] = [album];
         }
       });
-      // Make the genre keys sorted alphabetically
       Object.keys(sortedTop100)
         .sort()
         .forEach((key) => {
@@ -300,26 +253,145 @@ const sortTop100 = (
         });
       break;
     case "Date":
-      // Sort the top 100 albums by release date from newest to oldest
-      top100.sort(
+      sortedTop100.Chronological = top100.sort(
         (a, b) =>
           new Date(b.release_date).getTime() -
           new Date(a.release_date).getTime()
       );
-      sortedTop100["Chronological"] = top100;
       break;
     case "Artist":
-      // Sort the top 100 alphabetically by artist
-      top100.sort((a, b) => a.artist.localeCompare(b.artist));
-      sortedTop100["All Artists"] = top100;
+      sortedTop100["All Artists"] = top100.sort((a, b) =>
+        a.artist.localeCompare(b.artist)
+      );
       break;
   }
+
   return sortedTop100;
 };
 
+const getSpotifyAppUri = (webUrl: string | null): string | null => {
+  if (!webUrl) return null;
+  const match = webUrl.match(/open\.spotify\.com\/album\/([a-zA-Z0-9]+)/);
+  return match ? `spotify:album:${match[1]}` : webUrl;
+};
+
+const getAppleMusicAppUrl = (webUrl: string | null): string | null => {
+  if (!webUrl) return null;
+  return webUrl.replace(/^https?:\/\//, "music://");
+};
+
+const shareLink = async (title: string, url: string) => {
+  const absoluteUrl = url.startsWith("http") ? url : `https://austinzani.dev${url}`;
+  if (typeof navigator !== "undefined" && typeof navigator.share === "function") {
+    try {
+      await navigator.share({ title, url: absoluteUrl });
+      return;
+    } catch (_error) {
+      // Copying below gives users a deterministic fallback after cancel/errors.
+    }
+  }
+
+  if (typeof navigator !== "undefined" && navigator.clipboard) {
+    await navigator.clipboard.writeText(absoluteUrl);
+  }
+};
+
+const isAnnualAlbum = (album: AnnualAlbum | UpcomingAlbum): album is AnnualAlbum =>
+  !("upcoming" in album);
+
 const Music = () => {
   const { album, error, music, top100, year, yearList } = useLoaderData<typeof loader>();
-  if (error || !top100 || !yearList) {
+  const hasLoadError = Boolean(error || !top100 || !yearList);
+  const safeTop100 = top100 ?? [];
+  const safeYearList = yearList ?? {};
+
+  const yearTabs = Object.keys(safeYearList)
+    .sort((a, b) => parseInt(b) - parseInt(a))
+    .map((year) => ({ key: year, value: year }));
+  const initialYearTab = year ? year : yearTabs[0]?.key ?? String(new Date().getFullYear());
+
+  const [mainTab, setMainTab] = useState<MainTab>(year ? "year" : "top-100");
+  const [yearTab, setYearTab] = useState(initialYearTab);
+  const [top100Filter, setTop100Filter] = useState<Filter>(top100Filters[0].key);
+  const [selectedAlbum, setSelectedAlbum] = useState<AlbumModalDetails | null>(null);
+  const [shuffleStage, setShuffleStage] = useState<ShuffleStage>("closed");
+  const [shuffleService, setShuffleService] = useState<ShuffleService | null>(null);
+  const [shuffleAlbum, setShuffleAlbum] = useState<ShuffleAlbum | null>(null);
+  const spinTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const sortedTop100 = useMemo(
+    () => sortTop100([...safeTop100], top100Filter),
+    [safeTop100, top100Filter]
+  );
+  const selectedYearAlbums = safeYearList[parseInt(yearTab)] ?? [];
+  const revealedCount = selectedYearAlbums.filter(isAnnualAlbum).length;
+  const isDecemberCountdown =
+    createNewDateInTimeZone("America/New_York").getMonth() === 11;
+
+  const shuffleAlbums = useMemo<ShuffleAlbum[]>(() => {
+    const annualAlbums = Object.values(safeYearList)
+      .flat()
+      .filter(isAnnualAlbum)
+      .map((album) => ({
+        album: album.album,
+        artist: album.artist,
+        spotifyUrl: album.spotify_link,
+        appleMusicUrl: album.apple_link,
+        artworkUrl: album.album_art_url,
+      }));
+    const topAlbums = safeTop100.map((album) => ({
+      album: album.album,
+      artist: album.artist,
+      spotifyUrl: album.spotify_url,
+      appleMusicUrl: album.apple_music_url,
+      artworkUrl: album.artwork_url,
+    }));
+    const seen = new Set<string>();
+
+    return [...topAlbums, ...annualAlbums].filter((album) => {
+      const key = `${album.album}-${album.artist}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  }, [safeTop100, safeYearList]);
+
+  const closeShuffle = useCallback(() => {
+    if (spinTimeoutRef.current) {
+      clearTimeout(spinTimeoutRef.current);
+      spinTimeoutRef.current = null;
+    }
+    setShuffleStage("closed");
+    setShuffleService(null);
+    setShuffleAlbum(null);
+  }, []);
+
+  const startShuffle = useCallback(
+    (service: ShuffleService) => {
+      const eligibleAlbums = shuffleAlbums.filter((album) =>
+        service === "spotify" ? album.spotifyUrl : album.appleMusicUrl
+      );
+      if (!eligibleAlbums.length) return;
+
+      const chosen = eligibleAlbums[Math.floor(Math.random() * eligibleAlbums.length)];
+      setShuffleService(service);
+      setShuffleAlbum(chosen);
+      setShuffleStage("spinning");
+      spinTimeoutRef.current = setTimeout(() => {
+        setShuffleStage("result");
+        const appUrl =
+          service === "spotify"
+            ? getSpotifyAppUri(chosen.spotifyUrl)
+            : getAppleMusicAppUrl(chosen.appleMusicUrl);
+        if (appUrl) {
+          window.location.href = appUrl;
+        }
+      }, 1100);
+    },
+    [shuffleAlbums]
+  );
+
+  if (hasLoadError) {
     return (
       <div className="flex w-full justify-center px-4 py-12">
         <div className="w-full max-w-[64rem]">
@@ -328,61 +400,98 @@ const Music = () => {
       </div>
     );
   }
-  const yearTabs = Object.keys(yearList!)
-    .sort((a, b) => parseInt(b) - parseInt(a))
-    .map((year) => ({ key: year, value: year })); // Convert years to key/value objects
 
-  const [mainTab, setMainTab] = React.useState(year ? "year" : "top-100");
-  const [yearTab, setYearTab] = React.useState(year ? year : yearTabs[0].key);
-  const [top100Filter, setTop100Filter] = React.useState<Filter>(
-    top100Filters[0].key
-  );
-  const [selectedAlbum, setSelectedAlbum] =
-    React.useState<AlbumModalDetails | null>(null);
-  const sortedTop100 = useMemo(
-    () => sortTop100(top100!, top100Filter),
-    [top100Filter]
-  );
-
-  const virtuosoRef = useRef<VirtuosoHandle>(null);
-
-  // Handle scroll to specific album when shared link is used
-  const scrollTargetIndex = useMemo(() => {
-    if (yearTab === year && album) {
-      const targetRank = parseInt(album);
-      const albums = yearList![parseInt(yearTab)];
-      return albums.findIndex((a) => a.rank === targetRank);
-    }
-    return -1;
-  }, [yearTab, year, album, yearList]);
-
-  useEffect(() => {
-    if (scrollTargetIndex >= 0 && virtuosoRef.current) {
-      setTimeout(() => {
-        virtuosoRef.current?.scrollToIndex({
-          index: scrollTargetIndex,
-          align: "start",
-          behavior: "smooth",
-        });
-      }, 100);
-    }
-  }, [scrollTargetIndex]);
-
-  // @ts-ignore
   return (
-    <div className={"flex justify-center w-full px-2"}>
-      <div className={"flex m-3 flex-col w-full max-w-[64rem]"}>
+    <div className="flex w-full justify-center px-4">
+      <div className="relative flex w-full max-w-[67.5rem] flex-col py-10 sm:py-14 lg:py-16">
         <AlbumModal album={selectedAlbum} onClose={() => setSelectedAlbum(null)} />
-        <div className="mb-4 flex items-center justify-between">
-          <div>
-            <p className="font-mono text-xs font-semibold uppercase tracking-wide text-accent">
-              Listening Notes
-            </p>
-            <h1 className={"font-display text-6xl italic leading-none"}>Music</h1>
+        <Modal isOpen={shuffleStage !== "closed"} closeModal={closeShuffle}>
+          <div className="relative w-[min(88vw,21rem)] rounded-[10px] bg-surface p-6 text-center">
+            <button
+              type="button"
+              onClick={closeShuffle}
+              className="absolute -right-3 -top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full border-2 border-surface bg-ink font-mono text-base font-bold text-paper shadow-lg transition hover:bg-accent hover:text-accent-ink"
+              aria-label="Close shuffle"
+            >
+              x
+            </button>
+            {shuffleStage === "picker" ? (
+              <>
+                <h2 className="font-display text-3xl leading-none">Shuffle Something</h2>
+                <p className="mx-auto mt-3 max-w-[16rem] text-sm leading-relaxed text-ink-muted">
+                  A random pull from Austin's library. Where do you want to listen?
+                </p>
+                <div className="mt-5 flex flex-col gap-2.5">
+                  <button
+                    type="button"
+                    onClick={() => startShuffle("spotify")}
+                    className="rounded-lg bg-[#1DB954] px-4 py-3 font-mono text-xs font-semibold uppercase tracking-[0.04em] text-white"
+                  >
+                    Shuffle on Spotify
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => startShuffle("apple")}
+                    className="rounded-lg bg-gradient-to-r from-[#e64d70] to-[#a13a6f] px-4 py-3 font-mono text-xs font-semibold uppercase tracking-[0.04em] text-white"
+                  >
+                    Shuffle on Apple Music
+                  </button>
+                </div>
+              </>
+            ) : null}
+            {shuffleStage === "spinning" ? (
+              <div className="py-8">
+                <div className="mx-auto mb-5 h-20 w-20 animate-pulse overflow-hidden rounded-lg bg-paper-muted">
+                  {shuffleAlbum ? (
+                    <img
+                      src={shuffleAlbum.artworkUrl}
+                      alt={`${shuffleAlbum.album} artwork`}
+                      className="h-full w-full object-cover"
+                    />
+                  ) : null}
+                </div>
+                <p className="font-mono text-xs font-semibold uppercase tracking-[0.05em] text-ink-muted">
+                  Shuffling...
+                </p>
+              </div>
+            ) : null}
+            {shuffleStage === "result" && shuffleAlbum ? (
+              <>
+                <img
+                  src={shuffleAlbum.artworkUrl}
+                  alt={`${shuffleAlbum.album} artwork`}
+                  className="mb-4 aspect-square w-full rounded-lg object-cover"
+                />
+                <h2 className="font-display text-3xl leading-none">{shuffleAlbum.album}</h2>
+                <p className="mt-1 text-sm font-medium text-ink-muted">{shuffleAlbum.artist}</p>
+                <p className="mt-4 font-mono text-xs text-ink-muted">
+                  Opening in {shuffleService === "spotify" ? "Spotify" : "Apple Music"}...
+                </p>
+                <button
+                  type="button"
+                  onClick={closeShuffle}
+                  className="mt-5 w-full rounded-lg border-[1.5px] border-line px-4 py-3 font-mono text-xs font-semibold uppercase tracking-[0.04em] hover:bg-paper-muted"
+                >
+                  Done
+                </button>
+              </>
+            ) : null}
           </div>
-          <Link
-            to="/random_album"
-            className="flex items-center gap-2 border border-dashed border-accent bg-accent-soft px-4 py-2 font-mono text-xs font-semibold uppercase tracking-wide text-accent transition-colors hover:bg-accent hover:text-accent-ink"
+        </Modal>
+
+        <div className="mb-8 flex items-start justify-between gap-4">
+          <div>
+            <p className="font-mono text-xs font-semibold uppercase tracking-[0.14em] text-accent">
+              500+ Albums, Ranked, Since Forever
+            </p>
+            <h1 className="mt-3 font-display text-6xl leading-none sm:text-7xl lg:text-[5rem]">
+              Music
+            </h1>
+          </div>
+          <button
+            type="button"
+            onClick={() => setShuffleStage("picker")}
+            className="mt-2 inline-flex shrink-0 items-center gap-2 rounded-full bg-ink px-4 py-3 font-mono text-xs font-semibold uppercase tracking-[0.05em] text-paper transition hover:bg-accent hover:text-accent-ink sm:px-5"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -390,7 +499,7 @@ const Music = () => {
               viewBox="0 0 24 24"
               strokeWidth={2}
               stroke="currentColor"
-              className="w-4 h-4"
+              className="h-4 w-4"
             >
               <path
                 strokeLinecap="round"
@@ -399,127 +508,184 @@ const Music = () => {
               />
             </svg>
             Shuffle
-          </Link>
+          </button>
         </div>
-        <Tabs
-          aria-label="Music"
-          selectedKey={mainTab}
-          onSelectionChange={(key) => setMainTab(key as SetStateAction<string>)}
-        >
-          <Item key="top-100" title="Top 100">
-            <p className={"py-2 text-ink-muted"}>
-              My Personal Top 100 Albums
-            </p>
-            <p className="mb-2 font-mono text-xs font-semibold uppercase tracking-wide text-ink-muted">
-              Order By:
-            </p>
-            <ScrollablePills
-              items={top100Filters}
-              selectedKey={top100Filter}
-              onSelectionChange={(key: string) => setTop100Filter(key)}
-            />
-            <div className={"flex flex-col items-center"}>
+
+        <div className="mb-9 inline-flex max-w-full self-start overflow-x-auto rounded-full bg-[#ececee] p-1 dark:bg-paper-muted">
+          {mainTabs.map((tab) => (
+            <button
+              key={tab.key}
+              type="button"
+              onClick={() => setMainTab(tab.key)}
+              className={`whitespace-nowrap rounded-full px-5 py-3 font-mono text-[11px] font-semibold uppercase tracking-[0.05em] transition sm:text-xs ${
+                mainTab === tab.key ? "bg-ink text-paper" : "text-ink hover:bg-surface"
+              }`}
+            >
+              {tab.value}
+            </button>
+          ))}
+        </div>
+
+        {mainTab === "top-100" ? (
+          <>
+            <div className="mb-7 max-w-[34rem]">
+              <p className="mb-2 font-mono text-xs font-semibold uppercase tracking-wide text-ink-muted">
+                Order By
+              </p>
+              <ScrollablePills
+                items={top100Filters}
+                selectedKey={top100Filter}
+                onSelectionChange={(key: string) => setTop100Filter(key as Filter)}
+              />
+            </div>
+            <div>
               {Object.keys(sortedTop100).map((tier) => {
                 const showLabel = Object.keys(sortedTop100).length > 1;
                 return (
                   <div className="w-full" key={tier}>
-                    {<StickySectionHeader title={showLabel ? tier : " "} />}
-                    <div className="flex flex-wrap justify-center min-[945px]:justify-between">
-                      {sortedTop100[tier]?.map((album, index) => {
-                        return (
-                          <Top100Card
-                            key={`${album.album}-${index}`}
-                            album={album}
-                            onSelect={() =>
-                              setSelectedAlbum({
-                                title: album.album,
-                                artist: album.artist,
-                                artworkUrl: album.artwork_url,
-                                eyebrow: album.genre,
-                                appleMusicUrl: album.apple_music_url,
-                                spotifyUrl: album.spotify_url,
-                              })
-                            }
-                          />
-                        );
-                      })}
+                    {showLabel ? (
+                      <div className="mb-4 flex items-center gap-3 border-b-[1.5px] border-dashed border-line-muted pb-2">
+                        <p className="font-mono text-sm font-bold uppercase tracking-[0.1em] text-ink">
+                          {tier}
+                        </p>
+                        <span className="h-px flex-1 bg-line-muted" />
+                      </div>
+                    ) : null}
+                    <div className="mb-9 grid grid-cols-2 gap-x-5 gap-y-7 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+                      {sortedTop100[tier]?.map((album, index) => (
+                        <Top100Card
+                          key={`${album.album}-${index}`}
+                          album={album}
+                          showDateBadge={top100Filter === "Date"}
+                          onSelect={() =>
+                            setSelectedAlbum({
+                              title: album.album,
+                              artist: album.artist,
+                              artworkUrl: album.artwork_url,
+                              eyebrow: album.genre,
+                              appleMusicUrl: album.apple_music_url,
+                              spotifyUrl: album.spotify_url,
+                            })
+                          }
+                        />
+                      ))}
                     </div>
                   </div>
                 );
               })}
             </div>
-          </Item>
-          <Item key="year" title="Annual Top 25">
-            <div className="flex items-center justify-between py-2">
-              <p className={"text-ink-muted"}>
-                My top 25 albums from the end of every year.
-              </p>
-              <Link
-                to={`/music/story/${yearTab}`}
-                className="flex items-center gap-2 border border-dashed border-accent bg-accent-soft px-4 py-2 font-mono text-xs font-semibold uppercase tracking-wide text-accent transition-colors hover:bg-accent hover:text-accent-ink"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={2}
-                  stroke="currentColor"
-                  className="w-4 h-4"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z"
-                  />
-                </svg>
-                Story
-              </Link>
-            </div>
+          </>
+        ) : null}
+
+        {mainTab === "year" ? (
+          <>
             <ScrollablePills
               items={yearTabs}
               selectedKey={yearTab}
               onSelectionChange={(key: string) => setYearTab(key)}
             />
-            <Virtuoso
-              ref={virtuosoRef}
-              data={yearList![parseInt(yearTab)]}
-              useWindowScroll
-              style={{ width: "100%" }}
-              itemContent={(_index, albumObject) => (
-                <div className="flex flex-col items-center w-full">
-                  <AlbumOfTheYearListCard
+            <div className="mb-5 flex flex-wrap items-baseline justify-between gap-3">
+              <p className="text-[15px] leading-relaxed text-ink-muted">
+                {yearTab} countdown - one album unlocks a day, like an advent calendar.
+              </p>
+              <div className="flex items-center gap-4">
+                <span className="font-mono text-xs font-semibold uppercase tracking-[0.05em] text-accent">
+                  {revealedCount} of 25 revealed
+                </span>
+                <Link
+                  to={`/music/story/${yearTab}`}
+                  className="inline-flex items-center gap-2 rounded-full border-[1.5px] border-line px-4 py-2 font-mono text-xs font-semibold uppercase tracking-[0.04em] hover:bg-paper-muted"
+                >
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                  Story
+                </Link>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-x-3 gap-y-5 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7">
+              {selectedYearAlbums.map((albumObject) =>
+                "upcoming" in albumObject ? (
+                  <div
                     key={`${albumObject.year}-${albumObject.rank}`}
-                    album={albumObject}
-                    number={albumObject.rank}
-                    shouldScroll={false}
-                    onSelect={
-                      "upcoming" in albumObject
-                        ? undefined
-                        : () =>
-                            setSelectedAlbum({
-                              title: albumObject.album,
-                              artist: albumObject.artist,
-                              artworkUrl: albumObject.album_art_url,
-                              eyebrow: `#${albumObject.rank} / ${albumObject.year}`,
-                              blurb: albumObject.blurb,
-                              appleMusicUrl: albumObject.apple_link,
-                              spotifyUrl: albumObject.spotify_link,
-                              vinylUrl: albumObject.vinyl_link,
-                              shareUrl: `/music/story/${albumObject.year}?album=${albumObject.rank}`,
-                            })
+                    className="aspect-square rounded-lg border border-dashed border-[#b8ab8d] bg-[#ececee] p-2 dark:bg-paper-muted"
+                  >
+                    <div className="relative flex h-full w-full items-center justify-center rounded-md">
+                      <svg
+                        width="15"
+                        height="15"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.2"
+                        className="text-ink-muted"
+                      >
+                        <rect x="4" y="10" width="16" height="10" rx="2" />
+                        <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+                      </svg>
+                      <span className="absolute bottom-1 right-1 font-mono text-[10px] font-semibold text-ink-muted">
+                        {albumObject.reveal_date}
+                      </span>
+                    </div>
+                  </div>
+                ) : (
+                  <button
+                    key={`${albumObject.year}-${albumObject.rank}`}
+                    type="button"
+                    onClick={() =>
+                      setSelectedAlbum({
+                        title: albumObject.album,
+                        artist: albumObject.artist,
+                        artworkUrl: albumObject.album_art_url,
+                        eyebrow: `#${albumObject.rank} / ${albumObject.year}`,
+                        blurb: albumObject.blurb,
+                        appleMusicUrl: albumObject.apple_link,
+                        spotifyUrl: albumObject.spotify_link,
+                        vinylUrl: albumObject.vinyl_link,
+                        shareUrl: `/music/story/${albumObject.year}?album=${albumObject.rank}`,
+                      })
                     }
-                  />
-                </div>
+                    className="group text-left"
+                  >
+                    <div className="relative aspect-square overflow-hidden rounded-lg bg-paper-muted">
+                      <img
+                        src={albumObject.album_art_url}
+                        alt={`${albumObject.album} album artwork`}
+                        className="h-full w-full object-cover transition duration-200 group-hover:scale-[1.03]"
+                      />
+                      <span
+                        className={`absolute bottom-0 right-0 flex h-8 w-8 items-center justify-center rounded-tl-lg font-mono text-sm font-bold shadow-sm ${
+                          isDecemberCountdown
+                            ? albumObject.rank % 2 === 0
+                              ? "bg-[#0f7a3a] text-white"
+                              : "bg-[#c62828] text-white"
+                            : "bg-accent text-black"
+                        }`}
+                      >
+                        {albumObject.rank}
+                      </span>
+                    </div>
+                    <h2 className="mt-2 line-clamp-2 text-sm font-semibold leading-tight">
+                      {albumObject.album}
+                    </h2>
+                    <p className="mt-0.5 line-clamp-1 font-mono text-xs text-ink-muted">
+                      {albumObject.artist}
+                    </p>
+                  </button>
+                )
               )}
-            />
-          </Item>
-          <Item key="feed" title="Feed">
-            <p className="py-2 text-ink-muted">
-              Recent listens from the music history feed.
+            </div>
+          </>
+        ) : null}
+
+        {mainTab === "feed" ? (
+          <>
+            <p className="mb-6 max-w-[46rem] text-[15px] leading-relaxed text-ink-muted">
+              Whatever's been on repeat lately - albums, songs, and the odd rabbit hole.
             </p>
             {music && music.length > 0 ? (
-              <div className="flex flex-wrap justify-center gap-3 min-[945px]:justify-between">
-                {music.map((recentObject) => (
+              <div className="divide-y divide-dashed divide-line-muted border-y border-dashed border-line-muted">
+                {music.map((recentObject: MusicHistoryItem) => (
                   <RecentMusicCard
                     key={recentObject.id}
                     recentObject={recentObject}
@@ -537,6 +703,12 @@ const Music = () => {
                         shareUrl: `/music/share/${recentObject.id}`,
                       })
                     }
+                    onShare={() =>
+                      shareLink(
+                        `${recentObject.title} by ${recentObject.artist}`,
+                        `/music/share/${recentObject.id}`
+                      )
+                    }
                   />
                 ))}
               </div>
@@ -546,8 +718,8 @@ const Music = () => {
                 message="Music history will appear here once listening activity is available."
               />
             )}
-          </Item>
-        </Tabs>
+          </>
+        ) : null}
       </div>
     </div>
   );

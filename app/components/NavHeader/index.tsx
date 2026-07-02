@@ -1,15 +1,12 @@
 import { NavLink } from "@remix-run/react";
-import { useState } from "react";
 import Icon from "../Icon";
 import { Theme, useTheme } from "~/utils/theme-provider";
-import AccentSwatchPicker from "../AccentSwatchPicker";
-import SideNavigation from "../SideNavigation";
 
 const navigationOptions = [
-  { route: "/", label: "Home", icon: "house" },
-  { route: "/fantasy_football", label: "Fantasy Football", icon: "football" },
-  { route: "/music", label: "Music", icon: "music" },
-  { route: "/about", label: "About", icon: "user" },
+  { route: "/", label: "Home" },
+  { route: "/about", label: "About" },
+  { route: "/fantasy_football", label: "Fantasy Football" },
+  { route: "/music", label: "Music" },
 ] as const;
 
 const iconTransformOrigin = { transformOrigin: "50% 100px" };
@@ -24,7 +21,7 @@ const DarkModeToggle = () => {
           previousTheme === Theme.DARK ? Theme.LIGHT : Theme.DARK
         );
       }}
-      className="inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border border-dashed border-line-muted bg-surface p-1 transition hover:border-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+      className="inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border border-line-muted bg-white p-1 transition hover:border-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
     >
       <div className="relative h-8 w-8">
         <span
@@ -45,22 +42,27 @@ const DarkModeToggle = () => {
 };
 
 const NavHeader = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   return (
-    <>
-      <header className="sticky top-0 z-30 border-b-2 border-dashed border-line bg-paper/90 px-4 backdrop-blur">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4">
+      <header className="sticky top-0 z-30 border-b border-dashed border-line-muted bg-white px-[clamp(18px,4vw,48px)]">
+        <div className="flex min-h-[120px] flex-wrap items-center justify-between gap-4 py-4">
           <NavLink
             to="/"
             prefetch="intent"
-            className="flex h-11 w-11 items-center justify-center rounded-full border-2 border-dashed border-line bg-accent-soft font-mono text-sm font-bold text-ink"
+            className="flex items-center gap-4"
             aria-label="Home"
           >
-            AZ
+            <span className="flex h-16 w-16 -rotate-[8deg] items-center justify-center rounded-full bg-black font-display text-3xl font-bold italic leading-none text-white">
+              <span className="rotate-[8deg]">AZ</span>
+            </span>
+            <span className="font-mono text-xl font-semibold uppercase tracking-[0.14em] text-ink">
+              Austin Zani
+            </span>
           </NavLink>
 
-          <nav className="hidden items-center gap-1 md:flex" aria-label="Primary">
+          <nav
+            className="order-3 flex w-full flex-wrap items-center gap-x-2 gap-y-5 md:order-none md:w-auto md:gap-8"
+            aria-label="Primary"
+          >
             {navigationOptions.map((option) => (
               <NavLink
                 key={option.route}
@@ -68,51 +70,20 @@ const NavHeader = () => {
                 prefetch="intent"
                 end={option.route === "/"}
                 className={({ isActive }) =>
-                  `inline-flex items-center gap-2 rounded-full border border-dashed px-3 py-2 text-sm font-semibold transition ${
+                  `border-b pb-1 font-mono text-[15px] font-medium uppercase tracking-[0.12em] transition md:text-base ${
                     isActive
-                      ? "border-accent bg-accent-soft text-ink"
-                      : "border-transparent text-ink-muted hover:border-line-muted hover:text-ink"
+                      ? "border-accent text-ink"
+                      : "border-transparent text-ink hover:border-accent"
                   }`
                 }
               >
-                <Icon name={option.icon} className="h-4 w-4" />
                 <span>{option.label}</span>
               </NavLink>
             ))}
           </nav>
-
-          <div className="flex items-center gap-2">
-            <AccentSwatchPicker />
-            <DarkModeToggle />
-            <button
-              type="button"
-              aria-label={isMenuOpen ? "Close navigation" : "Open navigation"}
-              aria-expanded={isMenuOpen}
-              onClick={() => setIsMenuOpen((value) => !value)}
-              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-dashed border-line-muted bg-surface text-ink transition hover:border-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-accent md:hidden"
-            >
-              <Icon name={isMenuOpen ? "xmark" : "bars"} className="h-4 w-4" />
-            </button>
-          </div>
+          <DarkModeToggle />
         </div>
       </header>
-
-      {isMenuOpen ? (
-        <div className="fixed inset-0 z-20 bg-ink/25 md:hidden">
-          <button
-            type="button"
-            className="absolute inset-0 h-full w-full cursor-default"
-            aria-label="Close navigation"
-            onClick={() => setIsMenuOpen(false)}
-          />
-          <SideNavigation
-            options={navigationOptions}
-            onNavigate={() => setIsMenuOpen(false)}
-            className="absolute right-3 top-20 rounded-lg border-2 border-dashed border-line bg-surface pb-4 shadow-xl"
-          />
-        </div>
-      ) : null}
-    </>
   );
 };
 

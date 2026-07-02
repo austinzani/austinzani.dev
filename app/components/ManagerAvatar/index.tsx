@@ -38,7 +38,7 @@ const ManagerAvatar = ({ id, name, className }: ManagerAvatarProps) => {
   return (
     <div
       aria-label={name ? `${name} avatar` : "Manager avatar"}
-      className={`flex items-center justify-center rounded-lg border border-dashed border-line font-mono font-bold ${className ?? "h-10 w-10 text-sm"}`}
+      className={`flex aspect-square shrink-0 items-center justify-center rounded-full font-mono font-bold ${className ?? "h-10 w-10 text-sm"}`}
       style={{ backgroundColor: color.background, color: color.foreground }}
     >
       {getInitial(name)}

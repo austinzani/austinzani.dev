@@ -10,6 +10,16 @@ import {useFootballContext} from "~/routes/fantasy_football";
 import {Database} from "../../db_types";
 import {BreadcrumbItem, Breadcrumbs} from "~/components/Breadcrumb";
 import ManagerAvatar from "~/components/ManagerAvatar";
+import {
+    FantasyMain,
+    FantasySectionHeading,
+    FantasyStatCard,
+    HighLowPair,
+    fantasyTableBodyClass,
+    fantasyTableHeadRowClass,
+    fantasyTableRowClass,
+    fantasyTableShellClass,
+} from "~/components/FantasyFootballUI";
 
 interface loaderData {
     error: string | null,
@@ -53,22 +63,22 @@ export const loader = async ({params}: LoaderFunctionArgs): Promise<loaderData> 
 const SeasonTable = ({ seasons }: { seasons: Database['public']['CompositeTypes']['manager_season_object'][] }) => {
     const navigate = useNavigate();
     return (
-        <div className="relative overflow-x-auto border-2 border-dashed border-line bg-surface p-2">
-            <table className="table-fixed w-full min-w-[42rem]">
-                <thead className="sticky top-0 z-[5] bg-surface">
-                    <tr className="border-b border-dashed border-line-muted font-mono text-xs uppercase tracking-wide text-ink-muted">
+        <div className={fantasyTableShellClass}>
+            <table className="w-full min-w-[42rem] table-fixed">
+                <thead className="sticky top-0 z-[5] bg-paper dark:bg-zinc-950">
+                    <tr className={fantasyTableHeadRowClass}>
                         <th className="px-4 w-24 whitespace-nowrap cursor-default font-medium text-left">Year</th>
                         <th className="px-4 whitespace-nowrap cursor-default font-medium text-right">Record</th>
                         <th className="px-4 whitespace-nowrap cursor-default font-medium text-right">Points</th>
                         <th className="px-4 hidden sm:table-cell whitespace-nowrap cursor-default font-medium text-right">Weekly Records</th>
                     </tr>
                 </thead>
-                <tbody className="divide-y divide-dashed divide-line-muted">
+                <tbody className={fantasyTableBodyClass}>
                     {seasons?.map((year) => (
                         <tr
                             key={year.year}
                             onClick={() => navigate(`/fantasy_football/season/${year.year}`)}
-                            className="hover:bg-accent-soft"
+                            className={fantasyTableRowClass}
                         >
                             <td className="px-4 cursor-pointer whitespace-nowrap py-1 text-left rounded-l-lg">
                                 <div className="h-6 font-medium">{year.year}</div>
@@ -93,12 +103,10 @@ const SeasonTable = ({ seasons }: { seasons: Database['public']['CompositeTypes'
                                 </div>
                             </td>
                             <td className="px-4 cursor-pointer hidden sm:table-cell whitespace-nowrap py-1 text-right rounded-r-lg">
-                                <div className="h-6">
-                                    <span className="text-emerald-400 font-medium">{year.high_point_weeks} High</span>
-                                </div>
-                                <div className="h-5">
-                                    <span className="text-red-400 font-medium">{year.low_point_weeks} Low</span>
-                                </div>
+                                <HighLowPair
+                                    high={year.high_point_weeks}
+                                    low={year.low_point_weeks}
+                                />
                             </td>
                         </tr>
                     ))}
@@ -117,20 +125,20 @@ const OpponentTable = ({
 }) => {
     const navigate = useNavigate();
     return (
-        <div className="relative overflow-x-auto border-2 border-dashed border-line bg-surface p-2">
-            <table className="table-fixed w-full min-w-[32rem]">
-                <thead className="sticky top-0 z-[5] bg-surface">
-                    <tr className="border-b border-dashed border-line-muted font-mono text-xs uppercase tracking-wide text-ink-muted">
+        <div className={fantasyTableShellClass}>
+            <table className="w-full min-w-[32rem] table-fixed">
+                <thead className="sticky top-0 z-[5] bg-paper dark:bg-zinc-950">
+                    <tr className={fantasyTableHeadRowClass}>
                         <th className="px-4 w-48 whitespace-nowrap cursor-default font-medium text-left">Opponent</th>
                         <th className="px-4 whitespace-nowrap cursor-default font-medium text-right">History</th>
                     </tr>
                 </thead>
-                <tbody className="divide-y divide-dashed divide-line-muted">
+                <tbody className={fantasyTableBodyClass}>
                     {opponents?.map((opponent) => (
                         <tr
                             key={opponent.id}
                             onClick={() => navigate(`/fantasy_football/head_to_head?team_one=${manager_id}&team_two=${opponent.id}`)}
-                            className="hover:bg-accent-soft"
+                            className={fantasyTableRowClass}
                         >
                             <td className="px-4 cursor-pointer whitespace-nowrap py-1 text-left rounded-l-lg">
                                 <div className="h-6 font-medium">{capitalizeFirstLetter(opponent.name)}</div>
@@ -152,22 +160,6 @@ const OpponentTable = ({
     );
 };
 
-const StatCard = ({
-    title,
-    value,
-    subtitle
-}: {
-    title: string;
-    value: string | number;
-    subtitle?: string;
-}) => (
-    <div className="flex flex-col items-center border border-dashed border-line-muted bg-surface p-3">
-        <div className="font-mono text-xs uppercase tracking-wide text-ink-muted">{title}</div>
-        <div className="mt-1 font-display text-3xl italic">{value}</div>
-        {subtitle && <div className="mt-1 text-xs text-ink-muted">{subtitle}</div>}
-    </div>
-);
-
 const ManagerStats = ({
     all_time_stats
 }: {
@@ -177,36 +169,35 @@ const ManagerStats = ({
     const playoffWinPercentage = all_time_stats.playoff_games > 0 ? ((all_time_stats.playoff_wins / all_time_stats.playoff_games) * 100).toFixed(1) : "0.0";
 
     return (
-        <div className="mt-4 w-full border-2 border-dashed border-line bg-paper-muted p-4">
-            <h2 className="mb-4 font-display text-4xl italic">All Time Stats</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                <StatCard
-                    title="Record"
+        <div className="mt-4 w-full">
+            <FantasySectionHeading>All-Time Stats</FantasySectionHeading>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                <FantasyStatCard
+                    label="Record"
                     value={`${all_time_stats.total_wins}-${all_time_stats.total_games - all_time_stats.total_wins}`}
                     subtitle={`${winPercentage}% win rate`}
                 />
-                <StatCard
-                    title="Championships"
+                <FantasyStatCard
+                    label="Championships"
                     value={all_time_stats.championships}
                     subtitle={`${all_time_stats.playoff_births} playoff appearances`}
                 />
-                <StatCard
-                    title="Playoff Record"
+                <FantasyStatCard
+                    label="Playoff Record"
                     value={`${all_time_stats.playoff_wins}-${all_time_stats.playoff_games - all_time_stats.playoff_wins}`}
                     subtitle={`${playoffWinPercentage}% playoff win rate`}
                 />
-                <StatCard
-                    title="Weekly Records"
+                <FantasyStatCard
+                    label="High / Low Weeks"
                     value={`${all_time_stats.high_point_weeks}H / ${all_time_stats.low_point_weeks}L`}
-                    subtitle="High/Low point weeks"
                 />
-                <StatCard
-                    title="Points For"
+                <FantasyStatCard
+                    label="Points For"
                     value={all_time_stats.total_points_for.toFixed(2)}
                     subtitle={`${(all_time_stats.total_points_for / all_time_stats.total_seasons).toFixed(2)} Avg Per Season`}
                 />
-                <StatCard
-                    title="Points Against"
+                <FantasyStatCard
+                    label="Points Against"
                     value={all_time_stats.total_points_against.toFixed(2)}
                     subtitle={`${(all_time_stats.total_points_against / all_time_stats.total_seasons).toFixed(2)} Avg Per Season`}
                 />
@@ -222,18 +213,18 @@ export default function Manager() {
     const all_time_stats = allTime?.find((manager) => manager.name.toLowerCase() === manager_name.toLowerCase());
 
     return (
-        <div className="flex justify-center w-full">
-            <div className="flex m-3 flex-col w-full max-w-[64rem]">
-                <Breadcrumbs className="pb-3">
-                    <BreadcrumbItem href="/fantasy_football/all_time">League History</BreadcrumbItem>
+        <div className="w-full">
+            <FantasyMain>
+                <Breadcrumbs className="mb-3">
+                    <BreadcrumbItem href="/fantasy_football">League History</BreadcrumbItem>
                     <BreadcrumbItem>{capitalizeFirstLetter(all_time_stats?.name ?? "")}</BreadcrumbItem>
                 </Breadcrumbs>
                 
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-end">
+                <div className="mb-7 flex flex-col items-start justify-between gap-4 md:flex-row md:items-end">
                     <div className="flex items-center gap-4">
                         <ManagerAvatar id={manager_id} name={manager_name} className="h-14 w-14 text-lg" />
                         <div>
-                            <h1 className="font-display text-5xl italic">{manager_name}</h1>
+                            <h1 className="font-display text-[32px] leading-none">{manager_name}</h1>
                             <p className="font-mono text-xs uppercase tracking-wide text-ink-muted">{all_time_stats?.total_seasons} Seasons</p>
                         </div>
                     </div>
@@ -242,19 +233,19 @@ export default function Manager() {
                 {all_time_stats && <ManagerStats all_time_stats={all_time_stats} />}
 
                 {seasons && (
-                    <div className="mt-6">
-                        <h2 className="mb-3 font-display text-4xl italic">Season History</h2>
+                    <div className="mt-9">
+                        <FantasySectionHeading>Season History</FantasySectionHeading>
                         <SeasonTable seasons={seasons} />
                     </div>
                 )}
 
                 {opponents && (
-                    <div className="mt-6">
-                        <h2 className="mb-3 font-display text-4xl italic">Head-to-Head Records</h2>
+                    <div className="mt-9">
+                        <FantasySectionHeading>Head-to-Head Records</FantasySectionHeading>
                         <OpponentTable opponents={opponents} manager_id={manager_id} />
                     </div>
                 )}
-            </div>
+            </FantasyMain>
         </div>
     );
 }

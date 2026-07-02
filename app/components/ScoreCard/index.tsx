@@ -3,6 +3,36 @@ import { Database } from "../../../db_types";
 import { capitalizeFirstLetter } from "~/utils/helpers";
 import ManagerAvatar from "~/components/ManagerAvatar";
 
+const TeamLogoOrAvatar = ({
+    logo,
+    teamName,
+    managerName,
+}: {
+    logo?: string | null;
+    teamName: string | null | undefined;
+    managerName: string | null | undefined;
+}) => {
+    const [hasLogoError, setHasLogoError] = React.useState(false);
+
+    if (logo && !hasLogoError) {
+        return (
+            <img
+                className="h-10 w-10 rounded-full object-cover"
+                src={logo}
+                alt={`${teamName ?? managerName ?? "Team"} logo`}
+                onError={() => setHasLogoError(true)}
+            />
+        );
+    }
+
+    return (
+        <ManagerAvatar
+            name={managerName}
+            className="h-10 w-10 text-sm"
+        />
+    );
+};
+
 const ScoreCard = ({
     matchup,
     showDate
@@ -22,14 +52,14 @@ const ScoreCard = ({
     const isAwayWinner = !matchup.is_bye_week && (matchup.away_score ?? 0) > matchup.home_score;
 
     return (
-        <div className="max-w-md w-full mb-3">
+        <div className="w-full">
             {showDate && (
-                <div className="mb-1.5 px-3">
-                    <span className="text-sm font-medium">
+                <div className="mb-2 flex flex-wrap items-center gap-2">
+                    <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.06em] text-zinc-600 dark:text-zinc-400">
                         Week {matchup.week}, {matchup.year}
                     </span>
                     {(playoffMatchup || toiletBowl) && (
-                        <span className={`ml-2 text-xs px-2 py-0.5 rounded-full ${
+                        <span className={`rounded-full px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-[0.06em] ${
                             playoffMatchup ? 'bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-100' : 
                             'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200'
                         }`}>
@@ -39,7 +69,7 @@ const ScoreCard = ({
                 </div>
             )}
             
-            <div className="flex flex-col gap-2 p-3 rounded-lg bg-gray-50 dark:bg-zinc-900 shadow-sm dark:shadow-none">
+            <div className="flex flex-col gap-2 rounded-lg border-[1.5px] border-line-muted bg-paper-muted p-3 dark:bg-zinc-900">
                 {/* Home Team */}
                 <div className="flex items-center justify-between group">
                     <div className="flex items-center gap-2">
@@ -50,18 +80,11 @@ const ScoreCard = ({
                                 </div>
                             )}
                             <div className="w-10 h-10 flex items-center justify-center">
-                                {matchup.home_logo ? (
-                                    <img 
-                                        className="w-10 h-10 rounded-lg object-cover" 
-                                        src={matchup.home_logo} 
-                                        alt={`${matchup.home_team} logo`}
-                                    />
-                                ) : (
-                                    <ManagerAvatar
-                                        name={matchup.home_manager_name}
-                                        className="h-10 w-10 text-sm"
-                                    />
-                                )}
+                                <TeamLogoOrAvatar
+                                    logo={matchup.home_logo}
+                                    teamName={matchup.home_team}
+                                    managerName={matchup.home_manager_name}
+                                />
                             </div>
                         </div>
                         <div className="flex flex-col">
@@ -73,7 +96,7 @@ const ScoreCard = ({
                                     <span className="text-sm">{homeTeamIcon}</span>
                                 )}
                             </div>
-                            <span className="text-sm text-gray-600 dark:text-gray-400">
+                            <span className="text-sm text-zinc-600 dark:text-zinc-400">
                                 {capitalizeFirstLetter(matchup.home_manager_name)}
                             </span>
                         </div>
@@ -86,7 +109,7 @@ const ScoreCard = ({
                 </div>
 
                 {/* Divider */}
-                <div className="border-t border-gray-100 dark:border-zinc-800" />
+                <div className="border-t border-dashed border-line-muted" />
 
                 {/* Away Team */}
                 <div className="flex items-center justify-between group">
@@ -98,18 +121,11 @@ const ScoreCard = ({
                                 </div>
                             )}
                             <div className="w-10 h-10 flex items-center justify-center">
-                                {matchup.away_logo && !matchup.is_bye_week ? (
-                                    <img 
-                                        className="w-10 h-10 rounded-lg object-cover" 
-                                        src={matchup.away_logo} 
-                                        alt={`${matchup.away_team} logo`}
-                                    />
-                                ) : (
-                                    <ManagerAvatar
-                                        name={matchup.is_bye_week ? "Bye Week" : matchup.away_manager_name}
-                                        className="h-10 w-10 text-sm"
-                                    />
-                                )}
+                                <TeamLogoOrAvatar
+                                    logo={matchup.is_bye_week ? null : matchup.away_logo}
+                                    teamName={matchup.is_bye_week ? "Bye Week" : matchup.away_team}
+                                    managerName={matchup.is_bye_week ? "Bye Week" : matchup.away_manager_name}
+                                />
                             </div>
                         </div>
                         <div className="flex flex-col">
@@ -121,7 +137,7 @@ const ScoreCard = ({
                                     <span className="text-sm">{awayTeamIcon}</span>
                                 )}
                             </div>
-                            <span className="text-sm text-gray-600 dark:text-gray-400">
+                            <span className="text-sm text-zinc-600 dark:text-zinc-400">
                                 {capitalizeFirstLetter(matchup.is_bye_week ? "Bye Week" : matchup.away_manager_name)}
                             </span>
                         </div>
@@ -147,7 +163,7 @@ export const ScoreCardGroup = ({
     showDate?: boolean
 }) => {
     return (
-        <div className="flex flex-wrap justify-around gap-3 p-3">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {matchups.map((matchup, index: number) => (
                 <ScoreCard 
                     key={`${matchup.home_team}-${matchup.away_team}-${index}`} 
@@ -155,7 +171,6 @@ export const ScoreCardGroup = ({
                     showDate={showDate}
                 />
             ))}
-            {!!(matchups.length % 2) && <div className="flex-none max-w-md w-full mb-2"/>}
         </div>
     );
 };

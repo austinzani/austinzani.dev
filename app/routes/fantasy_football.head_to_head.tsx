@@ -9,6 +9,12 @@ import {Database} from "../../db_types";
 import {ScoreCardGroup} from "~/components/ScoreCard";
 import {BreadcrumbItem, Breadcrumbs} from "~/components/Breadcrumb";
 import ManagerAvatar from "~/components/ManagerAvatar";
+import ErrorState from "~/components/ErrorState";
+import {
+    FantasyMain,
+    FantasyPanel,
+    FantasySectionHeading,
+} from "~/components/FantasyFootballUI";
 
 interface loaderData {
     error: string | null,
@@ -81,14 +87,14 @@ const StatRow = ({ leftValue, rightValue, label, isHigherBetter = true }: StatRo
         ((isHigherBetter && rightNum > leftNum) || (!isHigherBetter && rightNum < leftNum));
 
     return (
-        <div className="flex items-center py-2 transition-colors hover:bg-accent-soft">
-            <div className={`flex-1 text-right ${leftWins ? 'font-medium text-emerald-600 dark:text-emerald-400' : 'text-ink-muted'}`}>
+        <div className="flex items-center py-2">
+            <div className={`flex-1 text-right ${leftWins ? 'font-semibold text-accent' : 'text-ink-muted'}`}>
                 {leftValue}
             </div>
             <div className="w-32 px-2 text-center font-mono text-xs uppercase tracking-wide text-ink-muted">
                 {label}
             </div>
-            <div className={`flex-1 text-left ${rightWins ? 'font-medium text-emerald-600 dark:text-emerald-400' : 'text-ink-muted'}`}>
+            <div className={`flex-1 text-left ${rightWins ? 'font-semibold text-accent' : 'text-ink-muted'}`}>
                 {rightValue}
             </div>
         </div>
@@ -98,6 +104,10 @@ const StatRow = ({ leftValue, rightValue, label, isHigherBetter = true }: StatRo
 const HeadToHeadStats = ({ head_to_head }: {
     head_to_head: Database['public']['CompositeTypes']['head_to_head_object'][]
 }) => {
+    if (head_to_head.length < 2) {
+        return <ErrorState message="No head-to-head record is available for this manager pair." />;
+    }
+
     const team_one_manager = capitalizeFirstLetter(head_to_head[0].name);
     const team_two_manager = capitalizeFirstLetter(head_to_head[1].name);
     const { managers } = useFootballContext();
@@ -116,22 +126,22 @@ const HeadToHeadStats = ({ head_to_head }: {
         games > 0 ? ((wins / games) * 100).toFixed(1) + '%' : '0%';
 
     return (
-        <div className="border-2 border-dashed border-line bg-paper-muted p-6">
-            <div className="flex items-center mb-4">
+        <FantasyPanel className="mb-8 rounded-[10px] border-line p-6">
+            <div className="mb-5 flex items-center">
                 <Link 
                     to={`/fantasy_football/manager/${team_one_id}`}
-                    className="flex flex-1 items-center justify-end gap-3 pr-4 text-right font-display text-4xl italic transition-colors hover:text-accent hover:underline"
+                    className="flex flex-1 items-center justify-end gap-3 pr-4 text-right font-display text-[26px] leading-none text-ink no-underline transition-colors hover:text-accent dark:text-zinc-50"
                     prefetch="intent"
                 >
                     <span>{team_one_manager}</span>
                     <ManagerAvatar id={team_one_id} name={team_one_manager} className="h-11 w-11 text-sm" />
                 </Link>
-                <div className="w-16 text-center font-mono text-xs uppercase tracking-wide text-ink-muted">
+                <div className="w-11 text-center text-[15px] text-zinc-500">
                     vs
                 </div>
                 <Link 
                     to={`/fantasy_football/manager/${team_two_id}`}
-                    className="flex flex-1 items-center gap-3 pl-4 text-left font-display text-4xl italic transition-colors hover:text-accent hover:underline"
+                    className="flex flex-1 items-center gap-3 pl-4 text-left font-display text-[26px] leading-none text-ink no-underline transition-colors hover:text-accent dark:text-zinc-50"
                     prefetch="intent"
                 >
                     <ManagerAvatar id={team_two_id} name={team_two_manager} className="h-11 w-11 text-sm" />
@@ -196,7 +206,7 @@ const HeadToHeadStats = ({ head_to_head }: {
                     label="Seasons"
                 />
             </div>
-        </div>
+        </FantasyPanel>
     );
 };
 
@@ -206,19 +216,21 @@ export default function Manager() {
     const team_one_manager = managers.find((manager) => manager.id === team_one_id)?.name ?? "";
     const team_two_manager = managers.find((manager) => manager.id === team_two_id)?.name ?? "";
     return (
-        <div className={'flex justify-center w-full'}>
-            <div className={'flex m-3 flex-col w-full max-w-[64rem]'}>
-                <Breadcrumbs className={"pb-3"}>
-                    <BreadcrumbItem href={`/fantasy_football/all_time`}>League History</BreadcrumbItem>
+        <div className="w-full">
+            <FantasyMain>
+                <Breadcrumbs className="mb-3">
+                    <BreadcrumbItem href={`/fantasy_football`}>League History</BreadcrumbItem>
                     <BreadcrumbItem href={`/fantasy_football/manager/${team_one_id}`}>{capitalizeFirstLetter(team_one_manager)}</BreadcrumbItem>
                     <BreadcrumbItem>{`vs. ${capitalizeFirstLetter(team_two_manager)}`}</BreadcrumbItem>
                 </Breadcrumbs>
-                {headToHead && <HeadToHeadStats head_to_head={headToHead}/>}
-                <h1 className={"pb-2 pt-4 font-display text-4xl italic"}>Matchup History</h1>
-                <div className={"flex flex-wrap justify-around"}>
+                {headToHead?.length ? (
+                    <HeadToHeadStats head_to_head={headToHead}/>
+                ) : (
+                    <ErrorState message={error ?? "No head-to-head record is available for this manager pair."} />
+                )}
+                <FantasySectionHeading>Matchup History</FantasySectionHeading>
                 {matchups && <ScoreCardGroup matchups={matchups} showDate={true}/>}
-                </div>
-            </div>
+            </FantasyMain>
         </div>
     );
 }

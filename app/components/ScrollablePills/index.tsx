@@ -41,17 +41,17 @@ export default function ScrollablePills({ items, selectedKey, onSelectionChange 
             
             <div 
                 ref={scrollRef}
-                className="flex gap-2 overflow-x-auto no-scrollbar w-full"
+                className="flex w-full gap-2.5 overflow-x-auto no-scrollbar"
                 onScroll={checkScroll}
             >
                 {items.map((item) => (
                     <button
                         key={item.key}
                         onClick={() => onSelectionChange(item.key)}
-                        className={`rounded-full border border-dashed px-3 py-1 font-mono text-xs uppercase tracking-wide whitespace-nowrap transition-colors
+                        className={`whitespace-nowrap rounded-full border-[1.5px] px-4 py-2.5 font-mono text-[12px] font-semibold uppercase tracking-[0.05em] transition-colors
                             ${selectedKey === item.key 
-                                ? 'border-accent bg-accent-soft text-ink' 
-                                : 'border-line-muted bg-surface text-ink-muted hover:border-accent hover:text-ink'
+                                ? 'border-zinc-900 bg-zinc-900 text-white dark:border-zinc-100 dark:bg-zinc-100 dark:text-black' 
+                                : 'border-zinc-300 bg-zinc-100 text-zinc-600 hover:border-zinc-500 hover:text-zinc-950 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-zinc-500 dark:hover:text-zinc-50'
                             }`}
                     >
                         {item.value}

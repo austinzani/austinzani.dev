@@ -1,122 +1,159 @@
-const sideProjects = [
+const facts = [
   {
-    name: "Spritz",
-    description:
-      "An iOS cocktail companion for tracking a home bar, matching available recipes, and getting unstuck with an AI mixologist.",
-    href: "https://apps.apple.com/us/search?term=Spritz%20Austin%20Zani",
+    label: "Family",
+    value: "Cath, Anderson, Quinn & Callan",
   },
   {
-    name: "Tides",
-    description:
-      "A daily reflection app for noticing emotional rhythms through simple, intentional check-ins.",
-    href: "https://apps.apple.com/us/search?term=Tides%20Journal%20Austin%20Zani",
+    label: "Employer",
+    value: "Pay Theory",
+  },
+  {
+    label: "Collecting",
+    value: "Vinyl, 10+ yrs",
   },
 ];
 
 const teams = [
-  "Celtics",
-  "Bengals",
-  "Bearcats",
+  "Boston Celtics",
+  "Cincinnati Bengals",
+  "UC Bearcats",
   "UT Vols",
   "FC Cincinnati",
-  "Reds",
+  "Cincinnati Reds",
   "Newcastle United",
+];
+
+const tags = [
+  { label: "Cincinnati, OH", className: "-rotate-2 border-ink text-ink" },
+  { label: "Pay Theory", className: "rotate-[1.5deg] border-ink text-ink" },
+  { label: "Music Lover", className: "-rotate-1 border-accent text-accent" },
+  { label: "Avid Sports Fan", className: "rotate-2 border-ink text-ink" },
+];
+
+const sideProjects = [
+  {
+    catalog: "Cat. 01",
+    name: "Spritz",
+    description:
+      "Discover cocktails, generate recipes with AI, and mix with what you already have.",
+    href: "https://apps.apple.com/app/id6748970457",
+    icon: "https://www.usespritz.app/assets/brand/app-icon-320.png",
+  },
+  {
+    catalog: "Cat. 02",
+    name: "Tides",
+    description:
+      "A beautifully simple journal that helps you reflect, grow, and understand your emotional journey.",
+    href: "https://apps.apple.com/app/id6746660968",
+    icon: "https://www.usetides.app/app-icon.png",
+  },
 ];
 
 const About = () => {
   return (
-    <div className="flex w-full justify-center px-4 py-12">
-      <article className="grid w-full max-w-5xl gap-8 lg:grid-cols-[0.75fr_1fr]">
-        <aside className="h-fit border-2 border-dashed border-line bg-accent-soft p-6">
-          <p className="font-mono text-xs font-semibold uppercase tracking-wide text-accent">
-            About
-          </p>
-          <h1 className="mt-4 font-display text-6xl italic leading-none md:text-7xl">
-            Hello, I&apos;m Austin Zani.
-          </h1>
-          <p className="mt-6 text-lg leading-relaxed text-ink-muted">
-            Software developer in Cincinnati, husband to Cath, and dad to
-            Anderson, Quinn, and Callan.
-          </p>
-        </aside>
+    <div className="w-full px-[clamp(18px,5vw,64px)] pb-[100px] pt-[clamp(36px,7vw,96px)]">
+      <article className="max-w-[1196px]">
+        <p className="zine-kicker mb-3.5">
+          File No. 001 — Subject
+        </p>
+        <h1 className="zine-page-title mb-5">
+          Austin Zani
+        </h1>
 
-        <div className="space-y-6">
-          <section className="border-2 border-dashed border-line bg-surface p-6">
-            <h2 className="font-mono text-sm font-semibold uppercase tracking-wide text-accent">
-              Life
-            </h2>
-            <div className="mt-4 space-y-4 text-lg leading-relaxed text-ink-muted">
-              <p>
-                I&apos;m a software developer based in Cincinnati, Ohio. I care
-                about building useful products with clear interfaces, durable
-                systems, and enough personality to feel made by a person.
-              </p>
-              <p>
-                Music is a big part of my life. I love discovering new artists,
-                going to concerts, and collecting vinyl.
-              </p>
-            </div>
-          </section>
-
-          <section className="border-2 border-dashed border-line bg-surface p-6">
-            <h2 className="font-mono text-sm font-semibold uppercase tracking-wide text-accent">
-              Teams
-            </h2>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {teams.map((team) => (
-                <span
-                  key={team}
-                  className="rounded-full border border-dashed border-line-muted bg-paper-muted px-3 py-1 font-mono text-xs uppercase tracking-wide text-ink"
-                >
-                  {team}
-                </span>
-              ))}
-            </div>
-          </section>
-
-          <section className="border-2 border-dashed border-line bg-surface p-6">
-            <h2 className="font-mono text-sm font-semibold uppercase tracking-wide text-accent">
-              Work
-            </h2>
-            <div className="mt-4 space-y-4 text-lg leading-relaxed text-ink-muted">
-              <p>
-                I completed Tech Elevator in 2020 and have worked across
-                JavaScript, TypeScript, React, Python, AWS, Swift, and SwiftUI.
-              </p>
-              <p>
-                I currently work as a Developer at Pay Theory, building payment
-                tools that help platforms support more inclusive ways to pay.
-              </p>
-            </div>
-          </section>
-
-          <section className="border-2 border-dashed border-line bg-surface p-6">
-            <h2 className="font-mono text-sm font-semibold uppercase tracking-wide text-accent">
-              Side Projects
-            </h2>
-            <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              {sideProjects.map((project) => (
-                <a
-                  key={project.name}
-                  href={project.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group block border border-dashed border-line-muted bg-paper p-4 transition hover:border-accent hover:bg-accent-soft"
-                >
-                  <h3 className="font-display text-3xl italic text-ink">
-                    {project.name}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-ink-muted">
-                    {project.description}
-                  </p>
-                  <p className="mt-4 font-mono text-xs font-semibold uppercase tracking-wide text-accent">
-                    App Store
-                  </p>
-                </a>
-              ))}
-            </div>
-          </section>
+        <div className="mb-[46px] flex flex-wrap gap-2.5">
+          {tags.map((tag) => (
+            <span
+              key={tag.label}
+              className={`zine-tag ${tag.className}`}
+            >
+              {tag.label}
+            </span>
+          ))}
         </div>
+
+        <div className="mb-[60px] flex flex-wrap gap-[clamp(24px,4vw,56px)] lg:grid lg:grid-cols-[430px_minmax(0,730px)] lg:gap-10">
+          <div className="flex w-full flex-col gap-3.5 lg:w-auto lg:gap-5">
+            {facts.map((fact) => (
+              <div
+                key={fact.label}
+                className="flex justify-between gap-2 border-b border-dotted border-line-muted pb-2 lg:pb-3"
+              >
+                <span className="zine-ledger-label">
+                  {fact.label}
+                </span>
+                <span className="zine-ledger-value text-right">
+                  {fact.value}
+                </span>
+              </div>
+            ))}
+            <div className="flex justify-between gap-2">
+              <span className="zine-ledger-label flex-shrink-0">
+                Teams
+              </span>
+              <div className="flex flex-col gap-1.5 text-right lg:gap-2">
+                {teams.map((team) => (
+                  <span key={team} className="zine-ledger-value">
+                    {team}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="min-w-[280px] flex-1">
+            <p className="zine-lede mb-[18px]">
+              I&apos;m a software developer based in Cincinnati — husband to
+              Cath, dad to Anderson, Quinn, and Callan. I worked the Apple
+              Store floor back when the original iPhone still felt like magic,
+              which is what pulled me into building software in the first place.
+            </p>
+            <p className="zine-lede">
+              These days I build payment tooling at Pay Theory, and everything
+              else — the league, the music ranking, the two apps below — happens
+              after the kids are asleep. When I&apos;m not building, I&apos;m
+              rooting for the UC Bearcats, holding season tickets for the
+              Bengals, and never missing a Celtics game.
+            </p>
+          </div>
+        </div>
+
+        <section className="border-t border-dashed border-line-muted pt-2">
+          <h2 className="zine-catalog-heading py-3.5">
+            Side Projects — Catalog
+          </h2>
+
+          {sideProjects.map((project) => (
+            <div
+              key={project.name}
+              className="grid grid-cols-[64px_54px_minmax(0,1fr)] items-center gap-x-4 gap-y-3 border-b border-dashed border-line-muted py-[22px] md:flex md:flex-wrap md:gap-5 lg:py-9"
+            >
+              <span className="zine-catalog-heading flex-shrink-0 text-accent">
+                {project.catalog}
+              </span>
+              <img
+                src={project.icon}
+                alt={`${project.name} app icon`}
+                className="h-[54px] w-[54px] flex-shrink-0 rounded-[13px] object-cover lg:h-24 lg:w-24 lg:rounded-[22px]"
+              />
+              <div className="min-w-[200px] flex-1">
+                <h3 className="zine-catalog-title mb-1">
+                  {project.name}
+                </h3>
+                <p className="zine-catalog-body">
+                  {project.description}
+                </p>
+              </div>
+              <a
+                href={project.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="zine-catalog-action col-start-3 w-fit flex-shrink-0 md:col-start-auto"
+              >
+                App Store →
+              </a>
+            </div>
+          ))}
+        </section>
       </article>
     </div>
   );

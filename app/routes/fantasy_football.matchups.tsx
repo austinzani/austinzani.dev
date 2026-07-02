@@ -1,110 +1,17 @@
-import {Link, useLoaderData} from "@remix-run/react";
-import React from "react";
-import supabase from "~/utils/supabase";
+import { redirect, type LoaderFunctionArgs } from "@remix-run/node";
 
-import type {LoaderFunctionArgs} from "@remix-run/node";
-import {Database} from "../../db_types";
-import {ScoreCardGroup} from "~/components/ScoreCard";
-import {ChevronLeftIcon, ChevronRightIcon} from "@heroicons/react/24/solid";
-import { Breadcrumbs, BreadcrumbItem} from "~/components/Breadcrumb";
-import IconButton from "~/components/IconButton";
-import EmptyState from "~/components/EmptyState";
-import ErrorState from "~/components/ErrorState";
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+  const url = new URL(request.url);
+  const year = url.searchParams.get("year");
+  const week = url.searchParams.get("week") ?? "1";
 
-interface loaderData {
-    error: string | null,
-    matchups: null | Database['public']['CompositeTypes']['game_details'][],
-    season: null | Database['public']['Tables']['season']['Row']
-    year: number,
-    week: number
-}
+  if (!year) {
+    return redirect("/fantasy_football");
+  }
 
-export const loader = async ({request}: LoaderFunctionArgs): Promise<loaderData> => {
-    const url = new URL(request.url);
-    const year = url.searchParams.get("year");
-    const week = url.searchParams.get("week");
-    if (year && week) {
-        const year_int = parseInt(year);
-        const week_int = parseInt(week);
-        if (!year_int || !week_int) {
-            // TODO: Route them back to the all time page
-        }
-        const [matchups, season] = await Promise.all([
-            supabase.rpc('week_matchups', {selected_week: week_int, season_year: year_int}),
-            supabase.from('season').select().eq('year', year_int).maybeSingle()])
+  return redirect(`/fantasy_football/season/${year}?view=week-by-week&week=${week}`);
+};
 
-        const {data: weekResponse, error: weekError} = matchups
-        const {data: seasonResponse, error: seasonError} = season
-        if (weekError || seasonError) {
-            // Todo: Route them back to the all time page
-        }
-        return {
-            error: null,
-            matchups: weekResponse,
-            season: seasonResponse,
-            year: year_int,
-            week: week_int
-        }
-    }
-    return {
-        error: "Invalid Year or Week",
-        matchups: null,
-        season: null,
-        year: 0,
-        week: 0
-    }
-}
-
-type paginationButtonProps = {
-    to: string,
-    disabled: boolean,
-    icon: 'chevron-left' | 'chevron-right'
-}
-
-const PaginationButton = ({to, disabled, icon}: paginationButtonProps) => {
-    return <IconButton link={to} internal icon={icon} disabled={disabled} />
-}
-
-export default function WeekMatchups() {
-    const {error, matchups, year, week, season} = useLoaderData<loaderData>()
-    const isPlayoffs = week > (season?.regular_season_weeks ?? 13)
-    const winnersBracket = matchups?.filter(matchup => matchup.is_winners_bracket && matchup.is_playoffs && !matchup.is_bye_week)
-    const losersBracket = matchups?.filter(matchup => (!matchup.is_winners_bracket || !matchup.is_playoffs) && !matchup.is_bye_week)
-    return (
-        <div className={'flex justify-center w-full'}>
-            <div className={'flex m-3 flex-col w-full max-w-[64rem]'}>
-                <Breadcrumbs className={"pb-3"}>
-                    <BreadcrumbItem href={`/fantasy_football/season/${year}`}>Season History</BreadcrumbItem>
-                    <BreadcrumbItem href={`/fantasy_football/season/${year}`}>Matchups</BreadcrumbItem>
-                </Breadcrumbs>
-                <div className={"mb-4 flex flex-col gap-3 border-2 border-dashed border-line bg-paper-muted p-4 sm:flex-row sm:items-center sm:justify-between"}>
-                    <div className={"flex w-full justify-between sm:justify-start sm:w-auto items-center"}>
-                        <h1 className={"pr-2 font-display text-5xl italic"}>{`${year}: Week ${week}`}</h1>
-                        <div className={"flex"}>
-                            <PaginationButton to={`?year=${year}&week=${week - 1}`} disabled={week === 1} icon="chevron-left"/>
-                            <PaginationButton to={`?year=${year}&week=${week + 1}`} disabled={week === season?.total_weeks} icon="chevron-right"/>
-                        </div>
-                    </div>
-                    <p className="font-mono text-xs uppercase tracking-wide text-ink-muted">High point / low point markers shown on cards</p>
-                </div>
-                    {error ? <ErrorState message={error} /> : null}
-                    {matchups && matchups.length === 0 ? (
-                        <EmptyState title="No matchups" message="No games are available for this week." />
-                    ) : null}
-                    {(matchups && matchups.length > 0 && !isPlayoffs) && <ScoreCardGroup matchups={matchups}/>}
-                    {(matchups && isPlayoffs) && (
-                        <div className="space-y-6">
-                            <div>
-                                <h2 className="font-display text-4xl italic">Winners Bracket</h2>
-                                <ScoreCardGroup matchups={winnersBracket!} />
-                            </div>
-                            <div>
-                                <h2 className="font-display text-4xl italic">Consolation Matches</h2>
-                                <ScoreCardGroup matchups={losersBracket!}/>
-                            </div>
-                        </div>
-                    )}
-            </div>
-        </div>
-    );
+export default function WeekMatchupsRedirect() {
+  return null;
 }

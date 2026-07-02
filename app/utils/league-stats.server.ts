@@ -17,14 +17,21 @@ async function getLeagueStats() {
     "all_time"
   );
 
-  if (managerError || yearsError || allTimeError) {
+  const { count: matchupCount, error: matchupCountError } = await supabase
+    .from("game")
+    .select("*", { count: "exact", head: true })
+    .eq("is_bye_week", false);
+
+  if (managerError || yearsError || allTimeError || matchupCountError) {
     return {
-      error: managerError || yearsError || allTimeError,
+      error: managerError || yearsError || allTimeError || matchupCountError,
       managers: [],
       allTime: [],
       years: [],
       seasonCount: 0,
       activeTeamCount: 0,
+      teamSeasonCount: 0,
+      matchupCount: 0,
       latestChampionFirstName: null,
     };
   }
@@ -59,6 +66,12 @@ async function getLeagueStats() {
     seasonCount: yearsData?.length ?? 0,
     activeTeamCount:
       allTimeResponse?.filter((manager) => manager.is_active).length ?? 0,
+    teamSeasonCount:
+      allTimeResponse?.reduce(
+        (total, manager) => total + (manager.total_seasons ?? 0),
+        0
+      ) ?? 0,
+    matchupCount: matchupCount ?? 0,
     latestChampionFirstName,
   };
 }
