@@ -15,13 +15,13 @@ const facts = [
 ];
 
 const teams = [
-  "Boston Celtics",
-  "Cincinnati Bengals",
-  "UC Bearcats",
-  "UT Vols",
-  "FC Cincinnati",
-  "Cincinnati Reds",
-  "Newcastle United",
+  { name: "Boston Celtics", logo: "/images/teams/celtics.png" },
+  { name: "Cincinnati Bengals", logo: "/images/teams/bengals.png" },
+  { name: "UC Bearcats", logo: "/images/teams/bearcats.png" },
+  { name: "UT Vols", logo: "/images/teams/vols.png" },
+  { name: "FC Cincinnati", logo: "/images/teams/fc-cincinnati.png" },
+  { name: "Cincinnati Reds", logo: "/images/teams/reds.png" },
+  { name: "Newcastle United", logo: "/images/teams/newcastle.png" },
 ];
 
 const tags = [
@@ -98,8 +98,16 @@ const About = () => {
               </span>
               <div className="flex flex-col gap-1.5 text-right lg:gap-2">
                 {teams.map((team) => (
-                  <span key={team} className="zine-ledger-value">
-                    {team}
+                  <span
+                    key={team.name}
+                    className="zine-ledger-value inline-flex items-center justify-end gap-2"
+                  >
+                    {team.name}
+                    <img
+                      src={team.logo}
+                      alt={`${team.name} logo`}
+                      className="h-8 w-8 flex-shrink-0 object-contain"
+                    />
                   </span>
                 ))}
               </div>
