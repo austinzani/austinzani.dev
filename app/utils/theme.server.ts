@@ -10,7 +10,7 @@ if (!sessionSecret) {
 const themeStorage = createCookieSessionStorage({
     cookie: {
         name: 'my_remix_theme',
-        secure: true,
+        secure: process.env.NODE_ENV === 'production',
         secrets: [sessionSecret],
         sameSite: 'lax',
         path: '/',

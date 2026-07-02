@@ -4,8 +4,9 @@ const facts = [
     value: "Cath, Anderson, Quinn & Callan",
   },
   {
-    label: "Employer",
+    label: "Work",
     value: "Pay Theory",
+    subtitle: "Lead Engineer",
   },
   {
     label: "Collecting",
@@ -24,8 +25,8 @@ const teams = [
 ];
 
 const tags = [
-  { label: "Cincinnati, OH", className: "-rotate-2 border-ink text-ink" },
-  { label: "Pay Theory", className: "rotate-[1.5deg] border-ink text-ink" },
+  { label: "Cincinnati, OH", className: "-rotate-2 border-accent text-accent" },
+  { label: "Software Developer", className: "rotate-[1.5deg] border-ink text-ink" },
   { label: "Music Lover", className: "-rotate-1 border-accent text-accent" },
   { label: "Avid Sports Fan", className: "rotate-2 border-ink text-ink" },
 ];
@@ -81,8 +82,13 @@ const About = () => {
                 <span className="zine-ledger-label">
                   {fact.label}
                 </span>
-                <span className="zine-ledger-value text-right">
-                  {fact.value}
+                <span className="flex flex-col items-end text-right">
+                  <span className="zine-ledger-value">{fact.value}</span>
+                  {"subtitle" in fact && fact.subtitle ? (
+                    <span className="text-sm text-ink-muted">
+                      {fact.subtitle}
+                    </span>
+                  ) : null}
                 </span>
               </div>
             ))}

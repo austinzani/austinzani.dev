@@ -14,8 +14,11 @@ import {
     FantasySectionHeading,
     HighLowPair,
     fantasyTableBodyClass,
+    fantasyTableFrozenColWrapClass,
+    fantasyTableHeadHeightClass,
     fantasyTableHeadRowClass,
     fantasyTableRowClass,
+    fantasyTableRowHeightClass,
     fantasyTableShellClass,
 } from "~/components/FantasyFootballUI";
 
@@ -115,79 +118,97 @@ const AllTimeTable = ({
     const navigate = useNavigate();
     const { managers } = useFootballContext();
 
+    const visibleManagers = (allTime ?? []).filter(
+        (manager) => showAll || manager.is_active
+    );
+
     return (
-        <div className={fantasyTableShellClass}>
-            <table className="w-full min-w-[42rem] table-fixed">
+        <div className="flex items-start">
+            <table className={fantasyTableFrozenColWrapClass}>
                 <thead>
                     <tr className={fantasyTableHeadRowClass}>
-                        <th className="px-4 w-[185px] whitespace-nowrap cursor-default font-medium text-left">Manager</th>
-                        <th className="px-4 whitespace-nowrap cursor-default font-medium text-right">Manager Record</th>
-                        <th className="px-4 whitespace-nowrap cursor-default font-medium text-right min-w-32">
-                            Playoffs
-                        </th>
-                        <th className="px-4 whitespace-nowrap cursor-default font-medium text-right">
-                            Titles
-                        </th>
-                        <th className="px-4 hidden sm:table-cell whitespace-nowrap cursor-default font-medium text-right">
-                            High/Low Points
-                        </th>
+                        <th className={`px-4 whitespace-nowrap cursor-default font-medium text-left ${fantasyTableHeadHeightClass}`}>Manager</th>
                     </tr>
                 </thead>
                 <tbody className={fantasyTableBodyClass}>
-                    {allTime?.map((manager) => {
+                    {visibleManagers.map((manager) => {
                         const managerId = managers.find((m) => m.name.toLowerCase() === manager.name.toLowerCase())?.id;
-                        const winPercentage = manager.total_games > 0
-                            ? (manager.total_wins / manager.total_games).toFixed(3)
-                            : ".000";
-                        const row = (
+                        return (
                             <tr
                                 key={manager.name}
                                 onClick={() => navigate(`/fantasy_football/manager/${managerId}`)}
                                 className={fantasyTableRowClass}
                             >
-                                <td className="px-4 cursor-pointer whitespace-nowrap py-2 font-light text-left">
+                                <td className={`px-4 cursor-pointer whitespace-nowrap font-light text-left ${fantasyTableRowHeightClass}`}>
                                     <div className="flex items-center gap-3">
                                         <ManagerAvatar id={managerId} name={manager.name} className="h-9 w-9 text-xs" />
-                                        <div>
-                                            <div className="h-6 font-semibold">{capitalizeFirstLetter(manager.name)}</div>
-                                        </div>
+                                        <div className="font-semibold">{capitalizeFirstLetter(manager.name)}</div>
                                     </div>
-                                </td>
-                                <td className="px-4 cursor-pointer tabular-nums whitespace-nowrap py-1 text-right">
-                                    <div className="h-6 font-medium">
-                                        {winPercentage}
-                                    </div>
-                                    <div className="h-5 text-ink-muted text-sm">
-                                        {manager.total_wins}-{manager.total_games - manager.total_wins}
-                                    </div>
-                                </td>
-                                <td className="px-4 cursor-pointer whitespace-nowrap py-1 text-right">
-                                    <div className="h-6 font-medium">
-                                        {manager.playoff_births} Berths
-                                    </div>
-                                    <div className="h-5 text-ink-muted text-sm">
-                                        {manager.playoff_wins}-{manager.playoff_games - manager.playoff_wins}
-                                    </div>
-                                </td>
-                                <td className="px-4 cursor-pointer whitespace-nowrap py-1 text-right font-mono text-sm font-semibold text-accent">
-                                    {manager.championships > 0 ? "★".repeat(manager.championships) : "—"}
-                                </td>
-                                <td className="px-4 cursor-pointer hidden sm:table-cell whitespace-nowrap py-1 text-right rounded-r-lg">
-                                    <HighLowPair
-                                        high={manager.high_point_weeks}
-                                        low={manager.low_point_weeks}
-                                    />
                                 </td>
                             </tr>
                         );
-                        
-                        if (showAll || (!showAll && manager.is_active)) {
-                            return row;
-                        }
-                        return null;
                     })}
                 </tbody>
             </table>
+            <div className={`${fantasyTableShellClass} min-w-0 flex-1 pr-4 md:pr-0`}>
+                <table className="w-full">
+                    <thead>
+                        <tr className={fantasyTableHeadRowClass}>
+                            <th className={`px-4 whitespace-nowrap cursor-default font-medium text-right ${fantasyTableHeadHeightClass}`}>Record</th>
+                            <th className={`px-4 whitespace-nowrap cursor-default font-medium text-right ${fantasyTableHeadHeightClass}`}>
+                                Playoffs
+                            </th>
+                            <th className={`px-4 whitespace-nowrap cursor-default font-medium text-right ${fantasyTableHeadHeightClass}`}>
+                                Titles
+                            </th>
+                            <th className={`px-4 hidden sm:table-cell whitespace-nowrap cursor-default font-medium text-right ${fantasyTableHeadHeightClass}`}>
+                                High/Low Points
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody className={fantasyTableBodyClass}>
+                        {visibleManagers.map((manager) => {
+                            const managerId = managers.find((m) => m.name.toLowerCase() === manager.name.toLowerCase())?.id;
+                            const winPercentage = manager.total_games > 0
+                                ? (manager.total_wins / manager.total_games).toFixed(3)
+                                : ".000";
+                            return (
+                                <tr
+                                    key={manager.name}
+                                    onClick={() => navigate(`/fantasy_football/manager/${managerId}`)}
+                                    className={fantasyTableRowClass}
+                                >
+                                    <td className={`px-4 cursor-pointer tabular-nums whitespace-nowrap text-right ${fantasyTableRowHeightClass}`}>
+                                        <div className="font-medium">
+                                            {winPercentage}
+                                        </div>
+                                        <div className="text-ink-muted text-sm">
+                                            {manager.total_wins}-{manager.total_games - manager.total_wins}
+                                        </div>
+                                    </td>
+                                    <td className={`px-4 cursor-pointer whitespace-nowrap text-right ${fantasyTableRowHeightClass}`}>
+                                        <div className="font-medium">
+                                            {manager.playoff_births} Berths
+                                        </div>
+                                        <div className="text-ink-muted text-sm">
+                                            {manager.playoff_wins}-{manager.playoff_games - manager.playoff_wins}
+                                        </div>
+                                    </td>
+                                    <td className={`px-4 cursor-pointer whitespace-nowrap text-right font-mono text-sm font-semibold text-accent ${fantasyTableRowHeightClass}`}>
+                                        {manager.championships > 0 ? "★".repeat(manager.championships) : "—"}
+                                    </td>
+                                    <td className={`px-4 cursor-pointer hidden sm:table-cell whitespace-nowrap text-right ${fantasyTableRowHeightClass}`}>
+                                        <HighLowPair
+                                            high={manager.high_point_weeks}
+                                            low={manager.low_point_weeks}
+                                        />
+                                    </td>
+                                </tr>
+                            );
+                        })}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 };

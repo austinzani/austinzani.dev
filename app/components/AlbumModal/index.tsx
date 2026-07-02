@@ -35,10 +35,10 @@ const AlbumModal = ({ album, onClose }: AlbumModalProps) => {
           <button
             type="button"
             onClick={onClose}
-            className="absolute -right-3 -top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full border-2 border-surface bg-ink font-mono text-base font-bold text-paper shadow-lg transition hover:bg-accent hover:text-accent-ink"
+            className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full border border-line-muted bg-surface font-mono text-lg font-black leading-none text-ink shadow-md transition hover:border-line hover:bg-paper-muted"
             aria-label="Close album details"
           >
-            x
+            ×
           </button>
           <LazyImage
             src={album.artworkUrl}

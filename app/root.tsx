@@ -29,6 +29,7 @@ import NavHeader from "./components/NavHeader";
 export type LoaderData = {
   theme: Theme | null;
   accent: Accent | null;
+  navMemojiIndex: number;
 };
 
 export const meta: MetaFunction = () => {
@@ -56,6 +57,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   const data: LoaderData = {
     theme: themeSession.getTheme(),
     accent: accentSession.getAccent(),
+    navMemojiIndex: Math.floor(Math.random() * 7),
   };
 
   return data;
@@ -94,7 +96,7 @@ function App() {
     <html
       lang="en"
       data-accent={accent}
-      className={`w-full h-full ${theme || ""}`}
+      className={`w-full h-full overflow-x-hidden ${theme || ""}`}
     >
       <head>
         <meta charSet="utf-8" />
@@ -109,10 +111,10 @@ function App() {
       </head>
       <body
         className={
-          "zine-page min-h-screen w-full bg-paper text-ink font-body transition-colors"
+          "zine-page min-h-screen w-full overflow-x-hidden bg-paper text-ink font-body transition-colors"
         }
       >
-        <NavHeader />
+        <NavHeader memojiIndex={data.navMemojiIndex} />
         <main className="w-full">
           <Outlet />
         </main>

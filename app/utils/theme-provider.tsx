@@ -46,6 +46,7 @@ function ThemeProvider({
     })
 
     const persistTheme = useFetcher()
+    const hasUserSpecifiedThemeRef = React.useRef(Boolean(specifiedTheme))
     // TODO: remove this when persistTheme is memoized properly
     const persistThemeRef = React.useRef(persistTheme)
     React.useEffect(() => {
@@ -55,6 +56,7 @@ function ThemeProvider({
     React.useEffect(() => {
         const mediaQuery = window.matchMedia(prefersLightMQ)
         const handleChange = () => {
+            if (hasUserSpecifiedThemeRef.current) return
             setThemeState(mediaQuery.matches ? Theme.LIGHT : Theme.DARK)
         }
         mediaQuery.addEventListener('change', handleChange)
@@ -65,9 +67,10 @@ function ThemeProvider({
         (cb: Parameters<typeof setThemeState>[0]) => {
             const newTheme = typeof cb === 'function' ? cb(theme) : cb
             if (newTheme) {
+                hasUserSpecifiedThemeRef.current = true
                 persistThemeRef.current.submit(
                     {theme: newTheme},
-                    {action: 'action/set-theme', method: 'post'},
+                    {action: '/action/set-theme', method: 'post'},
                 )
             }
             setThemeState(newTheme)

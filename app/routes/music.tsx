@@ -410,10 +410,10 @@ const Music = () => {
             <button
               type="button"
               onClick={closeShuffle}
-              className="absolute -right-3 -top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full border-2 border-surface bg-ink font-mono text-base font-bold text-paper shadow-lg transition hover:bg-accent hover:text-accent-ink"
+              className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full border border-line-muted bg-surface font-mono text-lg font-black leading-none text-ink shadow-md transition hover:border-line hover:bg-paper-muted"
               aria-label="Close shuffle"
             >
-              x
+              ×
             </button>
             {shuffleStage === "picker" ? (
               <>
@@ -511,7 +511,7 @@ const Music = () => {
           </button>
         </div>
 
-        <div className="mb-9 inline-flex max-w-full self-start overflow-x-auto rounded-full bg-[#ececee] p-1 dark:bg-paper-muted">
+        <div className="mb-9 inline-flex max-w-full self-start overflow-x-auto rounded-full bg-paper-muted p-1">
           {mainTabs.map((tab) => (
             <button
               key={tab.key}
@@ -608,7 +608,7 @@ const Music = () => {
                 "upcoming" in albumObject ? (
                   <div
                     key={`${albumObject.year}-${albumObject.rank}`}
-                    className="aspect-square rounded-lg border border-dashed border-[#b8ab8d] bg-[#ececee] p-2 dark:bg-paper-muted"
+                    className="aspect-square rounded-lg border border-dashed border-line-muted bg-paper-muted p-2"
                   >
                     <div className="relative flex h-full w-full items-center justify-center rounded-md">
                       <svg

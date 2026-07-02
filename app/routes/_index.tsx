@@ -58,7 +58,7 @@ export default function Index() {
           Husband. Father. Bearcat. Builder.
         </h2>
         <p className="zine-lede mb-11 max-w-3xl">
-          Software developer in Cincinnati raising two kids, chasing a fantasy
+          Software developer in Cincinnati raising three kids, chasing a fantasy
           football title I never win, and ranking every album I’ve ever loved.
           This site is the record of all of it.
         </p>
@@ -71,8 +71,8 @@ export default function Index() {
               prefetch="intent"
               className={`group relative min-h-[214px] rounded border border-dashed p-6 pt-[26px] transition hover:-translate-y-1 ${card.className}`}
             >
-              <span className="absolute left-[-9px] top-1/2 h-[18px] w-[18px] -translate-y-1/2 rounded-full bg-white" />
-              <span className="absolute right-[-9px] top-1/2 h-[18px] w-[18px] -translate-y-1/2 rounded-full bg-white" />
+              <span className="absolute left-[-9px] top-1/2 h-[18px] w-[18px] -translate-y-1/2 rounded-full bg-paper" />
+              <span className="absolute right-[-9px] top-1/2 h-[18px] w-[18px] -translate-y-1/2 rounded-full bg-paper" />
               <p
                 className={`mb-3.5 font-mono text-xs font-semibold uppercase tracking-[0.1em] ${card.mutedClassName}`}
               >

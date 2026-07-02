@@ -21,8 +21,11 @@ import {
     FantasyStatCard,
     HighLowPair,
     fantasyTableBodyClass,
+    fantasyTableFrozenColWrapClass,
+    fantasyTableHeadHeightClass,
     fantasyTableHeadRowClass,
     fantasyTableRowClass,
+    fantasyTableRowHeightClass,
     fantasyTableShellClass,
 } from "~/components/FantasyFootballUI";
 
@@ -153,14 +156,11 @@ const SeasonTable = ({season}: { season: Database["public"]["CompositeTypes"]["s
     const {managers} = useFootballContext();
 
     return (
-        <div className={fantasyTableShellClass}>
-            <table className="w-full min-w-[44rem] table-fixed">
+        <div className="flex items-start">
+            <table className={fantasyTableFrozenColWrapClass}>
                 <thead>
                     <tr className={fantasyTableHeadRowClass}>
-                        <th className="px-4 w-[185px] whitespace-nowrap cursor-default font-medium text-left">Manager</th>
-                        <th className="px-4 whitespace-nowrap cursor-default font-medium text-right">Record</th>
-                        <th className="px-4 whitespace-nowrap cursor-default font-medium text-right min-w-32">Points</th>
-                        <th className="px-4 hidden lg:table-cell whitespace-nowrap cursor-default font-medium text-right">High/Low Points</th>
+                        <th className={`px-4 whitespace-nowrap cursor-default font-medium text-left ${fantasyTableHeadHeightClass}`}>Manager</th>
                     </tr>
                 </thead>
                 <tbody className={fantasyTableBodyClass}>
@@ -172,48 +172,72 @@ const SeasonTable = ({season}: { season: Database["public"]["CompositeTypes"]["s
                                 onClick={() => navigate(`/fantasy_football/manager/${managerId}`)}
                                 className={fantasyTableRowClass}
                             >
-                                <td className="px-4 cursor-pointer whitespace-nowrap py-2 font-light text-left">
+                                <td className={`px-4 cursor-pointer whitespace-nowrap font-light text-left ${fantasyTableRowHeightClass}`}>
                                     <div className="flex items-center gap-3">
                                         <ManagerAvatar id={managerId} name={manager.manager_name} className="h-9 w-9 text-xs" />
                                         <div>
-                                            <div className="h-6 font-semibold">{capitalizeFirstLetter(manager.manager_name)}</div>
-                                            <div className="h-5 text-accent text-sm">
+                                            <div className="font-semibold">{capitalizeFirstLetter(manager.manager_name)}</div>
+                                            <div className="text-accent text-sm">
                                                 {manager.championships ? "Champion" : "\u00A0"}
                                             </div>
                                         </div>
                                     </div>
-                                </td>
-                                <td className="px-4 cursor-pointer tabular-nums whitespace-nowrap py-1 text-right">
-                                    <div className="h-6 font-medium">
-                                        {manager.total_wins}-{manager.total_games - manager.total_wins}
-                                    </div>
-                                    {manager.playoff_wins > 0 || manager.playoff_games > 0 ? (
-                                        <div className="h-5 text-ink-muted text-sm">
-                                            Playoffs: {manager.playoff_wins}-{manager.playoff_games - manager.playoff_wins}
-                                        </div>
-                                    ) : (
-                                        <div className="h-5">{"\u00A0"}</div>
-                                    )}
-                                </td>
-                                <td className="px-4 cursor-pointer whitespace-nowrap py-1 text-right">
-                                    <div className="h-6 font-medium">
-                                        PF: {manager.total_points_for.toFixed(2)}
-                                    </div>
-                                    <div className="h-5 text-ink-muted text-sm">
-                                        PA: {manager.total_points_against.toFixed(2)}
-                                    </div>
-                                </td>
-                                <td className="px-4 cursor-pointer hidden lg:table-cell whitespace-nowrap py-1 text-right rounded-r-lg">
-                                    <HighLowPair
-                                        high={manager.high_point_weeks}
-                                        low={manager.low_point_weeks}
-                                    />
                                 </td>
                             </tr>
                         );
                     })}
                 </tbody>
             </table>
+            <div className={`${fantasyTableShellClass} min-w-0 flex-1 pr-4 md:pr-0`}>
+                <table className="w-full">
+                    <thead>
+                        <tr className={fantasyTableHeadRowClass}>
+                            <th className={`px-5 whitespace-nowrap cursor-default font-medium text-right ${fantasyTableHeadHeightClass}`}>Record</th>
+                            <th className={`px-5 whitespace-nowrap cursor-default font-medium text-right ${fantasyTableHeadHeightClass}`}>Points</th>
+                            <th className={`px-4 hidden lg:table-cell whitespace-nowrap cursor-default font-medium text-right ${fantasyTableHeadHeightClass}`}>High/Low Points</th>
+                        </tr>
+                    </thead>
+                    <tbody className={fantasyTableBodyClass}>
+                        {season?.map((manager) => {
+                            const managerId = managers.find((m) => m.name.toLowerCase() === manager.manager_name.toLowerCase())?.id;
+                            return (
+                                <tr
+                                    key={manager.manager_name}
+                                    onClick={() => navigate(`/fantasy_football/manager/${managerId}`)}
+                                    className={fantasyTableRowClass}
+                                >
+                                    <td className={`px-5 cursor-pointer tabular-nums whitespace-nowrap text-right ${fantasyTableRowHeightClass}`}>
+                                        <div className="font-medium">
+                                            {manager.total_wins}-{manager.total_games - manager.total_wins}
+                                        </div>
+                                        {manager.playoff_wins > 0 || manager.playoff_games > 0 ? (
+                                            <div className="text-ink-muted text-sm">
+                                                Playoffs: {manager.playoff_wins}-{manager.playoff_games - manager.playoff_wins}
+                                            </div>
+                                        ) : (
+                                            <div className="text-sm">{"\u00A0"}</div>
+                                        )}
+                                    </td>
+                                    <td className={`px-5 cursor-pointer whitespace-nowrap text-right ${fantasyTableRowHeightClass}`}>
+                                        <div className="font-medium">
+                                            PF: {manager.total_points_for.toFixed(2)}
+                                        </div>
+                                        <div className="text-ink-muted text-sm">
+                                            PA: {manager.total_points_against.toFixed(2)}
+                                        </div>
+                                    </td>
+                                    <td className={`px-4 cursor-pointer hidden lg:table-cell whitespace-nowrap text-right ${fantasyTableRowHeightClass}`}>
+                                        <HighLowPair
+                                            high={manager.high_point_weeks}
+                                            low={manager.low_point_weeks}
+                                        />
+                                    </td>
+                                </tr>
+                            );
+                        })}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 };

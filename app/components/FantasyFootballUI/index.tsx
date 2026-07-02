@@ -124,20 +124,26 @@ export const FantasySectionHeading = ({ children }: { children: ReactNode }) => 
 );
 
 export const fantasyTableShellClass =
-  "relative overflow-x-auto bg-paper dark:bg-zinc-950";
+  "relative overflow-x-auto overscroll-x-contain [-webkit-overflow-scrolling:touch] md:overflow-x-visible";
 
 export const fantasyTableClass = "w-full table-fixed";
 
 export const fantasyTableHeadRowClass =
-  "border-b-[1.5px] border-line font-mono text-[11px] font-semibold uppercase tracking-[0.06em] text-zinc-500 dark:border-zinc-500 dark:text-zinc-400";
+  "border-b-[1.5px] border-line bg-[color:color-mix(in_srgb,var(--color-surface)_58%,transparent)] font-mono text-[11px] font-semibold uppercase tracking-[0.06em] text-zinc-500 backdrop-blur-[1px] dark:border-zinc-500 dark:text-zinc-400";
 
 export const fantasyTableBodyClass = "divide-y divide-dashed divide-line-muted";
 
 export const fantasyTableRowClass =
-  "cursor-pointer transition hover:bg-accent-soft dark:hover:bg-zinc-900";
+  "group cursor-pointer bg-[color:color-mix(in_srgb,var(--color-surface)_34%,transparent)] transition hover:bg-[color:color-mix(in_srgb,var(--color-accent-soft)_55%,transparent)]";
+
+export const fantasyTableFrozenColWrapClass = "w-[230px] shrink-0";
+
+export const fantasyTableHeadHeightClass = "h-11 align-middle";
+
+export const fantasyTableRowHeightClass = "h-[52px] align-middle";
 
 export const HighLowPair = ({ high, low }: { high: ReactNode; low: ReactNode }) => (
-  <div className="inline-grid min-w-[86px] grid-cols-[auto_auto] gap-x-2 gap-y-0.5 rounded bg-paper-muted px-2 py-1 text-right font-mono text-[11px] font-semibold uppercase tracking-[0.04em] text-ink-muted dark:bg-zinc-900 dark:text-zinc-300">
+  <div className="inline-grid min-w-[86px] grid-cols-[auto_auto] gap-x-2 gap-y-0.5 rounded bg-[color:color-mix(in_srgb,var(--color-paper-muted)_70%,transparent)] px-2 py-1 text-right font-mono text-[11px] font-semibold uppercase tracking-[0.04em] text-ink-muted">
     <span>{high}</span>
     <span>High</span>
     <span>{low}</span>
