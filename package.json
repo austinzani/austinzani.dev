@@ -19,7 +19,6 @@
     "@fortawesome/free-regular-svg-icons": "^6.4.2",
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
-    "@heroicons/react": "^2.0.18",
     "@remix-run/node": "^2.2.0",
     "@remix-run/react": "^2.2.0",
     "@remix-run/v1-route-convention": "^0.1.4",
@@ -31,7 +30,6 @@
     "react": "^18.2.0",
     "react-aria": "^3.30.0",
     "react-dom": "^18.2.0",
-    "react-stately": "^3.28.0",
     "react-virtuoso": "^4.16.1",
     "zod": "^3.22.4"
   },

@@ -8,7 +8,7 @@ import {
     FantasyHero,
 } from "~/components/FantasyFootballUI";
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+export const loader = async (_: LoaderFunctionArgs) => {
     const leagueStats = await getLeagueStats();
     if (leagueStats.error) {
         return {

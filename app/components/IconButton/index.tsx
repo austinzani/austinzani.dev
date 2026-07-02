@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from '@remix-run/react';
 import { IconName, IconPrefix } from '@fortawesome/fontawesome-svg-core';
 import Icon from '../Icon';

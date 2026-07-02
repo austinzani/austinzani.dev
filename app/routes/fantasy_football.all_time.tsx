@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import {useState} from "react";
 import {useNavigate} from "@remix-run/react";
 import {redirect} from "@remix-run/node";
 
@@ -43,10 +43,9 @@ const AllTimeSummary = ({
     const byHighPoints = [...allTime].sort((a, b) => (b.high_point_weeks ?? 0) - (a.high_point_weeks ?? 0)).slice(0, 5);
     const byLowPoints = [...allTime].sort((a, b) => (b.low_point_weeks ?? 0) - (a.low_point_weeks ?? 0)).slice(0, 5);
 
-    const StatList = ({ title, data, getValue, getSubtitle }: {
+    const StatList = ({ title, data, getSubtitle }: {
         title: string,
         data: typeof allTime,
-        getValue: (item: typeof data[0]) => string,
         getSubtitle: (item: typeof data[0]) => string
     }) => (
         <div>
@@ -70,37 +69,31 @@ const AllTimeSummary = ({
                 <StatList
                     title="Championships"
                     data={byChampionships}
-                    getValue={(item) => capitalizeFirstLetter(item.name)}
                     getSubtitle={(item) => `${item.championships} titles`}
                 />
                 <StatList
                     title="Playoff Appearances"
                     data={byPlayoffs}
-                    getValue={(item) => capitalizeFirstLetter(item.name)}
                     getSubtitle={(item) => `${item.playoff_births} times`}
                 />
                 <StatList
                     title="High Points"
                     data={byHighPoints}
-                    getValue={(item) => capitalizeFirstLetter(item.name)}
                     getSubtitle={(item) => `${item.high_point_weeks} weeks`}
                 />
                 <StatList
                     title="Low Points"
                     data={byLowPoints}
-                    getValue={(item) => capitalizeFirstLetter(item.name)}
                     getSubtitle={(item) => `${item.low_point_weeks} weeks`}
                 />
                 <StatList
                     title="Most Transactions Per Season"
                     data={byTransactionsPerSeason.slice(0, 5)}
-                    getValue={(item) => capitalizeFirstLetter(item.name)}
                     getSubtitle={(item) => `${transactionsPerSeason(item).toFixed(2)}`}
                 />
                 <StatList
                     title="Least Transactions Per Season"
                     data={byTransactionsPerSeason.slice(-5).reverse()}
-                    getValue={(item) => capitalizeFirstLetter(item.name)}
                     getSubtitle={(item) => `${transactionsPerSeason(item).toFixed(2)}`}
                 />
             </div>

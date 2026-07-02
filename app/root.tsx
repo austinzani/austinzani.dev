@@ -8,7 +8,6 @@ import {
   ScrollRestoration,
   useLoaderData,
 } from "@remix-run/react";
-import React from "react";
 import { Theme } from "~/utils/theme-provider";
 import { getThemeSession } from "~/utils/theme.server";
 import { LoaderFunction } from "@remix-run/node";

@@ -37,7 +37,7 @@ export const FantasyHero = ({
 
       {metrics?.length ? (
         <div className="mt-[26px] flex flex-wrap border-t border-dashed border-zinc-700">
-          {metrics.map((metric, index) => (
+          {metrics.map((metric) => (
             <div
               key={metric.label}
               className="min-w-[120px] flex-1 border-zinc-700 px-5 pb-1 pt-[18px] sm:border-r last:border-r-0"
@@ -125,8 +125,6 @@ export const FantasySectionHeading = ({ children }: { children: ReactNode }) => 
 
 export const fantasyTableShellClass =
   "relative overflow-x-auto overscroll-x-contain [-webkit-overflow-scrolling:touch] md:overflow-x-visible";
-
-export const fantasyTableClass = "w-full table-fixed";
 
 export const fantasyTableHeadRowClass =
   "border-b-[1.5px] border-line bg-[color:color-mix(in_srgb,var(--color-surface)_58%,transparent)] font-mono text-[11px] font-semibold uppercase tracking-[0.06em] text-zinc-500 backdrop-blur-[1px] dark:border-zinc-500 dark:text-zinc-400";

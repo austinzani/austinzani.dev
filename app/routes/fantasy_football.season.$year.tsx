@@ -1,5 +1,5 @@
 import {useLoaderData, useNavigate, useSearchParams} from "@remix-run/react";
-import React, {useState} from "react";
+import {useState} from "react";
 import supabase from "~/utils/supabase";
 
 import {capitalizeFirstLetter} from "~/utils/helpers";

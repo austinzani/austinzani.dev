@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { Link, useLoaderData } from "@remix-run/react";
 import { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import AlbumModal, { AlbumModalDetails } from "~/components/AlbumModal";

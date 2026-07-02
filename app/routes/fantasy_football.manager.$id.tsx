@@ -1,5 +1,4 @@
-import {Link, useLoaderData, useNavigate} from "@remix-run/react";
-import React, {useState} from "react";
+import {useLoaderData, useNavigate} from "@remix-run/react";
 import supabase from "~/utils/supabase";
 
 import {capitalizeFirstLetter} from "~/utils/helpers";
@@ -207,7 +206,7 @@ const ManagerStats = ({
 };
 
 export default function Manager() {
-    const { error, seasons, opponents, manager_id } = useLoaderData<loaderData>();
+    const { seasons, opponents, manager_id } = useLoaderData<loaderData>();
     const { allTime, managers } = useFootballContext();
     const manager_name = capitalizeFirstLetter(managers?.find((manager) => manager.id === manager_id)?.name ?? "");
     const all_time_stats = allTime?.find((manager) => manager.name.toLowerCase() === manager_name.toLowerCase());
