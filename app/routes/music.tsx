@@ -645,9 +645,9 @@ const Music = () => {
                         shareUrl: `/music/story/${albumObject.year}?album=${albumObject.rank}`,
                       })
                     }
-                    className="group text-left"
+                    className="group flex h-full flex-col text-left"
                   >
-                    <div className="relative aspect-square overflow-hidden rounded-lg bg-paper-muted">
+                    <div className="relative aspect-square shrink-0 overflow-hidden rounded-lg bg-paper-muted">
                       <img
                         src={albumObject.album_art_url}
                         alt={`${albumObject.album} album artwork`}

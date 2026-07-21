@@ -31,7 +31,7 @@ const AlbumModal = ({ album, onClose }: AlbumModalProps) => {
   return (
     <Modal isOpen={Boolean(album)} closeModal={onClose}>
       {album ? (
-        <div className="relative max-h-[88vh] w-[min(88vw,24rem)] overflow-y-auto rounded-[10px] bg-surface p-6">
+        <div className="relative flex max-h-[calc(90dvh-1rem)] w-[min(88vw,24rem)] flex-col overflow-hidden rounded-[10px] bg-surface">
           <button
             type="button"
             onClick={onClose}
@@ -40,64 +40,66 @@ const AlbumModal = ({ album, onClose }: AlbumModalProps) => {
           >
             ×
           </button>
-          <LazyImage
-            src={album.artworkUrl}
-            alt={`${album.title} album artwork`}
-            className="h-full w-full object-cover"
-            containerClassName="mb-4 aspect-square overflow-hidden rounded-lg bg-paper-muted"
-          />
-          {album.eyebrow ? (
-            <p className="mb-2 font-mono text-xs font-semibold uppercase tracking-[0.06em] text-accent">
-              {album.eyebrow}
-            </p>
-          ) : null}
-          <h2 className="font-display text-4xl leading-none">{album.title}</h2>
-          <p className="mt-2 text-sm font-medium text-ink-muted">{album.artist}</p>
-          {album.blurb ? (
-            <p className="mt-4 border-l-2 border-accent pl-3 text-sm leading-relaxed text-ink-muted">
-              {album.blurb}
-            </p>
-          ) : null}
-          <div className="mt-5 flex flex-col gap-2">
-            {album.appleMusicUrl ? (
-              <a
-                href={album.appleMusicUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`${modalActionClassName} bg-gradient-to-r from-[#e64d70] to-[#a13a6f]`}
-              >
-                Listen on Apple Music
-              </a>
+          <div className="min-h-0 overflow-y-auto p-6">
+            <LazyImage
+              src={album.artworkUrl}
+              alt={`${album.title} album artwork`}
+              className="h-full w-full object-cover"
+              containerClassName="mb-4 aspect-square overflow-hidden rounded-lg bg-paper-muted"
+            />
+            {album.eyebrow ? (
+              <p className="mb-2 font-mono text-xs font-semibold uppercase tracking-[0.06em] text-accent">
+                {album.eyebrow}
+              </p>
             ) : null}
-            {album.spotifyUrl ? (
-              <a
-                href={album.spotifyUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`${modalActionClassName} bg-[#1DB954]`}
-              >
-                Listen on Spotify
-              </a>
+            <h2 className="font-display text-4xl leading-none">{album.title}</h2>
+            <p className="mt-2 text-sm font-medium text-ink-muted">{album.artist}</p>
+            {album.blurb ? (
+              <p className="mt-4 border-l-2 border-accent pl-3 text-sm leading-relaxed text-ink-muted">
+                {album.blurb}
+              </p>
             ) : null}
-            {album.vinylUrl ? (
-              <a
-                href={album.vinylUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`${modalActionClassName} bg-ink`}
-              >
-                Buy on Vinyl
-              </a>
-            ) : null}
-            {shareUrl ? (
-              <button
-                type="button"
-                onClick={() => navigator.clipboard?.writeText(shareUrl)}
-                className="rounded-lg border-[1.5px] border-line px-4 py-3 text-center font-mono text-xs font-semibold uppercase tracking-[0.04em] text-ink hover:bg-paper-muted"
-              >
-                Copy Share Link
-              </button>
-            ) : null}
+            <div className="mt-5 flex flex-col gap-2">
+              {album.appleMusicUrl ? (
+                <a
+                  href={album.appleMusicUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`${modalActionClassName} bg-gradient-to-r from-[#e64d70] to-[#a13a6f]`}
+                >
+                  Listen on Apple Music
+                </a>
+              ) : null}
+              {album.spotifyUrl ? (
+                <a
+                  href={album.spotifyUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`${modalActionClassName} bg-[#1DB954]`}
+                >
+                  Listen on Spotify
+                </a>
+              ) : null}
+              {album.vinylUrl ? (
+                <a
+                  href={album.vinylUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`${modalActionClassName} bg-ink`}
+                >
+                  Buy on Vinyl
+                </a>
+              ) : null}
+              {shareUrl ? (
+                <button
+                  type="button"
+                  onClick={() => navigator.clipboard?.writeText(shareUrl)}
+                  className="rounded-lg border-[1.5px] border-line px-4 py-3 text-center font-mono text-xs font-semibold uppercase tracking-[0.04em] text-ink hover:bg-paper-muted"
+                >
+                  Copy Share Link
+                </button>
+              ) : null}
+            </div>
           </div>
         </div>
       ) : null}

@@ -1023,12 +1023,12 @@ video {
   max-height: 80vh;
 }
 
-.max-h-\[88vh\] {
-  max-height: 88vh;
+.max-h-\[90dvh\] {
+  max-height: 90dvh;
 }
 
-.max-h-\[95\%\] {
-  max-height: 95%;
+.max-h-\[calc\(90dvh-1rem\)\] {
+  max-height: calc(90dvh - 1rem);
 }
 
 .min-h-0 {
