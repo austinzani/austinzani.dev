@@ -1,0 +1,78 @@
+# Tour de Sport — daily standings ingest (AUS-844).
+#
+# Runs scripts/ingest/run.mjs (see its header for full semantics) on a nightly
+# schedule, with a manual-dispatch button that accepts an optional sport filter
+# for targeted re-runs ("fixed one adapter, re-run just golf").
+#
+# ── Human setup (one-time, before this can run live) ─────────────────────────
+# 1. Add two repository secrets (Settings → Secrets and variables → Actions)
+#    with PRODUCTION values:
+#      SUPABASE_URL               — the project's API URL
+#      SUPABASE_SERVICE_ROLE_KEY  — the service-role key (ingest tables are
+#                                   service-role-only under RLS)
+# 2. Know the schedule caveats: the cron only runs from the DEFAULT branch, so
+#    it starts firing after this merges to main; and GitHub auto-disables
+#    scheduled workflows after 60 days without repo activity (spec's known
+#    caveat — the site's staleness badge is the detector if that ever bites).
+name: Ingest standings
+
+on:
+  # 10:00 UTC ≈ 05:00–06:00 US Eastern: the latest US finishes (West Coast
+  # NBA/NHL games) wrap by ~04:30 ET, so every sport's "today" is complete
+  # before the snapshot is taken.
+  schedule:
+    - cron: "0 10 * * *"
+  workflow_dispatch:
+    inputs:
+      sport:
+        description: "Optional sport_key filter (e.g. nhl). Empty = all sports."
+        type: string
+        required: false
+        default: ""
+
+# One ingest at a time: a manual dispatch queues behind (never races) the
+# nightly run. cancel-in-progress stays false so nothing is killed mid-write.
+concurrency:
+  group: tds-ingest
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      TDS_RUNNER: github-actions
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          # package.json engines says ">=14" but that predates this script;
+          # the ingest code uses modern Node ESM — pin the current LTS.
+          node-version: 22
+          cache: npm
+
+      # Full `npm ci`: the ingest script only needs runtime deps (dotenv,
+      # @supabase/supabase-js, zod — all in "dependencies"), but a plain ci is
+      # deterministic from the lockfile, avoids lifecycle-script surprises from
+      # --omit=dev, and the extra install time is trivial at this cadence.
+      - run: npm ci
+
+      # The job's pass/fail rule is exactly the script's exit code: it exits 0
+      # when at least one sport succeeded and 1 only when every attempted sport
+      # failed — a single broken adapter records a failed snapshot but does NOT
+      # mark this job red. No extra shell logic needed.
+      - name: Run ingest
+        env:
+          SPORT: ${{ inputs.sport }}
+        run: |
+          if [ -n "$SPORT" ]; then
+            npm run ingest -- --sport "$SPORT"
+          else
+            npm run ingest
+          fi
