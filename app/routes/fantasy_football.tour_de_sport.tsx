@@ -1,6 +1,6 @@
 import { json } from "@remix-run/node";
 import type { HeadersFunction, MetaFunction } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
 
 import ManagerAvatar from "~/components/ManagerAvatar";
 import {
@@ -10,6 +10,16 @@ import {
 } from "~/components/FantasyFootballUI";
 import { capitalizeFirstLetter } from "~/utils/helpers";
 import { createSupabaseServerClient } from "~/utils/supabase.server";
+import {
+  formatPoints,
+  formatRelativeTime,
+  isStaleFetchedAt,
+  rankScoreboardRows,
+} from "~/utils/tour_de_sport/scoreboard";
+import type {
+  ScoreboardRow,
+  ScoreboardSportEntry,
+} from "~/utils/tour_de_sport/scoreboard";
 import { TIER_RULE_SENTENCE } from "~/utils/tour_de_sport/tiers";
 import type { LockedInputs, SportTiers } from "~/utils/tour_de_sport/tiers";
 
@@ -63,6 +73,9 @@ const emptyState = {
   sports: [] as TourDeSportSport[],
   participants: [] as TourDeSportParticipant[],
   assignments: [] as TourDeSportAssignment[],
+  scoreboard: [] as ScoreboardRow[],
+  // Loader clock for SSR-stable staleness/relative-time rendering.
+  now: 0,
 };
 
 export const loader = async () => {
@@ -82,21 +95,31 @@ export const loader = async () => {
       return json(emptyState, { headers: { "Cache-Control": CACHE_CONTROL } });
     }
 
-    const [sportsResult, participantsResult] = await Promise.all([
-      supabase
-        .from("tds_sports")
-        .select("id, sport_key, name, sport_index, metric_mode, tiers, revealed_at")
-        .eq("season_id", season.id)
-        .order("sport_index", { ascending: true }),
-      supabase
-        .from("tds_participants")
-        .select("id, display_name, manager_id")
-        .eq("season_id", season.id)
-        .order("display_name", { ascending: true }),
-    ]);
+    const [sportsResult, participantsResult, scoreboardResult] =
+      await Promise.all([
+        supabase
+          .from("tds_sports")
+          .select("id, sport_key, name, sport_index, metric_mode, tiers, revealed_at")
+          .eq("season_id", season.id)
+          .order("sport_index", { ascending: true }),
+        supabase
+          .from("tds_participants")
+          .select("id, display_name, manager_id")
+          .eq("season_id", season.id)
+          .order("display_name", { ascending: true }),
+        // Anon RPC: totals over counted sports only, per-sport breakdown as
+        // jsonb. RLS keeps unrevealed sports' points null.
+        supabase.rpc("tds_scoreboard", { p_season_year: season.year }),
+      ]);
 
     const sports = sportsResult.data ?? [];
     const participants = participantsResult.data ?? [];
+    const scoreboard = (scoreboardResult.data ?? []).map((row) => ({
+      ...row,
+      // The jsonb column comes back as generic Json; narrow it to the shape
+      // the RPC documents.
+      sports: row.sports as unknown as ScoreboardSportEntry[],
+    })) as ScoreboardRow[];
 
     // Assignment reads are reveal-gated by RLS, so anonymous traffic sees
     // zero rows until the Draw reveals a sport — the board fills in sport by
@@ -123,6 +146,8 @@ export const loader = async () => {
         sports: sports as unknown as TourDeSportSport[],
         participants: participants as TourDeSportParticipant[],
         assignments,
+        scoreboard,
+        now: Date.now(),
       },
       { headers: { "Cache-Control": CACHE_CONTROL } }
     );
@@ -380,9 +405,13 @@ function RevealedAssignmentsSection({
                 <span className="font-mono text-xs font-semibold text-accent">
                   {String(sport.sport_index + 1).padStart(2, "0")}
                 </span>
-                <span className="font-display text-lg leading-tight text-ink dark:text-zinc-50">
+                <Link
+                  to={`/fantasy_football/tour_de_sport/${sport.sport_key}`}
+                  prefetch="intent"
+                  className="font-display text-lg leading-tight text-ink transition hover:text-accent dark:text-zinc-50"
+                >
                   {sport.name}
-                </span>
+                </Link>
               </div>
               <ul className="space-y-1.5">
                 {assignments
@@ -420,13 +449,144 @@ function RevealedAssignmentsSection({
   );
 }
 
+/**
+ * The season standings — rendered only once at least one Sport actually
+ * counts toward totals. Every row expands (native details, so the breakdown
+ * is server-rendered) into per-sport chips linking to the detail pages.
+ */
+function ScoreboardSection({
+  scoreboard,
+  now,
+}: {
+  scoreboard: ScoreboardRow[];
+  now: number;
+}) {
+  const ranked = rankScoreboardRows(scoreboard);
+  const sportEntries = scoreboard[0]?.sports ?? [];
+  const countedEntries = sportEntries.filter((sport) => sport.counted);
+  const fetchedTimes = countedEntries
+    .map((sport) => sport.fetched_at)
+    .filter((value): value is string => Boolean(value))
+    .sort();
+  const newestFetchedAt =
+    fetchedTimes.length > 0 ? fetchedTimes[fetchedTimes.length - 1] : null;
+  const anyStale = sportEntries.some(
+    (sport) => sport.revealed && isStaleFetchedAt(sport.fetched_at, now)
+  );
+
+  return (
+    <section className="mb-9">
+      <FantasySectionHeading>Scoreboard</FantasySectionHeading>
+      <p className="mb-4 max-w-[640px] text-[15px] leading-[1.7] text-ink-muted">
+        Every Participant, ranked by total points across the Sports that
+        count so far. Expand a row for the per-sport breakdown — each chip
+        opens that Sport's full board.
+      </p>
+      <div className="space-y-2">
+        {ranked.map((row) => (
+          <details
+            key={row.participant_id}
+            className="rounded-md border border-line-muted bg-paper-muted dark:bg-zinc-900"
+          >
+            <summary className="flex cursor-pointer select-none list-none items-center gap-3 p-3 [&::-webkit-details-marker]:hidden">
+              <span className="w-8 shrink-0 text-right font-mono text-sm font-semibold text-accent">
+                {row.tied ? `T${row.rank}` : row.rank}
+              </span>
+              <ManagerAvatar
+                id={row.manager_id ?? row.display_name}
+                name={row.display_name}
+                className="h-9 w-9 text-xs"
+              />
+              <span className="min-w-0 flex-1 truncate text-sm font-semibold text-ink dark:text-zinc-50">
+                {capitalizeFirstLetter(row.display_name)}
+              </span>
+              <span className="font-display text-2xl leading-none text-ink dark:text-zinc-50">
+                {formatPoints(row.total_points)}
+              </span>
+              <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.06em] text-ink-muted dark:text-zinc-400">
+                pts
+              </span>
+            </summary>
+            <div className="grid grid-cols-2 gap-2 border-t border-dashed border-line-muted p-3 sm:grid-cols-3 lg:grid-cols-4">
+              {row.sports.map((sport) => {
+                const stale =
+                  sport.revealed && isStaleFetchedAt(sport.fetched_at, now);
+                return (
+                  <Link
+                    key={sport.sport_key}
+                    to={`/fantasy_football/tour_de_sport/${sport.sport_key}`}
+                    prefetch="intent"
+                    className="flex items-center justify-between gap-2 rounded border border-line-muted bg-paper px-2.5 py-1.5 transition hover:border-accent dark:bg-zinc-950"
+                  >
+                    <span className="flex min-w-0 items-center gap-1.5">
+                      {stale ? (
+                        <span
+                          title="Data older than 48 hours"
+                          className="h-1.5 w-1.5 shrink-0 rounded-full bg-amber-500"
+                        />
+                      ) : null}
+                      <span className="min-w-0 truncate font-mono text-[11px] font-semibold uppercase tracking-[0.04em] text-ink-muted dark:text-zinc-400">
+                        {sport.name}
+                      </span>
+                    </span>
+                    {sport.counted ? (
+                      <span className="shrink-0 font-mono text-sm font-semibold text-ink dark:text-zinc-50">
+                        {formatPoints(sport.points)}
+                      </span>
+                    ) : (
+                      <span className="flex shrink-0 items-center gap-1.5">
+                        {sport.points !== null ? (
+                          <span className="font-mono text-xs text-ink-muted dark:text-zinc-400">
+                            {formatPoints(sport.points)}
+                          </span>
+                        ) : null}
+                        <span className="rounded border border-line-muted px-1 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.06em] text-ink-muted dark:text-zinc-400">
+                          Not yet counted
+                        </span>
+                      </span>
+                    )}
+                  </Link>
+                );
+              })}
+            </div>
+          </details>
+        ))}
+      </div>
+      <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-ink-muted dark:text-zinc-400">
+        <span>
+          {countedEntries.length} of {sportEntries.length} Sports counting
+          toward totals.
+        </span>
+        {newestFetchedAt ? (
+          <span>Last updated {formatRelativeTime(newestFetchedAt, now)}.</span>
+        ) : null}
+        {anyStale ? (
+          <span className="inline-flex items-center gap-1.5">
+            <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
+            Amber marks a Sport whose data is older than 48 hours.
+          </span>
+        ) : null}
+      </div>
+    </section>
+  );
+}
+
 export default function TourDeSport() {
-  const { season, sports, participants, assignments } =
+  const { season, sports, participants, assignments, scoreboard, now } =
     useLoaderData<typeof loader>();
   const cutoffLabel = formatCutoffDate(season?.cutoff_date);
+  // The scoreboard leads the page once any sport is actually counting; until
+  // then the landing stays the explainer it has always been.
+  const hasCountedSport = scoreboard.some((row) =>
+    row.sports.some((sport) => sport.counted)
+  );
 
   return (
     <FantasyMain>
+      {hasCountedSport ? (
+        <ScoreboardSection scoreboard={scoreboard} now={now} />
+      ) : null}
+
       <div className="mb-9 grid grid-cols-2 gap-3 lg:grid-cols-4">
         <FantasyStatCard
           label="Participants"
@@ -499,9 +659,11 @@ export default function TourDeSport() {
         {sports.length > 0 ? (
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
             {sports.map((sport) => (
-              <div
+              <Link
                 key={sport.id}
-                className="rounded-md border border-line-muted bg-paper-muted p-4 dark:bg-zinc-900"
+                to={`/fantasy_football/tour_de_sport/${sport.sport_key}`}
+                prefetch="intent"
+                className="block rounded-md border border-line-muted bg-paper-muted p-4 transition hover:border-accent dark:bg-zinc-900"
               >
                 <div className="mb-1.5 font-mono text-[11px] font-semibold text-accent">
                   {String(sport.sport_index + 1).padStart(2, "0")}
@@ -512,7 +674,7 @@ export default function TourDeSport() {
                 <div className="mt-1.5 text-xs leading-[1.5] text-ink-muted dark:text-zinc-400">
                   {metricModeLabel[sport.metric_mode]}
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         ) : (

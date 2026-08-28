@@ -1112,6 +1112,35 @@ export type Database = {
           isSetofReturn: true
         }
       }
+      tds_scoreboard: {
+        Args: { p_season_year: number }
+        Returns: {
+          display_name: string
+          manager_id: number
+          participant_id: number
+          sports: Json
+          total_points: number
+        }[]
+      }
+      tds_sport_scores: {
+        Args: { p_season_year: number; p_sport_key: string }
+        Returns: {
+          base_points: number
+          display_name: string
+          entity_id: number
+          entity_image_url: string
+          entity_name: string
+          fetched_at: string
+          metric_value: number
+          ordinal: number
+          overridden: boolean
+          override_reason: string
+          participant_id: number
+          points: number
+          real_rank: number
+          snapshot_date: string
+        }[]
+      }
       week_matchups: {
         Args: { season_year: number; selected_week: number }
         Returns: Database["public"]["CompositeTypes"]["game_details"][]

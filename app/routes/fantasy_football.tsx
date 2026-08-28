@@ -12,6 +12,7 @@ import {
     FantasyMenu,
     FantasyMenuBar,
 } from "~/components/FantasyFootballUI";
+import { TDS_SPORT_NAMES } from "~/utils/tour_de_sport/scoreboard";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
     const [leagueStats, memberStatus] = await Promise.all([
@@ -102,6 +103,22 @@ function getFantasyHeroCopy(pathname: string, latestChampionFirstName: string | 
             eyebrow: "Commissioner Console",
             title: "The Draw",
             subtitle: "Season Lock and the live sport-by-sport Draw. Commissioner only — everything run from here is final.",
+            showBack: true,
+        };
+    }
+
+    // Per-sport detail pages: the hero switch is pathname-only, so the sport
+    // name comes from the frozen key → name map; unknown keys fall through to
+    // the generic Tour de Sport hero (which the 404 boundary renders under).
+    const tourDeSportSegment = pathname
+        .split("/tour_de_sport/")[1]
+        ?.split("/")[0];
+    if (tourDeSportSegment && TDS_SPORT_NAMES[tourDeSportSegment]) {
+        return {
+            eyebrow: "Tour de Sport — Season 1",
+            title: TDS_SPORT_NAMES[tourDeSportSegment],
+            subtitle:
+                "One Sport's full board — every Participant's Entity, its real-world standing, and the points it pays toward the season total.",
             showBack: true,
         };
     }

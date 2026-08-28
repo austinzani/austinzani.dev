@@ -939,6 +939,10 @@ video {
   height: 0.25rem;
 }
 
+.h-1\.5 {
+  height: 0.375rem;
+}
+
 .h-10 {
   height: 2.5rem;
 }
@@ -1057,6 +1061,14 @@ video {
 
 .min-h-screen {
   min-height: 100vh;
+}
+
+.w-1 {
+  width: 0.25rem;
+}
+
+.w-1\.5 {
+  width: 0.375rem;
 }
 
 .w-10 {
@@ -1210,6 +1222,10 @@ video {
 
 .min-w-\[42rem\] {
   min-width: 42rem;
+}
+
+.min-w-\[680px\] {
+  min-width: 680px;
 }
 
 .min-w-\[86px\] {
@@ -1572,6 +1588,10 @@ video {
   row-gap: 0.125rem;
 }
 
+.gap-y-1 {
+  row-gap: 0.25rem;
+}
+
 .gap-y-3 {
   row-gap: 0.75rem;
 }
@@ -1800,6 +1820,11 @@ video {
   border-color: var(--color-accent);
 }
 
+.border-amber-500 {
+  --tw-border-opacity: 1;
+  border-color: rgb(245 158 11 / var(--tw-border-opacity));
+}
+
 .border-black {
   --tw-border-opacity: 1;
   border-color: rgb(0 0 0 / var(--tw-border-opacity));
@@ -1937,6 +1962,11 @@ video {
 .bg-amber-100 {
   --tw-bg-opacity: 1;
   background-color: rgb(254 243 199 / var(--tw-bg-opacity));
+}
+
+.bg-amber-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(245 158 11 / var(--tw-bg-opacity));
 }
 
 .bg-black {
@@ -2190,6 +2220,11 @@ video {
 .px-2 {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
+}
+
+.px-2\.5 {
+  padding-left: 0.625rem;
+  padding-right: 0.625rem;
 }
 
 .px-3 {
@@ -2512,6 +2547,10 @@ video {
   font-size: 34px;
 }
 
+.text-\[9px\] {
+  font-size: 9px;
+}
+
 .text-\[clamp\(28px\2c 4\.5vw\2c 40px\)\] {
   font-size: clamp(28px,4.5vw,40px);
 }
@@ -2690,6 +2729,11 @@ video {
 .text-amber-400 {
   --tw-text-opacity: 1;
   color: rgb(251 191 36 / var(--tw-text-opacity));
+}
+
+.text-amber-600 {
+  --tw-text-opacity: 1;
+  color: rgb(217 119 6 / var(--tw-text-opacity));
 }
 
 .text-amber-800 {
@@ -3444,6 +3488,11 @@ video {
   color: rgb(254 243 199 / var(--tw-text-opacity));
 }
 
+:is(.dark .dark\:text-amber-400) {
+  --tw-text-opacity: 1;
+  color: rgb(251 191 36 / var(--tw-text-opacity));
+}
+
 :is(.dark .dark\:text-black) {
   --tw-text-opacity: 1;
   color: rgb(0 0 0 / var(--tw-text-opacity));
@@ -3851,6 +3900,10 @@ video {
   .lg\:text-\[5rem\] {
     font-size: 5rem;
   }
+}
+
+.\[\&\:\:-webkit-details-marker\]\:hidden::-webkit-details-marker {
+  display: none;
 }
 
 .peer:checked ~ .peer-checked\:\[\&_\.radio-dot\]\:bg-orange-500 .radio-dot {
