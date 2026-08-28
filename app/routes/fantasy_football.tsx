@@ -97,6 +97,15 @@ function getFantasyHeroCopy(pathname: string, latestChampionFirstName: string | 
         };
     }
 
+    if (pathname.includes("/constitution")) {
+        return {
+            eyebrow: "League Governance",
+            title: "The Constitution",
+            subtitle: "The league's living rulebook. Fees, rosters, scoring, and the rules of play, amended each spring at the Town Hall.",
+            showBack: true,
+        };
+    }
+
     if (pathname.includes("/all_time")) {
         return {
             eyebrow: "Established 2011 — All-Time League",

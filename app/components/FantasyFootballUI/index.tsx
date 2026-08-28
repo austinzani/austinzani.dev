@@ -26,6 +26,7 @@ type FantasyMenuItem = {
 };
 
 const memberMenuItems: FantasyMenuItem[] = [
+  { label: "Constitution", to: "/fantasy_football/constitution" },
   { label: "Town Hall", to: "/fantasy_football/town_hall" },
   { label: "Rule Submission", to: "/fantasy_football/rule_submission" },
 ];
