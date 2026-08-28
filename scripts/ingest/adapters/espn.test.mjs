@@ -9,6 +9,7 @@ import { describe, expect, it } from "vitest";
 import { adapterResultSchema } from "../contract.mjs";
 import {
   deriveCompletedSeasonYear,
+  deriveSeason,
   espnAdapters,
   espnConfigs,
   pickFinalRankingWeek,
@@ -170,6 +171,44 @@ describe("espn final-poll week derivation", () => {
   });
 });
 
+// A LIVE poll may carry competition-style ties — the real 2026 preseason AP
+// poll has USC and BYU sharing #14 with #15 skipped — and the contract
+// explicitly allows shared raw ranks (scoring averages ties later). The
+// transform accepts that shape and still rejects a genuinely broken ordering.
+describe("espn rankings transform with tied poll ranks", () => {
+  const pollPayload = (currents) => ({
+    rankings: [
+      {
+        id: "1",
+        ranks: currents.map((current, i) => ({
+          current,
+          points: 100 - i,
+          team: { id: String(i + 1), location: `Town ${i + 1}`, name: "U" },
+        })),
+      },
+    ],
+  });
+
+  it("accepts competition-style ties (…, 14, 14, 16, …)", () => {
+    const currents = [...Array.from({ length: 13 }, (_, i) => i + 1), 14, 14, 16];
+    const result = transformRankings(espnConfigs.cfb, pollPayload(currents), FETCHED_FROM);
+    const ranks = result.entities.map((e) => e.rank);
+    expect(ranks).toEqual(currents);
+  });
+
+  it("rejects a rank skipping ahead without a tie", () => {
+    expect(() =>
+      transformRankings(espnConfigs.cfb, pollPayload([1, 3, 4]), FETCHED_FROM),
+    ).toThrow(/not a valid competition ranking/);
+  });
+
+  it("rejects a poll that does not start at rank 1", () => {
+    expect(() =>
+      transformRankings(espnConfigs.cfb, pollPayload([2, 3, 4]), FETCHED_FROM),
+    ).toThrow(/not a valid competition ranking/);
+  });
+});
+
 describe("espn completed-season derivation at league-calendar boundaries", () => {
   const derive = (key, date) =>
     deriveCompletedSeasonYear(espnConfigs[key].season, date);
@@ -213,5 +252,75 @@ describe("espn completed-season derivation at league-calendar boundaries", () =>
 
   it("rejects a malformed date", () => {
     expect(() => derive("nfl", "yesterday")).toThrow(/cannot derive/);
+  });
+});
+
+// The adapter rule: read the season IN PROGRESS (live standings / current
+// poll); only when no season is in progress read the last completed season's
+// finals. deriveSeason answers both the ESPN season label and which of the
+// two paths applies.
+describe("espn season derivation follows the season in progress", () => {
+  const derive = (key, date) => deriveSeason(espnConfigs[key].season, date);
+
+  it("nfl: in-season Sep-Feb, labeled by starting year", () => {
+    expect(derive("nfl", "2026-08-28")).toEqual({ seasonYear: 2025, inSeason: false });
+    expect(derive("nfl", "2026-09-10")).toEqual({ seasonYear: 2026, inSeason: true });
+    expect(derive("nfl", "2027-02-10")).toEqual({ seasonYear: 2026, inSeason: true });
+    expect(derive("nfl", "2027-03-01")).toEqual({ seasonYear: 2026, inSeason: false });
+  });
+
+  it("nba: in-season Oct-Jun, labeled by ending year", () => {
+    expect(derive("nba", "2026-08-28")).toEqual({ seasonYear: 2026, inSeason: false });
+    expect(derive("nba", "2026-10-25")).toEqual({ seasonYear: 2027, inSeason: true });
+    expect(derive("nba", "2027-06-15")).toEqual({ seasonYear: 2027, inSeason: true });
+    expect(derive("nba", "2027-07-01")).toEqual({ seasonYear: 2027, inSeason: false });
+  });
+
+  it("mls: in-season Feb-Dec, calendar-year label", () => {
+    expect(derive("mls", "2026-08-28")).toEqual({ seasonYear: 2026, inSeason: true });
+    // December playoffs still read the (final) 2026 regular-season table.
+    expect(derive("mls", "2026-12-05")).toEqual({ seasonYear: 2026, inSeason: true });
+    expect(derive("mls", "2027-01-15")).toEqual({ seasonYear: 2026, inSeason: false });
+    expect(derive("mls", "2027-02-20")).toEqual({ seasonYear: 2027, inSeason: true });
+  });
+
+  it("epl: in-season Aug-May, labeled by starting year", () => {
+    expect(derive("epl", "2026-08-28")).toEqual({ seasonYear: 2026, inSeason: true });
+    expect(derive("epl", "2027-05-15")).toEqual({ seasonYear: 2026, inSeason: true });
+    expect(derive("epl", "2027-06-10")).toEqual({ seasonYear: 2026, inSeason: false });
+    expect(derive("epl", "2027-07-31")).toEqual({ seasonYear: 2026, inSeason: false });
+  });
+
+  it("cfb: in-season Aug-Jan, labeled by starting year", () => {
+    expect(derive("cfb", "2026-08-28")).toEqual({ seasonYear: 2026, inSeason: true });
+    expect(derive("cfb", "2027-01-10")).toEqual({ seasonYear: 2026, inSeason: true });
+    expect(derive("cfb", "2027-02-01")).toEqual({ seasonYear: 2026, inSeason: false });
+  });
+
+  it("cbb: in-season Nov-Apr, labeled by ending year", () => {
+    expect(derive("cbb", "2026-08-28")).toEqual({ seasonYear: 2026, inSeason: false });
+    expect(derive("cbb", "2026-11-10")).toEqual({ seasonYear: 2027, inSeason: true });
+    expect(derive("cbb", "2027-04-01")).toEqual({ seasonYear: 2027, inSeason: true });
+    expect(derive("cbb", "2027-05-01")).toEqual({ seasonYear: 2027, inSeason: false });
+  });
+
+  it("on the 2027-08-07 cutoff the mid-flight sports read live, the completed ones their finals", () => {
+    // Mid-flight at the cutoff — frozen there by the game.
+    expect(derive("mls", "2027-08-07")).toEqual({ seasonYear: 2027, inSeason: true });
+    // Completed before the cutoff — the adapter reads their finals all
+    // summer (their game-freeze already happened at the final itself).
+    expect(derive("nfl", "2027-08-07")).toEqual({ seasonYear: 2026, inSeason: false });
+    expect(derive("nba", "2027-08-07")).toEqual({ seasonYear: 2027, inSeason: false });
+    expect(derive("cbb", "2027-08-07")).toEqual({ seasonYear: 2027, inSeason: false });
+    // epl/cfb August: their month windows already open for the NEXT season
+    // (2027-28 / 2027) — by cutoff day those sports are long since frozen at
+    // their finals by ingestion/status, so the adapter following the new
+    // season is correct under the uniform rule.
+    expect(derive("epl", "2027-08-07")).toEqual({ seasonYear: 2027, inSeason: true });
+    expect(derive("cfb", "2027-08-07")).toEqual({ seasonYear: 2027, inSeason: true });
+  });
+
+  it("rejects a malformed date", () => {
+    expect(() => derive("epl", "not-a-date")).toThrow(/cannot derive/);
   });
 });

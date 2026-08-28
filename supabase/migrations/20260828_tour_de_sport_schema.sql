@@ -442,29 +442,29 @@ ON CONFLICT (year) DO NOTHING;
 -- The 12 sports, in the spec's listed order (sport_index 0..11 — frozen; the
 -- draw's serpentine input; never renumbered after Season Lock).
 --
--- metric_mode reasoning against the 2027-08-07 cutoff:
---   nhl    final_prior — 2026-27 NHL season completes in June 2027; score its
---                        final standings (official NHL API, AUS-843).
---   mlb    live        — 2027 MLB regular season (Apr-Oct) is mid-flight at
---                        the cutoff; read live (MLB Stats API, AUS-846).
---   f1     live        — 2027 F1 championship (Mar-Dec) is mid-flight at the
---                        cutoff; read live (Jolpica, AUS-846).
---   nfl    final_prior — 2026 NFL season ended Feb 2027; the 2027 season
---                        starts after the cutoff (AUS-847).
---   nba    final_prior — 2026-27 NBA season completes June 2027 (AUS-847).
---   mls    final_prior — per AUS-847 the ESPN six all read the most recent
---                        completed season at the cutoff: the 2026 MLS table.
---   epl    final_prior — 2026-27 Premier League completes May 2027 (AUS-847).
---   cfb    final_prior — reads rankings/polls, not live standings; at the
---                        cutoff that is the completed-season/preseason poll
---                        (CFBD + ESPN rankings, AUS-847).
---   cbb    final_prior — AP poll, same posture as CFB (AUS-847).
---   nascar live        — 2027 Cup season (Feb-Nov) is mid-flight at the
---                        cutoff; CF live-points feed (AUS-848).
---   pga    live        — 2027 golf season is mid-flight at the cutoff; ESPN
---                        golf standings read live (AUS-848).
---   atp    live        — ATP world rankings roll weekly and are always
---                        current; read live at the cutoff (AUS-848).
+-- metric_mode reasoning against the 2027-08-07 cutoff — one question per
+-- sport: does the season being scored COMPLETE before the cutoff?
+--   final_prior — the season completes before the cutoff, so the sport is
+--                 scored at its natural FINAL (standings/table/poll):
+--     nhl  2026-27 season, finals complete June 2027 (NHL API, AUS-843).
+--     nfl  2026 season, ends Feb 2027; the 2027 season starts after the
+--          cutoff (AUS-847).
+--     nba  2026-27 season, completes June 2027 (AUS-847).
+--     epl  2026-27 Premier League, final table May 2027 (AUS-847).
+--     cfb  2026 season's final AP poll, published after the January 2027
+--          CFP (ESPN rankings, AUS-847).
+--     cbb  2026-27 season's final AP poll, published April 2027 (AUS-847).
+--   live        — the season being scored is MID-FLIGHT on the cutoff, so
+--                 the sport is frozen at whatever the standings say that
+--                 morning:
+--     mlb  2027 regular season (Apr-Oct) (MLB Stats API, AUS-846).
+--     mls  2027 season (Feb-Dec) — mid-flight at the cutoff exactly like
+--          MLB, frozen at the cutoff's league-wide points table.
+--     f1   2027 championship (Mar-Dec) (Jolpica, AUS-846).
+--     nascar 2027 Cup season (Feb-Nov) (CF live-points feed, AUS-848).
+--     pga  2027 golf season (ESPN golf standings, AUS-848).
+--     atp  world rankings roll weekly and are always current; frozen at
+--          the cutoff week's list (AUS-848).
 INSERT INTO public.tds_sports (season_id, sport_key, name, sport_index, metric_mode)
 SELECT seas.id, v.sport_key, v.name, v.sport_index, v.metric_mode::public.tds_metric_mode
 FROM public.tds_seasons seas
@@ -475,7 +475,7 @@ JOIN (
     ('f1',     'Formula 1',           2,  'live'),
     ('nfl',    'NFL',                 3,  'final_prior'),
     ('nba',    'NBA',                 4,  'final_prior'),
-    ('mls',    'MLS',                 5,  'final_prior'),
+    ('mls',    'MLS',                 5,  'live'),
     ('epl',    'Premier League',      6,  'final_prior'),
     ('cfb',    'College Football',    7,  'final_prior'),
     ('cbb',    'College Basketball',  8,  'final_prior'),

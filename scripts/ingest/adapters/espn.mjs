@@ -1,8 +1,14 @@
 // ESPN adapter family — one config-driven module covering six sports:
 // NFL, NBA, MLS, Premier League (epl), College Football (cfb), and College
-// Basketball (cbb). All six are metric_mode 'final_prior': at any run date
-// they read the most recent COMPLETED season — final standings for the four
-// team leagues, the final AP Top 25 poll for the two college sports.
+// Basketball (cbb).
+//
+// The uniform season rule, shared with every adapter in the family: read the
+// season IN PROGRESS (live standings for the four team leagues, the current
+// AP Top 25 for the two college sports); when no season is in progress, read
+// the most recently completed season's finals. A sport whose season completes
+// before the game's cutoff freezes naturally at its final; a sport mid-flight
+// on the cutoff is frozen there by ingestion/status — neither freeze lives in
+// this module.
 //
 // Endpoint variants (probed 2026-08-28 — evidence in the AUS-847 notes):
 //   standings  GET site.api.espn.com/apis/v2/sports/{path}/standings?season=Y
@@ -11,28 +17,35 @@
 //              long as `season` is pinned explicitly. The variant that DOES
 //              come back empty for soccer is
 //              site.web.api.espn.com/apis/v2/sports/soccer/{lg}/standings
-//              ?season=Y&level=1 (no `children` at all), and the common
-//              variant WITHOUT `season` snaps to the in-flight season —
-//              wrong for final_prior. So: common host, season always pinned.
+//              ?season=Y&level=1 (no `children` at all). We always pin the
+//              season we derived — the in-progress one in-season, the last
+//              completed one otherwise — never rely on the no-param default.
 //   rankings   GET site.api.espn.com/apis/site/v2/sports/{path}/rankings
-//              ?seasons=Y — its `weeks` index lists every published poll
-//              week; the LAST entry of a completed season is labeled
-//              "Final Rankings" (cfb: seasontype=3&weeks=1; cbb:
-//              seasontype=3&weeks=3). We re-request with that week pinned
-//              and read the AP Top 25 (id "1").
+//              ?seasons=Y — its `rankings` array carries the LATEST published
+//              poll of season Y (probed 2026-08-28: ?seasons=2026 returns the
+//              live 2026 preseason AP poll), which is exactly what an
+//              in-progress season reads. Its `weeks` index lists every
+//              published poll week; the LAST entry of a completed season is
+//              labeled "Final Rankings" (cfb: seasontype=3&weeks=1; cbb:
+//              seasontype=3&weeks=3) — for a completed season we re-request
+//              with that week pinned. Both paths read the AP Top 25 (id "1").
 //
 // College sources: ESPN rankings only — the build plan's CollegeFootballData
 // (CFBD) source is deliberately NOT used: it requires an API key (a new
 // secret) and the poll requirement is fully satisfied by ESPN's rankings
 // endpoint. Pool = the ranked 25 (>= the 14 participants).
 //
-// Season derivation is a pure calendar rule per league (mirrors the NHL
-// adapter's derive-the-completed-season approach, but ESPN has no season
-// index with end dates, so the league calendar is encoded as a month
-// boundary): once `boundaryMonth` is reached, the most recently completed
-// season is `year + onOrAfter`; before it, `year + before`. ESPN season
-// labels differ per league (NFL/CFB/soccer = starting year; NBA/CBB =
-// ending year) — the offsets bake that in. Unit-tested at the boundaries.
+// Season derivation is a pure calendar rule per league (ESPN has no season
+// index with end dates, so the league calendar is encoded in months). Two
+// parts, both unit-tested at the boundaries:
+//   - `inSeason` window {from, to, startYearOffset}: months when a season is
+//     in progress (wrapping year-end when to < from). Inside it the derived
+//     ESPN label is that in-progress season's.
+//   - completed-season boundary {boundaryMonth, onOrAfter, before}: outside
+//     the window, once `boundaryMonth` is reached the most recently
+//     completed season is `year + onOrAfter`; before it, `year + before`.
+// ESPN season labels differ per league (NFL/CFB/soccer = starting year;
+// NBA/CBB = ending year) — the offsets bake that in.
 
 const STANDINGS_HOST = "https://site.api.espn.com/apis/v2/sports";
 const RANKINGS_HOST = "https://site.api.espn.com/apis/site/v2/sports";
@@ -55,15 +68,49 @@ export const rankingsWeekUrl = (path, seasonYear, seasonType, week) =>
  * @param {string} todayIsoDate - "YYYY-MM-DD" (UTC)
  */
 export function deriveCompletedSeasonYear(rule, todayIsoDate) {
+  const { year, month } = parseIsoDate(todayIsoDate);
+  return month >= rule.boundaryMonth
+    ? year + rule.onOrAfter
+    : year + rule.before;
+}
+
+function parseIsoDate(todayIsoDate) {
   const match = /^(\d{4})-(\d{2})-\d{2}$/.exec(todayIsoDate);
   if (!match) {
     throw new Error(`espn: cannot derive season year from "${todayIsoDate}"`);
   }
-  const year = Number(match[1]);
-  const month = Number(match[2]);
-  return month >= rule.boundaryMonth
-    ? year + rule.onOrAfter
-    : year + rule.before;
+  return { year: Number(match[1]), month: Number(match[2]) };
+}
+
+/**
+ * Derive which ESPN season to read under the uniform rule: the season in
+ * progress when today falls in the league's `inSeason` month window, else
+ * the most recently completed season. Pure.
+ *
+ * Inside the window the in-progress label is `year + startYearOffset` for
+ * months in the window's opening (pre-New-Year) segment and one less after
+ * the wrap — starting-year-labeled leagues use offset 0, ending-year-labeled
+ * leagues offset 1, calendar-year leagues a non-wrapping window with 0.
+ *
+ * @param {{boundaryMonth: number, onOrAfter: number, before: number,
+ *          inSeason: {from: number, to: number, startYearOffset: number}}} rule
+ * @param {string} todayIsoDate - "YYYY-MM-DD" (UTC)
+ * @returns {{seasonYear: number, inSeason: boolean}}
+ */
+export function deriveSeason(rule, todayIsoDate) {
+  const { year, month } = parseIsoDate(todayIsoDate);
+  const { from, to, startYearOffset } = rule.inSeason;
+  const inWindow =
+    from <= to ? month >= from && month <= to : month >= from || month <= to;
+  if (!inWindow) {
+    return {
+      seasonYear: deriveCompletedSeasonYear(rule, todayIsoDate),
+      inSeason: false,
+    };
+  }
+  const seasonYear =
+    month >= from ? year + startYearOffset : year + startYearOffset - 1;
+  return { seasonYear, inSeason: true };
 }
 
 const statValue = (row, statName) => {
@@ -182,9 +229,11 @@ export function transformStandings(config, standingsPayload, fetchedFrom) {
 /**
  * Pick the final published poll week of a season from the rankings
  * endpoint's `weeks` index — the last entry, which for a completed season
- * is the postseason "Final Rankings" occurrence. Pure; throws when the
- * index is missing or the last entry is not a final/postseason week (a
- * mid-flight season — a final_prior adapter must never read one).
+ * is the postseason "Final Rankings" occurrence. Used only on the
+ * completed-season path; an in-progress season reads the latest poll from
+ * the unpinned index payload instead and never calls this. Pure; throws
+ * when the index is missing or the last entry is not a final/postseason
+ * week (i.e. the season turned out to be mid-flight).
  *
  * @param {{weeks: Array<{display: string, week: string, type: string}>}} indexPayload
  */
@@ -257,11 +306,17 @@ export function transformRankings(config, rankingsPayload, fetchedFrom) {
     })
     .sort((a, b) => a.rank - b.rank);
 
-  // A final AP poll is a unique contiguous 1..25.
+  // Poll ranks use standard competition ranking: a final poll is a unique
+  // contiguous 1..25, while a LIVE poll may share a rank across ties with
+  // the next rank(s) skipped (the 2026 preseason AP poll: 14, 14, 16). The
+  // contract allows shared raw ranks — scoring averages ties later — so
+  // validate exactly that shape: sorted, a rank never exceeds its 1-based
+  // position and never falls below the rank before it.
   entities.forEach((entity, index) => {
-    if (entity.rank !== index + 1) {
+    const floor = index === 0 ? 1 : entities[index - 1].rank;
+    if (entity.rank > index + 1 || entity.rank < floor) {
       throw new Error(
-        `${config.sportKey}: AP poll ranks are not a contiguous 1..${entities.length} ordering (saw ${entity.rank} at position ${index + 1})`,
+        `${config.sportKey}: AP poll ranks are not a valid competition ranking (saw ${entity.rank} at position ${index + 1})`,
       );
     }
   });
@@ -287,10 +342,15 @@ export function makeEspnAdapter(config) {
     sportKey: config.sportKey,
     async fetch() {
       const todayIsoDate = new Date().toISOString().slice(0, 10);
-      const seasonYear = deriveCompletedSeasonYear(config.season, todayIsoDate);
+      const { seasonYear, inSeason } = deriveSeason(config.season, todayIsoDate);
       if (config.mode === "rankings") {
         const indexUrl = rankingsIndexUrl(config.path, seasonYear);
         const index = await getJson(config.sportKey, indexUrl);
+        if (inSeason) {
+          // The season-pinned request with no week pin already carries the
+          // latest published poll of the in-progress season — read it directly.
+          return transformRankings(config, index, [indexUrl]);
+        }
         const final = pickFinalRankingWeek(index);
         const pollUrl = rankingsWeekUrl(
           config.path,
@@ -301,6 +361,8 @@ export function makeEspnAdapter(config) {
         const poll = await getJson(config.sportKey, pollUrl);
         return transformRankings(config, poll, [indexUrl, pollUrl]);
       }
+      // Standings: the same pinned-season URL serves both paths — in-season
+      // it is the live table, otherwise the completed season's final one.
       const url = standingsUrl(config.path, seasonYear);
       const payload = await getJson(config.sportKey, url);
       return transformStandings(config, payload, [url]);
@@ -308,65 +370,102 @@ export function makeEspnAdapter(config) {
   };
 }
 
-// Season rules: month >= boundaryMonth → year + onOrAfter, else year + before.
+// Season rules, per league:
+//   inSeason {from, to, startYearOffset} — months a season is in progress
+//     (wrapping year-end when to < from); inside it the in-progress label is
+//     year + startYearOffset in the opening segment, one less after the wrap.
+//   {boundaryMonth, onOrAfter, before} — outside the window, month >=
+//     boundaryMonth → completed season year + onOrAfter, else year + before.
 // Offsets encode each league's ESPN season label (NFL/CFB/soccer = starting
-// year; NBA/CBB = ending year) against its completion month.
+// year; NBA/CBB = ending year) against its calendar.
 export const espnConfigs = {
-  // NFL season Y runs Sep Y – Feb Y+1 (Super Bowl). From March, season Y-1
-  // is the last completed one; in Jan/Feb it is still Y-2.
+  // NFL season Y runs Sep Y – Feb Y+1 (Super Bowl); label = starting year.
+  // Offseason Mar–Aug reads season Y-1's finals.
   nfl: {
     sportKey: "nfl",
     path: "football/nfl",
     mode: "standings",
     rankRule: "winPercent",
     expectedCount: 32,
-    season: { boundaryMonth: 3, onOrAfter: -1, before: -2 },
+    season: {
+      boundaryMonth: 3,
+      onOrAfter: -1,
+      before: -2,
+      inSeason: { from: 9, to: 2, startYearOffset: 0 },
+    },
   },
-  // NBA season labeled by ending year, Finals wrap mid-June. From July,
-  // this calendar year's label is complete; before that, last year's.
+  // NBA season labeled by ending year, Oct – mid-June Finals. Offseason
+  // Jul–Sep reads the season that just completed.
   nba: {
     sportKey: "nba",
     path: "basketball/nba",
     mode: "standings",
     rankRule: "winPercent",
     expectedCount: 30,
-    season: { boundaryMonth: 7, onOrAfter: 0, before: -1 },
+    season: {
+      boundaryMonth: 7,
+      onOrAfter: 0,
+      before: -1,
+      inSeason: { from: 10, to: 6, startYearOffset: 1 },
+    },
   },
-  // MLS is single-calendar-year; the regular-season table (Decision Day) is
-  // final by early November. From December, this year's table is complete.
+  // MLS is single-calendar-year, late Feb – Dec (playoffs; the regular-season
+  // table is final at Decision Day in early November, so the December reads
+  // simply keep returning that final table). Only January is offseason.
   // No expectedCount — the league is still expanding (30 clubs in 2025).
   mls: {
     sportKey: "mls",
     path: "soccer/usa.1",
     mode: "standings",
     rankRule: "points",
-    season: { boundaryMonth: 12, onOrAfter: 0, before: -1 },
+    season: {
+      boundaryMonth: 12,
+      onOrAfter: 0,
+      before: -1,
+      inSeason: { from: 2, to: 12, startYearOffset: 0 },
+    },
   },
-  // Premier League season labeled by starting year, final table late May.
-  // From June, season Y-1 (e.g. 2025 = 2025-26) is the last completed one.
+  // Premier League season labeled by starting year, mid-Aug – late May.
+  // Offseason Jun–Jul reads season Y-1's final table.
   epl: {
     sportKey: "epl",
     path: "soccer/eng.1",
     mode: "standings",
     rankRule: "tableRank",
     expectedCount: 20,
-    season: { boundaryMonth: 6, onOrAfter: -1, before: -2 },
+    season: {
+      boundaryMonth: 6,
+      onOrAfter: -1,
+      before: -2,
+      inSeason: { from: 8, to: 5, startYearOffset: 0 },
+    },
   },
-  // CFB season labeled by starting year; CFP title game mid/late January.
-  // From February, season Y-1's final AP poll exists; in January, Y-2's.
+  // CFB season labeled by starting year; preseason AP poll lands in August,
+  // CFP title game mid/late January. Offseason Feb–Jul reads season Y-1's
+  // final poll.
   cfb: {
     sportKey: "cfb",
     path: "football/college-football",
     mode: "rankings",
-    season: { boundaryMonth: 2, onOrAfter: -1, before: -2 },
+    season: {
+      boundaryMonth: 2,
+      onOrAfter: -1,
+      before: -2,
+      inSeason: { from: 8, to: 1, startYearOffset: 0 },
+    },
   },
-  // CBB season labeled by ending year; championship + final AP poll early
-  // April. From May, this calendar year's label is complete.
+  // CBB season labeled by ending year; first polls in November, championship
+  // + final AP poll early April. Offseason May–Oct reads the completed one.
   cbb: {
     sportKey: "cbb",
     path: "basketball/mens-college-basketball",
     mode: "rankings",
-    season: { boundaryMonth: 5, onOrAfter: 0, before: -1 },
+    season: {
+      boundaryMonth: 5,
+      onOrAfter: 0,
+      before: -1,
+      inSeason: { from: 11, to: 4, startYearOffset: 1 },
+    },
   },
 };
 

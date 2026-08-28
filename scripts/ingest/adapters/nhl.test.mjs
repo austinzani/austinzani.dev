@@ -5,7 +5,11 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { adapterResultSchema } from "../contract.mjs";
-import { pickLastCompletedSeason, transformStandings } from "./nhl.mjs";
+import {
+  isNhlSeasonInProgress,
+  pickLastCompletedSeason,
+  transformStandings,
+} from "./nhl.mjs";
 
 const fixture = JSON.parse(
   readFileSync(
@@ -89,5 +93,28 @@ describe("nhl last-completed-season derivation", () => {
     expect(() => pickLastCompletedSeason(seasons, "2024-01-01")).toThrow(
       /no completed season/,
     );
+  });
+});
+
+// In-season (Oct-Jun) the adapter reads /v1/standings/now — the live table;
+// only in the offseason does it fall back to the last completed season's
+// final standings via the derivation above.
+describe("nhl in-season window (Oct-Jun)", () => {
+  it("is out of season through the summer", () => {
+    expect(isNhlSeasonInProgress("2026-07-15")).toBe(false);
+    expect(isNhlSeasonInProgress("2026-08-28")).toBe(false);
+    expect(isNhlSeasonInProgress("2026-09-30")).toBe(false);
+  });
+
+  it("is in season from October through June", () => {
+    expect(isNhlSeasonInProgress("2026-10-01")).toBe(true);
+    expect(isNhlSeasonInProgress("2026-12-15")).toBe(true);
+    expect(isNhlSeasonInProgress("2027-04-17")).toBe(true);
+    expect(isNhlSeasonInProgress("2027-06-30")).toBe(true);
+    expect(isNhlSeasonInProgress("2027-07-01")).toBe(false);
+  });
+
+  it("rejects a malformed date", () => {
+    expect(() => isNhlSeasonInProgress("soon")).toThrow(/cannot derive/);
   });
 });

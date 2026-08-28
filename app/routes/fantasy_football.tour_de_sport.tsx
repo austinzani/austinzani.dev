@@ -26,6 +26,7 @@ import type {
   ScoreboardRow,
   ScoreboardSportEntry,
 } from "~/utils/tour_de_sport/scoreboard";
+import { sportScoringShortLabel } from "~/utils/tour_de_sport/scoring-copy";
 import { TIER_RULE_SENTENCE } from "~/utils/tour_de_sport/tiers";
 import type { LockedInputs, SportTiers } from "~/utils/tour_de_sport/tiers";
 
@@ -201,13 +202,8 @@ function formatLockTimestamp(value: string) {
   return `${new Date(value).toISOString().replace("T", " ").slice(0, 16)} UTC`;
 }
 
-const metricModeLabel: Record<TourDeSportSport["metric_mode"], string> = {
-  live: "Live standings through the cutoff",
-  final_prior: "Most recent completed season",
-};
-
 const howItWorksParagraphs = [
-  "Everyone gets one Entity in each of the twelve Sports, dealt by a live Draw at the 2027 draft party. Strength Tiers keep the portfolios fair, a published seed proves nobody rigged it, and a revealed Sport is final.",
+  "Everyone gets one Entity in each of the twelve Sports, dealt by a live Draw at the draft party. Strength Tiers keep the portfolios fair, a published seed proves nobody rigged it, and a revealed Sport is final.",
   "Scoring is simple. Each Sport ranks the fourteen Entities by their real-world results: 14 points for first down to 1 for last, ties split the difference. Add up all twelve Sports and the biggest total wins the year.",
 ];
 
@@ -367,10 +363,12 @@ function DrawRecordSection({
  * cache varies per sport through the query string.
  */
 function SportsTabsSection({
+  season,
   sports,
   participants,
   assignments,
 }: {
+  season: TourDeSportSeason;
   sports: TourDeSportSport[];
   participants: TourDeSportParticipant[];
   assignments: TourDeSportAssignment[];
@@ -439,7 +437,12 @@ function SportsTabsSection({
             </Link>
           </div>
           <div className="mt-1 text-xs text-ink-muted dark:text-zinc-400">
-            {metricModeLabel[selectedSport.metric_mode]}
+            {sportScoringShortLabel(
+              selectedSport.sport_key,
+              season.year,
+              season.cutoff_date,
+              selectedSport.metric_mode
+            )}
           </div>
         </div>
         {sportAssignments.length > 0 ? (
@@ -696,8 +699,9 @@ export default function TourDeSport() {
         </section>
       ) : null}
 
-      {sports.length > 0 ? (
+      {season && sports.length > 0 ? (
         <SportsTabsSection
+          season={season}
           sports={sports}
           participants={participants}
           assignments={assignments}

@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   formatCutoffDate,
   sportScoringDescription,
+  sportScoringShortLabel,
 } from "./scoring-copy";
 
 describe("formatCutoffDate", () => {
@@ -41,5 +42,39 @@ describe("sportScoringDescription", () => {
   it("falls back by metric mode for unknown sports", () => {
     expect(sportScoringDescription("cricket", 2027, "2027-08-07", "live")).toContain("frozen on Aug 7, 2027");
     expect(sportScoringDescription("cricket", 2027, "2027-08-07", "final_prior")).toContain("most recent completed season");
+  });
+});
+
+describe("sportScoringShortLabel", () => {
+  it("labels the final-standings leagues", () => {
+    expect(sportScoringShortLabel("nfl", 2027, "2027-08-07")).toBe("Final 2026 standings");
+    expect(sportScoringShortLabel("nhl", 2027, "2027-08-07")).toBe("Final 2026-27 standings");
+    expect(sportScoringShortLabel("nba", 2027, "2027-08-07")).toBe("Final 2026-27 standings");
+    expect(sportScoringShortLabel("epl", 2027, "2027-08-07")).toBe("Final 2026-27 table");
+  });
+
+  it("labels the poll sports", () => {
+    expect(sportScoringShortLabel("cfb", 2027, "2027-08-07")).toBe("Final 2026 AP poll");
+    expect(sportScoringShortLabel("cbb", 2027, "2027-08-07")).toBe("Final 2026-27 AP poll");
+  });
+
+  it("labels the cutoff-frozen sports with the cutoff date", () => {
+    for (const key of ["mlb", "mls", "nascar", "pga", "f1"]) {
+      expect(sportScoringShortLabel(key, 2027, "2027-08-07")).toBe("Frozen Aug 7, 2027");
+    }
+    expect(sportScoringShortLabel("atp", 2027, "2027-08-07")).toBe("Rankings on Aug 7, 2027");
+  });
+
+  it("rolls every label forward with a new season row", () => {
+    expect(sportScoringShortLabel("nfl", 2028, "2028-08-06")).toBe("Final 2027 standings");
+    expect(sportScoringShortLabel("nhl", 2028, "2028-08-06")).toBe("Final 2027-28 standings");
+    expect(sportScoringShortLabel("cbb", 2028, "2028-08-06")).toBe("Final 2027-28 AP poll");
+    expect(sportScoringShortLabel("mlb", 2028, "2028-08-06")).toBe("Frozen Aug 6, 2028");
+    expect(sportScoringShortLabel("atp", 2028, "2028-08-06")).toBe("Rankings on Aug 6, 2028");
+  });
+
+  it("falls back by metric mode for unknown sports", () => {
+    expect(sportScoringShortLabel("cricket", 2027, "2027-08-07", "live")).toBe("Frozen Aug 7, 2027");
+    expect(sportScoringShortLabel("cricket", 2027, "2027-08-07", "final_prior")).toBe("Most recent completed season");
   });
 });

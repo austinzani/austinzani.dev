@@ -28,6 +28,7 @@ import type { SportScoreRow } from "~/utils/tour_de_sport/scoreboard";
 import {
   UNIVERSAL_SCORING_SENTENCE,
   sportScoringDescription,
+  sportScoringShortLabel,
 } from "~/utils/tour_de_sport/scoring-copy";
 
 // Public sport board: cache at the edge, serve stale while revalidating —
@@ -141,11 +142,6 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
   }
 };
 
-const metricModeLabel: Record<SportDetail["metric_mode"], string> = {
-  live: "Live standings through the cutoff",
-  final_prior: "Most recent completed season",
-};
-
 function formatMetricValue(value: number | null): string | null {
   if (value === null || value === undefined) return null;
   return String(Math.round(value * 1000) / 1000);
@@ -214,7 +210,15 @@ export default function TourDeSportSport() {
         <section>
           <FantasySectionHeading>The Board</FantasySectionHeading>
           <div className="mb-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-ink-muted dark:text-zinc-400">
-            <span>{metricModeLabel[sport.metric_mode]}.</span>
+            <span>
+              {sportScoringShortLabel(
+                sport.sport_key,
+                season.year,
+                season.cutoff_date,
+                sport.metric_mode
+              )}
+              .
+            </span>
             <span>
               {fetchedAt
                 ? `Data last updated ${formatRelativeTime(fetchedAt, now)}${

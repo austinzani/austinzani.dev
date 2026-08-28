@@ -1,11 +1,18 @@
 // NHL adapter — official NHL Web API (api-web.nhle.com).
 //
-// metric_mode for NHL is 'final_prior': we read the FINAL standings of the
-// most recent COMPLETED season, derived programmatically from the API's
-// season index so the next season's final standings take over automatically
-// once it completes. Two requests:
-//   1. GET /v1/standings-season            → every season's standingsEnd date
-//   2. GET /v1/standings/{standingsEnd}    → final standings for that season
+// The uniform season rule (shared with the ESPN family): read the season IN
+// PROGRESS; when no season is in progress, read the most recently completed
+// season's final standings. Concretely:
+//   in-season (Oct–Jun)  GET /v1/standings/now — the live standings. It only
+//                        comes back empty in the offseason (it currently
+//                        307-redirects to the last standings date then, but
+//                        we never rely on that — the month window keeps this
+//                        path in-season only), and an empty payload hard-
+//                        fails the run rather than recording a bad snapshot.
+//   offseason (Jul–Sep)  two requests, derived from the API's season index
+//                        so the next season takes over automatically:
+//     1. GET /v1/standings-season          → every season's standingsEnd date
+//     2. GET /v1/standings/{standingsEnd}  → final standings for that season
 //
 // The standings payload is a flat array of 32 rows already carrying
 // leagueSequence — the NHL's own league-wide ordering (points, then their
@@ -13,7 +20,24 @@
 
 const BASE_URL = "https://api-web.nhle.com/v1";
 const SEASONS_URL = `${BASE_URL}/standings-season`;
+const NOW_URL = `${BASE_URL}/standings/now`;
 const standingsUrl = (date) => `${BASE_URL}/standings/${date}`;
+
+/**
+ * Is an NHL season in progress (October through June)? Pure month rule —
+ * preseason games start early October and the Stanley Cup Final runs into
+ * late June.
+ *
+ * @param {string} todayIsoDate - "YYYY-MM-DD" (UTC)
+ */
+export function isNhlSeasonInProgress(todayIsoDate) {
+  const match = /^\d{4}-(\d{2})-\d{2}$/.exec(todayIsoDate);
+  if (!match) {
+    throw new Error(`nhl: cannot derive season phase from "${todayIsoDate}"`);
+  }
+  const month = Number(match[1]);
+  return month >= 10 || month <= 6;
+}
 
 /**
  * Pick the most recent season whose final standings exist, i.e. the season
@@ -105,8 +129,14 @@ async function getJson(url) {
 const nhlAdapter = {
   sportKey: "nhl",
   async fetch() {
-    const seasonsPayload = await getJson(SEASONS_URL);
     const todayIsoDate = new Date().toISOString().slice(0, 10);
+    if (isNhlSeasonInProgress(todayIsoDate)) {
+      // Live standings of the season in progress; transformStandings
+      // hard-fails on an empty payload.
+      const standingsPayload = await getJson(NOW_URL);
+      return transformStandings(standingsPayload, [NOW_URL]);
+    }
+    const seasonsPayload = await getJson(SEASONS_URL);
     const season = pickLastCompletedSeason(seasonsPayload, todayIsoDate);
     const url = standingsUrl(season.standingsEnd);
     const standingsPayload = await getJson(url);
