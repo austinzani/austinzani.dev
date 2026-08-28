@@ -41,6 +41,8 @@ export type SportScoreRow = {
   override_reason: string | null;
   snapshot_date: string | null;
   fetched_at: string | null;
+  reassigned: boolean;
+  reassignment_reason: string | null;
 };
 
 /** Data older than this is flagged amber everywhere (per-spec staleness rule). */

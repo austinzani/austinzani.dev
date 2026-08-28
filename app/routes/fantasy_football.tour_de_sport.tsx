@@ -473,6 +473,11 @@ function ScoreboardSection({
   const anyStale = sportEntries.some(
     (sport) => sport.revealed && isStaleFetchedAt(sport.fetched_at, now)
   );
+  // Any participant with a manually overridden score anywhere — the chips
+  // flag the cell, the legend explains the tag.
+  const anyOverridden = ranked.some((row) =>
+    row.sports.some((sport) => sport.overridden === true)
+  );
 
   return (
     <section className="mb-9">
@@ -530,11 +535,29 @@ function ScoreboardSection({
                       </span>
                     </span>
                     {sport.counted ? (
-                      <span className="shrink-0 font-mono text-sm font-semibold text-ink dark:text-zinc-50">
-                        {formatPoints(sport.points)}
+                      <span className="flex shrink-0 items-center gap-1.5">
+                        {sport.overridden ? (
+                          <span
+                            title="Manually overridden score"
+                            className="rounded border border-amber-500 px-1 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.06em] text-amber-600 dark:text-amber-400"
+                          >
+                            OVR
+                          </span>
+                        ) : null}
+                        <span className="font-mono text-sm font-semibold text-ink dark:text-zinc-50">
+                          {formatPoints(sport.points)}
+                        </span>
                       </span>
                     ) : (
                       <span className="flex shrink-0 items-center gap-1.5">
+                        {sport.overridden ? (
+                          <span
+                            title="Manually overridden score"
+                            className="rounded border border-amber-500 px-1 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.06em] text-amber-600 dark:text-amber-400"
+                          >
+                            OVR
+                          </span>
+                        ) : null}
                         {sport.points !== null ? (
                           <span className="font-mono text-xs text-ink-muted dark:text-zinc-400">
                             {formatPoints(sport.points)}
@@ -564,6 +587,12 @@ function ScoreboardSection({
           <span className="inline-flex items-center gap-1.5">
             <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
             Amber marks a Sport whose data is older than 48 hours.
+          </span>
+        ) : null}
+        {anyOverridden ? (
+          <span>
+            OVR marks a manually overridden score — the reason is on the
+            Sport's board.
           </span>
         ) : null}
       </div>

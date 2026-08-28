@@ -98,6 +98,15 @@ function getFantasyHeroCopy(pathname: string, latestChampionFirstName: string | 
         };
     }
 
+    if (pathname.includes("/tour_de_sport/admin")) {
+        return {
+            eyebrow: "Commissioner Console",
+            title: "The Admin Desk",
+            subtitle: "Sport status flips, manual score overrides, and emergency reassignments. Every change lands flagged on the public board.",
+            showBack: true,
+        };
+    }
+
     if (pathname.includes("/tour_de_sport/draw")) {
         return {
             eyebrow: "Commissioner Console",

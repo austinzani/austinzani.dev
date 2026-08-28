@@ -276,6 +276,14 @@ export default function TourDeSportSport() {
                               {row.entity_name}
                             </span>
                           </span>
+                          {row.reassigned ? (
+                            <div className="mt-1 max-w-[320px] text-xs leading-[1.5] text-amber-600 dark:text-amber-400">
+                              <span className="mr-1.5 rounded border border-amber-500 px-1 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.06em]">
+                                Reassigned
+                              </span>
+                              {row.reassignment_reason}
+                            </div>
+                          ) : null}
                           {row.overridden && row.override_reason ? (
                             <div className="mt-1 max-w-[320px] text-xs leading-[1.5] text-amber-600 dark:text-amber-400">
                               {row.override_reason}

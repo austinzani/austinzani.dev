@@ -422,6 +422,8 @@ export type Database = {
           entity_id: number
           id: number
           participant_id: number
+          reassigned_at: string | null
+          reassignment_reason: string | null
           sport_id: number
           tier_index: number | null
           tier_slot: number | null
@@ -432,6 +434,8 @@ export type Database = {
           entity_id: number
           id?: never
           participant_id: number
+          reassigned_at?: string | null
+          reassignment_reason?: string | null
           sport_id: number
           tier_index?: number | null
           tier_slot?: number | null
@@ -442,6 +446,8 @@ export type Database = {
           entity_id?: number
           id?: never
           participant_id?: number
+          reassigned_at?: string | null
+          reassignment_reason?: string | null
           sport_id?: number
           tier_index?: number | null
           tier_slot?: number | null
@@ -1138,6 +1144,8 @@ export type Database = {
           participant_id: number
           points: number
           real_rank: number
+          reassigned: boolean
+          reassignment_reason: string
           snapshot_date: string
         }[]
       }
