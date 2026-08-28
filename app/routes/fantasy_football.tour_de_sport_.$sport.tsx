@@ -25,6 +25,10 @@ import {
   isStaleFetchedAt,
 } from "~/utils/tour_de_sport/scoreboard";
 import type { SportScoreRow } from "~/utils/tour_de_sport/scoreboard";
+import {
+  UNIVERSAL_SCORING_SENTENCE,
+  sportScoringDescription,
+} from "~/utils/tour_de_sport/scoring-copy";
 
 // Public sport board: cache at the edge, serve stale while revalidating —
 // same policy as the landing page.
@@ -68,7 +72,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 
     const { data: season } = await supabase
       .from("tds_seasons")
-      .select("id, year")
+      .select("id, year, cutoff_date")
       .eq("year", SEASON_YEAR)
       .maybeSingle();
     if (!season) throw notFound();
@@ -121,6 +125,9 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
         } as SportDetail,
         rows,
         managerIdByParticipantId,
+        // The season row drives the scoring copy: a new season's year and
+        // cutoff date update the descriptions on their own.
+        season: { year: season.year, cutoff_date: season.cutoff_date },
         // Loader clock for SSR-stable staleness/relative-time rendering.
         now: Date.now(),
       },
@@ -158,8 +165,14 @@ const boardFlagLabelClass =
   "mr-1.5 font-mono text-[9px] font-semibold uppercase tracking-[0.06em]";
 
 export default function TourDeSportSport() {
-  const { sport, rows, managerIdByParticipantId, now } =
+  const { sport, rows, managerIdByParticipantId, season, now } =
     useLoaderData<typeof loader>();
+  const scoringSentence = sportScoringDescription(
+    sport.sport_key,
+    season.year,
+    season.cutoff_date,
+    sport.metric_mode
+  );
 
   const fetchedAt = rows[0]?.fetched_at ?? null;
   const snapshotDate = rows[0]?.snapshot_date ?? null;
@@ -329,13 +342,18 @@ export default function TourDeSportSport() {
             </FantasyPanel>
           )}
 
-          <p className="mt-4 max-w-[640px] text-xs leading-[1.5] text-ink-muted dark:text-zinc-400">
-            Every Sport pays the same 105-point pool, first place to last,
-            ties averaging their ranks. An assigned Entity missing from the
-            standings ranks below everyone present.
-          </p>
         </section>
       )}
+
+      <section className="mt-8">
+        <FantasySectionHeading>How This Sport Scores</FantasySectionHeading>
+        <div className="max-w-[640px] space-y-2 text-sm leading-[1.7] text-ink">
+          <p>{scoringSentence}</p>
+          <p className="text-xs leading-[1.6] text-ink-muted dark:text-zinc-400">
+            {UNIVERSAL_SCORING_SENTENCE}
+          </p>
+        </div>
+      </section>
     </FantasyMain>
   );
 }
