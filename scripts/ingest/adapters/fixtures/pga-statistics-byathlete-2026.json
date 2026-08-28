@@ -1,0 +1,1729 @@
+{
+  "requestedSeason": {
+    "year": 2026
+  },
+  "categories": [
+    {
+      "name": "general",
+      "names": [
+        "amount",
+        "cupPoints",
+        "tournamentsPlayed",
+        "roundsPlayed",
+        "cutsMade",
+        "topTenFinishes",
+        "wins",
+        "scoringAverage",
+        "yardsPerDrive",
+        "driveAccuracyPct",
+        "greensInRegPct",
+        "strokesPerHole",
+        "sandSaves",
+        "savePct",
+        "birdiesPerRound"
+      ]
+    }
+  ],
+  "athletes": [
+    {
+      "athlete": {
+        "id": "9478",
+        "displayName": "Scottie Scheffler",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/9478.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            20937524,
+            4986,
+            19,
+            74,
+            18,
+            12,
+            2,
+            67.95946,
+            312.5,
+            64.02321,
+            72.52252,
+            1.694617,
+            null,
+            52.678574,
+            4.7972975
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "9037",
+        "displayName": "Matt Fitzpatrick",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/9037.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/eng.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            14271067,
+            3463,
+            20,
+            74,
+            18,
+            8,
+            3,
+            69.054054,
+            306.1,
+            67.31517,
+            70.4955,
+            1.7603834,
+            null,
+            50.4,
+            4.2027025
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "11119",
+        "displayName": "Wyndham Clark",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/11119.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            14236186,
+            3292,
+            22,
+            74,
+            16,
+            6,
+            3,
+            69.02702,
+            312.7,
+            57.392998,
+            66.51652,
+            1.6896162,
+            null,
+            54.05405,
+            4.4594593
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "4425906",
+        "displayName": "Cameron Young",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/4425906.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            14408482,
+            3206,
+            19,
+            76,
+            19,
+            8,
+            2,
+            69.32895,
+            318.2,
+            60.43233,
+            68.56725,
+            1.7707889,
+            null,
+            53.65854,
+            4.0526314
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "7081",
+        "displayName": "Si Woo Kim",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/7081.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/sko.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            9735444,
+            2729,
+            23,
+            90,
+            22,
+            11,
+            0,
+            69.022224,
+            301.4,
+            69.1879,
+            68.950615,
+            1.7108326,
+            null,
+            55.113636,
+            4.4666667
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "4690755",
+        "displayName": "Chris Gotterup",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/4690755.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            8738885,
+            2588,
+            22,
+            84,
+            20,
+            6,
+            3,
+            69.2381,
+            322.6,
+            53.93836,
+            68.650795,
+            1.7331407,
+            null,
+            58.870964,
+            4.071429
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "10592",
+        "displayName": "Collin Morikawa",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/10592.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            9458378,
+            2542,
+            16,
+            58,
+            14,
+            7,
+            1,
+            68.98276,
+            305.9,
+            67.98029,
+            69.92337,
+            1.7136986,
+            null,
+            60.227276,
+            4.465517
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "9938",
+        "displayName": "Sam Burns",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/9938.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            8896540,
+            2453,
+            19,
+            70,
+            16,
+            6,
+            0,
+            69.2,
+            315.2,
+            57.479507,
+            68.88889,
+            1.7258065,
+            null,
+            56.521736,
+            4.2285714
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "5539",
+        "displayName": "Tommy Fleetwood",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/5539.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/eng.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            7054605,
+            2263,
+            18,
+            70,
+            17,
+            8,
+            0,
+            69.328575,
+            304.4,
+            67.93033,
+            66.74603,
+            1.7360286,
+            null,
+            56.41026,
+            3.7428572
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "4375972",
+        "displayName": "Ludvig Åberg",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/4375972.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/swe.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            7147271,
+            2198,
+            19,
+            70,
+            16,
+            8,
+            0,
+            69.37143,
+            317.6,
+            60.327194,
+            69.60317,
+            1.7309008,
+            null,
+            53.763443,
+            4.285714
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "3470",
+        "displayName": "Rory McIlroy",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/3470.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/nir.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            9866606,
+            2095,
+            13,
+            50,
+            12,
+            5,
+            1,
+            69.38,
+            330,
+            54.310345,
+            68.22222,
+            1.747557,
+            null,
+            57.317074,
+            4.2
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "10140",
+        "displayName": "Xander Schauffele",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/10140.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            7452725,
+            2025,
+            19,
+            72,
+            17,
+            7,
+            0,
+            69.43056,
+            319.7,
+            60.978043,
+            68.75,
+            1.7777778,
+            null,
+            54.545456,
+            3.8472223
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "5054388",
+        "displayName": "Jacob Bridgeman",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/5054388.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            8278365,
+            1961,
+            22,
+            86,
+            21,
+            5,
+            1,
+            69.406975,
+            305.4,
+            62.333332,
+            66.21447,
+            1.7014635,
+            null,
+            43.949043,
+            4.2325583
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "5409",
+        "displayName": "Russell Henley",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/5409.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            6446085,
+            1853,
+            19,
+            70,
+            16,
+            5,
+            1,
+            69.328575,
+            294.4,
+            71.83673,
+            67.38095,
+            1.7149588,
+            null,
+            55.932205,
+            4.0857143
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "4419142",
+        "displayName": "Akshay Bhatia",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/4419142.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            7941049,
+            1842,
+            20,
+            67,
+            13,
+            4,
+            1,
+            69.910446,
+            303.9,
+            55.97015,
+            64.42786,
+            1.7129987,
+            null,
+            65.87302,
+            4.044776
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "5860",
+        "displayName": "Hideki Matsuyama",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/5860.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/jpn.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            5679457,
+            1637,
+            22,
+            88,
+            22,
+            6,
+            0,
+            69.443184,
+            304,
+            62.09416,
+            66.351006,
+            1.7431018,
+            null,
+            60.13986,
+            4.090909
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "5076021",
+        "displayName": "Ryan Gerard",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/5076021.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            6299898,
+            1608,
+            25,
+            88,
+            20,
+            6,
+            0,
+            69.375,
+            307.4,
+            62.805874,
+            66.98232,
+            1.7181904,
+            null,
+            54.22535,
+            4.159091
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "3550",
+        "displayName": "Gary Woodland",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/3550.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            5266379,
+            1556,
+            21,
+            72,
+            15,
+            6,
+            1,
+            70,
+            323.2,
+            60.2,
+            66.66667,
+            1.755787,
+            null,
+            45.918365,
+            3.9305556
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "6007",
+        "displayName": "Patrick Cantlay",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/6007.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            6083596,
+            1529,
+            19,
+            68,
+            15,
+            5,
+            0,
+            69.22059,
+            307.3,
+            61.733616,
+            69.117645,
+            1.7387707,
+            null,
+            62.5,
+            3.9705882
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "4348470",
+        "displayName": "Kristoffer Reitan",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/4348470.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/nor.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            6448739,
+            1523,
+            21,
+            70,
+            15,
+            4,
+            1,
+            70.314285,
+            314,
+            57.802876,
+            66.66667,
+            1.7571429,
+            null,
+            56.302525,
+            3.6714287
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "4410932",
+        "displayName": "Min Woo Lee",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/4410932.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/aus.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            5763252,
+            1496,
+            19,
+            70,
+            16,
+            4,
+            0,
+            69.7,
+            323,
+            58.641975,
+            65.31746,
+            1.7399757,
+            null,
+            58.26087,
+            4.0142856
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "10166",
+        "displayName": "J.J. Spaun",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/10166.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            5099908,
+            1464,
+            22,
+            74,
+            15,
+            4,
+            1,
+            69.83784,
+            305.3,
+            63.883495,
+            67.71772,
+            1.7594235,
+            null,
+            47.580643,
+            3.9324324
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "9484",
+        "displayName": "Alex Smalley",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/9484.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            5430908,
+            1443,
+            23,
+            80,
+            18,
+            5,
+            0,
+            69.5125,
+            308.5,
+            60.72072,
+            70.13889,
+            1.7514851,
+            null,
+            52.29358,
+            3.9375
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "4364865",
+        "displayName": "Alex Fitzpatrick",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/4364865.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/eng.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            4670614,
+            1434,
+            13,
+            46,
+            11,
+            5,
+            1,
+            69.73913,
+            314,
+            64.95327,
+            69.08212,
+            1.8024476,
+            null,
+            50.617283,
+            3.6086957
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "11378",
+        "displayName": "Robert MacIntyre",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/11378.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/sct.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            5020888,
+            1428,
+            20,
+            71,
+            16,
+            6,
+            0,
+            69.521126,
+            306.2,
+            61.31313,
+            66.27543,
+            1.7142857,
+            null,
+            46.0177,
+            4.197183
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "4364873",
+        "displayName": "Viktor Hovland",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/4364873.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/nor.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            6495826,
+            1425,
+            18,
+            64,
+            14,
+            3,
+            1,
+            69.640625,
+            306.3,
+            64.94382,
+            66.14583,
+            1.7270341,
+            null,
+            47.572815,
+            4.21875
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "569",
+        "displayName": "Justin Rose",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/569.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/eng.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            5160356,
+            1405,
+            17,
+            59,
+            12,
+            3,
+            1,
+            69.98305,
+            310.7,
+            61.138016,
+            68.92655,
+            1.7540984,
+            null,
+            50.43478,
+            3.9661016
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "388",
+        "displayName": "Adam Scott",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/388.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/aus.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            4461268,
+            1383,
+            18,
+            68,
+            16,
+            3,
+            0,
+            69.75,
+            313.1,
+            58.68644,
+            69.36275,
+            1.7844523,
+            null,
+            50.505047,
+            3.8676472
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "4602673",
+        "displayName": "Tom Kim",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/4602673.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/sko.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            4816710,
+            1378,
+            22,
+            80,
+            19,
+            4,
+            1,
+            69.0125,
+            304.6,
+            64.16968,
+            69.166664,
+            1.7399598,
+            null,
+            53.465347,
+            4.0875
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "4251",
+        "displayName": "Ryan Fox",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/4251.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/nzl.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            5538659,
+            1368,
+            18,
+            68,
+            16,
+            3,
+            1,
+            70.02941,
+            314.8,
+            53.488373,
+            64.70589,
+            1.7462121,
+            null,
+            50.370373,
+            3.9411764
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "10364",
+        "displayName": "Kurt Kitayama",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/10364.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            5224658,
+            1303,
+            21,
+            81,
+            19,
+            4,
+            0,
+            69.641975,
+            314.7,
+            60.746002,
+            69.95885,
+            1.7715687,
+            null,
+            58.333332,
+            3.925926
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "10505",
+        "displayName": "J.T. Poston",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/10505.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            5973029,
+            1287,
+            21,
+            72,
+            15,
+            2,
+            1,
+            70.125,
+            301.1,
+            62.72366,
+            67.20679,
+            1.7485648,
+            null,
+            47.445255,
+            3.9166667
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "3702",
+        "displayName": "Rickie Fowler",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/3702.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            4976736,
+            1281,
+            21,
+            74,
+            16,
+            5,
+            0,
+            69.54054,
+            306.3,
+            63.34623,
+            68.54354,
+            1.7447973,
+            null,
+            45.454548,
+            3.9594595
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "5338",
+        "displayName": "Bud Cauley",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/5338.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            4573948,
+            1276,
+            22,
+            83,
+            19,
+            2,
+            1,
+            69.98795,
+            306.1,
+            59.948097,
+            66.59973,
+            1.7708542,
+            null,
+            50.78125,
+            3.5060241
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "11250",
+        "displayName": "Nicolai Højgaard",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/11250.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/den.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            4914868,
+            1228,
+            21,
+            74,
+            16,
+            4,
+            0,
+            69.824326,
+            325.1,
+            52.63672,
+            65.39039,
+            1.7485648,
+            null,
+            50,
+            3.6756756
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "3832",
+        "displayName": "Alex Noren",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/3832.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/swe.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            4275215,
+            1220,
+            21,
+            75,
+            16,
+            4,
+            0,
+            69.96,
+            297,
+            64.4084,
+            65.92593,
+            1.7561798,
+            null,
+            56,
+            3.72
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "11382",
+        "displayName": "Sungjae Im",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/11382.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/sko.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            3730077,
+            1217,
+            22,
+            76,
+            16,
+            5,
+            0,
+            69.86842,
+            306,
+            61.100567,
+            62.865494,
+            1.7267442,
+            null,
+            56.25,
+            3.6973684
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "9843",
+        "displayName": "Jake Knapp",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/9843.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            3974296,
+            1216,
+            17,
+            58,
+            12,
+            6,
+            0,
+            68.98276,
+            318.5,
+            57.94045,
+            66.37931,
+            1.7142857,
+            null,
+            51.76471,
+            4.1551723
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "10906",
+        "displayName": "Aaron Rai",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/10906.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/eng.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            5406602,
+            1214,
+            19,
+            62,
+            13,
+            2,
+            1,
+            69.96774,
+            293.3,
+            71.296295,
+            69.53405,
+            1.7706186,
+            null,
+            47.560974,
+            3.564516
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "8961",
+        "displayName": "Sepp Straka",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/8961.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/aut.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            4432187,
+            1150,
+            20,
+            69,
+            14,
+            3,
+            0,
+            70.78261,
+            304,
+            61.51452,
+            64.251205,
+            1.7706767,
+            null,
+            42.990654,
+            3.5072465
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "4404992",
+        "displayName": "Ben Griffin",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/4404992.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            4183407,
+            1142,
+            25,
+            84,
+            18,
+            4,
+            0,
+            69.67857,
+            306.3,
+            60.94017,
+            66.335976,
+            1.7527418,
+            null,
+            65.034966,
+            3.607143
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "9530",
+        "displayName": "Maverick McNealy",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/9530.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            3973877,
+            1100,
+            21,
+            80,
+            19,
+            3,
+            0,
+            69.575,
+            312.4,
+            56.696426,
+            65.97222,
+            1.7389474,
+            null,
+            63.636364,
+            4.05
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "4848",
+        "displayName": "Justin Thomas",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/4848.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            3966774,
+            1096,
+            17,
+            66,
+            16,
+            2,
+            0,
+            70.030304,
+            311.3,
+            61.026203,
+            63.55219,
+            1.7403973,
+            null,
+            60.169495,
+            3.7727273
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "4425904",
+        "displayName": "Michael Thorbjornsen",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/4425904.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            3856041,
+            1074,
+            22,
+            73,
+            15,
+            3,
+            1,
+            69.72603,
+            314.3,
+            61.143982,
+            68.72146,
+            1.7674419,
+            null,
+            60.909092,
+            3.8493152
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "4408316",
+        "displayName": "Nico Echavarria",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/4408316.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/col.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            3834179,
+            1054,
+            24,
+            81,
+            16,
+            3,
+            1,
+            70.666664,
+            299.1,
+            60.54965,
+            63.23731,
+            1.7451193,
+            null,
+            47.85714,
+            3.580247
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "4921329",
+        "displayName": "Michael Brennan",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/4921329.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            3358668,
+            1040,
+            25,
+            85,
+            19,
+            3,
+            1,
+            69.64706,
+            327.1,
+            58.898308,
+            68.16994,
+            1.7497603,
+            null,
+            41.59292,
+            4.0941176
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "4858572",
+        "displayName": "Ryo Hisatsune",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/4858572.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/jpn.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            3761921,
+            1021,
+            25,
+            96,
+            23,
+            5,
+            0,
+            69.854164,
+            306.9,
+            62.761192,
+            70.37037,
+            1.7606908,
+            null,
+            48.175182,
+            3.8645833
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "10980",
+        "displayName": "Sahith Theegala",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/10980.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            3274448,
+            918,
+            25,
+            94,
+            23,
+            4,
+            0,
+            69.93617,
+            310.5,
+            55.58959,
+            65.42553,
+            1.7380307,
+            null,
+            51.315792,
+            3.7765958
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "10522",
+        "displayName": "Eric Cole",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/10522.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            3022154,
+            912,
+            24,
+            80,
+            17,
+            4,
+            0,
+            69.5,
+            303,
+            53.6036,
+            63.819443,
+            1.7007617,
+            null,
+            61.832058,
+            4.0875
+          ]
+        }
+      ]
+    },
+    {
+      "athlete": {
+        "id": "4901368",
+        "displayName": "Matt McCarty",
+        "headshot": {
+          "href": "https://a.espncdn.com/i/headshots/golf/players/full/4901368.png"
+        },
+        "flag": {
+          "href": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png"
+        }
+      },
+      "categories": [
+        {
+          "name": "general",
+          "values": [
+            3168681,
+            874,
+            26,
+            84,
+            17,
+            4,
+            0,
+            70.309525,
+            299.7,
+            61.68942,
+            63.558205,
+            1.723205,
+            null,
+            51.851852,
+            3.892857
+          ]
+        }
+      ]
+    }
+  ]
+}

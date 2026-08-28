@@ -1,0 +1,506 @@
+[
+  {
+    "driver_id": 1361,
+    "first_name": "Denny",
+    "last_name": "Hamlin",
+    "points": 1001,
+    "points_position": 1,
+    "race_id": 0,
+    "is_points_eligible": true
+  },
+  {
+    "driver_id": 4023,
+    "first_name": "Ryan",
+    "last_name": "Blaney",
+    "points": 924,
+    "points_position": 2,
+    "race_id": 0,
+    "is_points_eligible": true
+  },
+  {
+    "driver_id": 4368,
+    "first_name": "Ty",
+    "last_name": "Gibbs",
+    "points": 880,
+    "points_position": 3,
+    "race_id": 0,
+    "is_points_eligible": true
+  },
+  {
+    "driver_id": 4065,
+    "first_name": "Tyler",
+    "last_name": "Reddick",
+    "points": 860,
+    "points_position": 4,
+    "race_id": 0,
+    "is_points_eligible": true
+  },
+  {
+    "driver_id": 4153,
+    "first_name": "Christopher",
+    "last_name": "Bell",
+    "points": 738,
+    "points_position": 5,
+    "race_id": 0,
+    "is_points_eligible": true
+  },
+  {
+    "driver_id": 4228,
+    "first_name": "Chase",
+    "last_name": "Briscoe",
+    "points": 727,
+    "points_position": 6,
+    "race_id": 0,
+    "is_points_eligible": true
+  },
+  {
+    "driver_id": 4030,
+    "first_name": "Kyle",
+    "last_name": "Larson",
+    "points": 708,
+    "points_position": 7,
+    "race_id": 0,
+    "is_points_eligible": true
+  },
+  {
+    "driver_id": 4062,
+    "first_name": "Chase",
+    "last_name": "Elliott",
+    "points": 707,
+    "points_position": 8,
+    "race_id": 0,
+    "is_points_eligible": true
+  },
+  {
+    "driver_id": 3859,
+    "first_name": "Joey",
+    "last_name": "Logano",
+    "points": 682,
+    "points_position": 9,
+    "race_id": 0,
+    "is_points_eligible": true
+  },
+  {
+    "driver_id": 3989,
+    "first_name": "Chris",
+    "last_name": "Buescher",
+    "points": 676,
+    "points_position": 10,
+    "race_id": 0,
+    "is_points_eligible": true
+  },
+  {
+    "driver_id": 4326,
+    "first_name": "Carson",
+    "last_name": "Hocevar",
+    "points": 672,
+    "points_position": 11,
+    "race_id": 0,
+    "is_points_eligible": true
+  },
+  {
+    "driver_id": 4184,
+    "first_name": "William",
+    "last_name": "Byron",
+    "points": 644,
+    "points_position": 12,
+    "race_id": 0,
+    "is_points_eligible": true
+  },
+  {
+    "driver_id": 4113,
+    "first_name": "Daniel",
+    "last_name": "Suarez",
+    "points": 638,
+    "points_position": 13,
+    "race_id": 0,
+    "is_points_eligible": true
+  },
+  {
+    "driver_id": 4025,
+    "first_name": "Bubba",
+    "last_name": "Wallace",
+    "points": 630,
+    "points_position": 14,
+    "race_id": 0,
+    "is_points_eligible": true
+  },
+  {
+    "driver_id": 4180,
+    "first_name": "Austin",
+    "last_name": "Cindric",
+    "points": 599,
+    "points_position": 15,
+    "race_id": 0,
+    "is_points_eligible": true
+  },
+  {
+    "driver_id": 4469,
+    "first_name": "Shane",
+    "last_name": "Van Gisbergen",
+    "points": 586,
+    "points_position": 16,
+    "race_id": 0,
+    "is_points_eligible": true
+  },
+  {
+    "driver_id": 4070,
+    "first_name": "Ryan",
+    "last_name": "Preece",
+    "points": 555,
+    "points_position": 17,
+    "race_id": 0,
+    "is_points_eligible": true
+  },
+  {
+    "driver_id": 1816,
+    "first_name": "Brad",
+    "last_name": "Keselowski",
+    "points": 520,
+    "points_position": 18,
+    "race_id": 0,
+    "is_points_eligible": true
+  },
+  {
+    "driver_id": 4001,
+    "first_name": "Ross",
+    "last_name": "Chastain",
+    "points": 505,
+    "points_position": 19,
+    "race_id": 0,
+    "is_points_eligible": true
+  },
+  {
+    "driver_id": 4059,
+    "first_name": "Erik",
+    "last_name": "Jones",
+    "points": 490,
+    "points_position": 20,
+    "race_id": 0,
+    "is_points_eligible": true
+  },
+  {
+    "driver_id": 3832,
+    "first_name": "Michael",
+    "last_name": "McDowell",
+    "points": 484,
+    "points_position": 21,
+    "race_id": 0,
+    "is_points_eligible": true
+  },
+  {
+    "driver_id": 3774,
+    "first_name": "AJ",
+    "last_name": "Allmendinger",
+    "points": 456,
+    "points_position": 22,
+    "race_id": 0,
+    "is_points_eligible": true
+  },
+  {
+    "driver_id": 4231,
+    "first_name": "Todd",
+    "last_name": "Gilliland",
+    "points": 444,
+    "points_position": 23,
+    "race_id": 0,
+    "is_points_eligible": true
+  },
+  {
+    "driver_id": 4272,
+    "first_name": "Zane",
+    "last_name": "Smith",
+    "points": 442,
+    "points_position": 24,
+    "race_id": 0,
+    "is_points_eligible": true
+  },
+  {
+    "driver_id": 3873,
+    "first_name": "Austin",
+    "last_name": "Dillon",
+    "points": 405,
+    "points_position": 25,
+    "race_id": 0,
+    "is_points_eligible": true
+  },
+  {
+    "driver_id": 4269,
+    "first_name": "Riley",
+    "last_name": "Herbst",
+    "points": 402,
+    "points_position": 26,
+    "race_id": 0,
+    "is_points_eligible": true
+  },
+  {
+    "driver_id": 3888,
+    "first_name": "Ricky",
+    "last_name": "Stenhouse Jr.",
+    "points": 398,
+    "points_position": 27,
+    "race_id": 0,
+    "is_points_eligible": true
+  },
+  {
+    "driver_id": 4092,
+    "first_name": "John Hunter",
+    "last_name": "Nemechek",
+    "points": 394,
+    "points_position": 28,
+    "race_id": 0,
+    "is_points_eligible": true
+  },
+  {
+    "driver_id": 4123,
+    "first_name": "Josh",
+    "last_name": "Berry",
+    "points": 386,
+    "points_position": 29,
+    "race_id": 0,
+    "is_points_eligible": true
+  },
+  {
+    "driver_id": 4045,
+    "first_name": "Alex",
+    "last_name": "Bowman",
+    "points": 362,
+    "points_position": 30,
+    "race_id": 0,
+    "is_points_eligible": true
+  },
+  {
+    "driver_id": 4224,
+    "first_name": "Noah",
+    "last_name": "Gragson",
+    "points": 334,
+    "points_position": 31,
+    "race_id": 0,
+    "is_points_eligible": true
+  },
+  {
+    "driver_id": 4104,
+    "first_name": "Cole",
+    "last_name": "Custer",
+    "points": 302,
+    "points_position": 32,
+    "race_id": 0,
+    "is_points_eligible": true
+  },
+  {
+    "driver_id": 4013,
+    "first_name": "Ty",
+    "last_name": "Dillon",
+    "points": 294,
+    "points_position": 33,
+    "race_id": 0,
+    "is_points_eligible": true
+  },
+  {
+    "driver_id": 4481,
+    "first_name": "Connor",
+    "last_name": "Zilisch #",
+    "points": 259,
+    "points_position": 34,
+    "race_id": 0,
+    "is_points_eligible": true
+  },
+  {
+    "driver_id": 4125,
+    "first_name": "Cody",
+    "last_name": "Ware",
+    "points": 199,
+    "points_position": 35,
+    "race_id": 0,
+    "is_points_eligible": true
+  },
+  {
+    "driver_id": 2215,
+    "first_name": "Casey",
+    "last_name": "Mears",
+    "points": 12,
+    "points_position": 36,
+    "race_id": 0,
+    "is_points_eligible": true
+  },
+  {
+    "driver_id": 4541,
+    "first_name": "Kevin",
+    "last_name": "Magnussen",
+    "points": 11,
+    "points_position": 37,
+    "race_id": 0,
+    "is_points_eligible": true
+  },
+  {
+    "driver_id": 1717,
+    "first_name": "Jimmie",
+    "last_name": "Johnson",
+    "points": 9,
+    "points_position": 38,
+    "race_id": 0,
+    "is_points_eligible": true
+  },
+  {
+    "driver_id": 4284,
+    "first_name": "Katherine",
+    "last_name": "Legge",
+    "points": 8,
+    "points_position": 39,
+    "race_id": 0,
+    "is_points_eligible": true
+  },
+  {
+    "driver_id": 3973,
+    "first_name": "BJ",
+    "last_name": "McLeod",
+    "points": 4,
+    "points_position": 40,
+    "race_id": 0,
+    "is_points_eligible": true
+  },
+  {
+    "driver_id": 4387,
+    "first_name": "Corey",
+    "last_name": "Heim",
+    "points": 0,
+    "points_position": 41,
+    "race_id": 0,
+    "is_points_eligible": false
+  },
+  {
+    "driver_id": 4133,
+    "first_name": "Austin",
+    "last_name": "Hill(i)",
+    "points": 0,
+    "points_position": 42,
+    "race_id": 0,
+    "is_points_eligible": false
+  },
+  {
+    "driver_id": 3669,
+    "first_name": "JJ",
+    "last_name": "Yeley",
+    "points": 0,
+    "points_position": 43,
+    "race_id": 0,
+    "is_points_eligible": false
+  },
+  {
+    "driver_id": 34,
+    "first_name": "Justin",
+    "last_name": "Allgaier",
+    "points": 0,
+    "points_position": 44,
+    "race_id": 0,
+    "is_points_eligible": false
+  },
+  {
+    "driver_id": 4451,
+    "first_name": "Daniel",
+    "last_name": "Dye",
+    "points": 0,
+    "points_position": 45,
+    "race_id": 0,
+    "is_points_eligible": false
+  },
+  {
+    "driver_id": 4463,
+    "first_name": "Jesse",
+    "last_name": "Love",
+    "points": 0,
+    "points_position": 46,
+    "race_id": 0,
+    "is_points_eligible": false
+  },
+  {
+    "driver_id": 4232,
+    "first_name": "Chad",
+    "last_name": "Finchum",
+    "points": 0,
+    "points_position": 47,
+    "race_id": 0,
+    "is_points_eligible": false
+  },
+  {
+    "driver_id": 4004,
+    "first_name": "Joey",
+    "last_name": "Gase",
+    "points": 0,
+    "points_position": 48,
+    "race_id": 0,
+    "is_points_eligible": false
+  },
+  {
+    "driver_id": 4301,
+    "first_name": "Anthony",
+    "last_name": "Alfredo",
+    "points": 0,
+    "points_position": 49,
+    "race_id": 0,
+    "is_points_eligible": false
+  },
+  {
+    "driver_id": 4213,
+    "first_name": "Josh",
+    "last_name": "Bilicki",
+    "points": 0,
+    "points_position": 50,
+    "race_id": 0,
+    "is_points_eligible": false
+  },
+  {
+    "driver_id": 3984,
+    "first_name": "Timmy",
+    "last_name": "Hill",
+    "points": 0,
+    "points_position": 51,
+    "race_id": 0,
+    "is_points_eligible": false
+  },
+  {
+    "driver_id": 4413,
+    "first_name": "Joey",
+    "last_name": "Hand",
+    "points": 0,
+    "points_position": 52,
+    "race_id": 0,
+    "is_points_eligible": true
+  },
+  {
+    "driver_id": 3918,
+    "first_name": "William",
+    "last_name": "Myers",
+    "points": 0,
+    "points_position": 53,
+    "race_id": 0,
+    "is_points_eligible": true
+  },
+  {
+    "driver_id": 2674,
+    "first_name": "David",
+    "last_name": "Ragan",
+    "points": 0,
+    "points_position": 54,
+    "race_id": 0,
+    "is_points_eligible": true
+  },
+  {
+    "driver_id": 4096,
+    "first_name": "Corey",
+    "last_name": "LaJoie",
+    "points": 0,
+    "points_position": 55,
+    "race_id": 0,
+    "is_points_eligible": false
+  },
+  {
+    "driver_id": 4312,
+    "first_name": "Chandler",
+    "last_name": "Smith",
+    "points": 0,
+    "points_position": 56,
+    "race_id": 0,
+    "is_points_eligible": false
+  }
+]
