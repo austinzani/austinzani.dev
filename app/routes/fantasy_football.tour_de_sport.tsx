@@ -1,8 +1,14 @@
 import { json } from "@remix-run/node";
 import type { HeadersFunction, MetaFunction } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
+import {
+  Link,
+  useLoaderData,
+  useSearchParams,
+} from "@remix-run/react";
+import type { ShouldRevalidateFunction } from "@remix-run/react";
 
 import ManagerAvatar from "~/components/ManagerAvatar";
+import ScrollablePills from "~/components/ScrollablePills";
 import {
   FantasyMain,
   FantasySectionHeading,
@@ -33,6 +39,18 @@ export const meta: MetaFunction = () => [
 export const headers: HeadersFunction = ({ loaderHeaders }) => ({
   "Cache-Control": loaderHeaders.get("Cache-Control") ?? CACHE_CONTROL,
 });
+
+// The sport tabs live in ?sport=<key>, which the loader ignores — a pill
+// click is a same-pathname navigation that needs no refetch. Real path
+// changes revalidate as usual.
+export const shouldRevalidate: ShouldRevalidateFunction = ({
+  currentUrl,
+  nextUrl,
+  defaultShouldRevalidate,
+}) => {
+  if (currentUrl.pathname === nextUrl.pathname) return false;
+  return defaultShouldRevalidate;
+};
 
 type TourDeSportSeason = {
   id: number;
@@ -341,13 +359,14 @@ function DrawRecordSection({
 }
 
 /**
- * The board filling in as sports reveal: for every revealed sport (RLS only
- * returns assignment rows once revealed_at is stamped), the participant →
- * entity pairs in pick-slot order. Names come from the frozen inputs — the
- * public record matches what Season Lock published. The full scoreboard is a
- * later chapter (AUS-849); this is just the assignments.
+ * One tabbed section for all per-sport content — a scrollable pill per sport
+ * (the year-selector idiom) with the selected sport's panel below: metric
+ * mode, a link to its full board, and its assignments once revealed (RLS only
+ * returns assignment rows once revealed_at is stamped). Selection lives in
+ * ?sport=<key> so the panel is SSR-rendered and deep-linkable, and the edge
+ * cache varies per sport through the query string.
  */
-function RevealedAssignmentsSection({
+function SportsTabsSection({
   sports,
   participants,
   assignments,
@@ -356,75 +375,107 @@ function RevealedAssignmentsSection({
   participants: TourDeSportParticipant[];
   assignments: TourDeSportAssignment[];
 }) {
+  const [searchParams, setSearchParams] = useSearchParams();
   const participantNameById = new Map(
     participants.map((participant) => [participant.id, participant.display_name])
   );
-  const revealedSports = sports.filter((sport) =>
-    assignments.some((assignment) => assignment.sport_id === sport.id)
+  const revealedCount = sports.filter(
+    (sport) => sport.revealed_at !== null
+  ).length;
+  const sportParam = searchParams.get("sport");
+  const selectedSport =
+    sports.find((sport) => sport.sport_key === sportParam) ??
+    sports.find((sport) => sport.revealed_at !== null) ??
+    sports[0];
+  if (!selectedSport) return null;
+
+  const selectSport = (key: string) => {
+    const nextParams = new URLSearchParams(searchParams);
+    nextParams.set("sport", key);
+    // Client navigation; shouldRevalidate skips the refetch and
+    // preventScrollReset keeps the page from jumping to the top.
+    setSearchParams(nextParams, { preventScrollReset: true });
+  };
+
+  const sportAssignments = assignments.filter(
+    (assignment) => assignment.sport_id === selectedSport.id
+  );
+  const entityNameById = new Map(
+    (selectedSport.tiers ?? []).flat().map((entity) => [entity.id, entity.name])
   );
 
   return (
     <section className="mb-9">
-      <FantasySectionHeading>Assignments</FantasySectionHeading>
+      <FantasySectionHeading>The Sports</FantasySectionHeading>
       <p className="mb-4 max-w-[640px] text-[15px] leading-[1.7] text-ink-muted">
-        {revealedSports.length} of {sports.length} Sports revealed. The rest
-        stay hidden until their turn at the Draw.
+        {revealedCount} of {sports.length} Sports revealed. Pick a Sport for
+        its assignments — the rest stay hidden until their turn at the Draw.
       </p>
-      <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
-        {revealedSports.map((sport) => {
-          const entityNameById = new Map(
-            (sport.tiers ?? [])
-              .flat()
-              .map((entity) => [entity.id, entity.name])
-          );
-          return (
-            <div
-              key={sport.id}
-              className="rounded-md border border-line-muted bg-paper-muted p-4 dark:bg-zinc-900"
+      <ScrollablePills
+        items={sports.map((sport) => ({
+          key: sport.sport_key,
+          value: sport.sport_key.toUpperCase(),
+        }))}
+        selectedKey={selectedSport.sport_key}
+        onSelectionChange={selectSport}
+      />
+      <div className="rounded-md border border-line-muted bg-paper-muted p-4 dark:bg-zinc-900">
+        <div className="mb-3 border-b-[1.5px] border-line pb-2.5 dark:border-zinc-500">
+          <div className="flex items-baseline justify-between gap-3">
+            <span className="flex min-w-0 items-baseline gap-2">
+              <span className="font-mono text-xs font-semibold text-accent">
+                {String(selectedSport.sport_index + 1).padStart(2, "0")}
+              </span>
+              <span className="min-w-0 truncate font-display text-lg leading-tight text-ink dark:text-zinc-50">
+                {selectedSport.name}
+              </span>
+            </span>
+            <Link
+              to={`/fantasy_football/tour_de_sport/${selectedSport.sport_key}`}
+              prefetch="intent"
+              className="shrink-0 font-mono text-[11px] font-semibold uppercase tracking-[0.06em] text-accent transition hover:text-ink dark:hover:text-zinc-50"
             >
-              <div className="mb-3 flex items-baseline gap-2 border-b-[1.5px] border-line pb-2 dark:border-zinc-500">
-                <span className="font-mono text-xs font-semibold text-accent">
-                  {String(sport.sport_index + 1).padStart(2, "0")}
+              View full board →
+            </Link>
+          </div>
+          <div className="mt-1 text-xs text-ink-muted dark:text-zinc-400">
+            {metricModeLabel[selectedSport.metric_mode]}
+          </div>
+        </div>
+        {sportAssignments.length > 0 ? (
+          <ul className="grid grid-cols-1 gap-x-8 gap-y-1.5 md:grid-cols-2">
+            {sportAssignments.map((assignment) => (
+              <li
+                key={`${assignment.sport_id}-${assignment.participant_id}`}
+                className="flex items-baseline justify-between gap-3 text-sm"
+              >
+                <span className="min-w-0 truncate font-semibold text-ink dark:text-zinc-50">
+                  {capitalizeFirstLetter(
+                    participantNameById.get(assignment.participant_id) ??
+                      `Participant ${assignment.participant_id}`
+                  )}
                 </span>
-                <Link
-                  to={`/fantasy_football/tour_de_sport/${sport.sport_key}`}
-                  prefetch="intent"
-                  className="font-display text-lg leading-tight text-ink transition hover:text-accent dark:text-zinc-50"
-                >
-                  {sport.name}
-                </Link>
-              </div>
-              <ul className="space-y-1.5">
-                {assignments
-                  .filter((assignment) => assignment.sport_id === sport.id)
-                  .map((assignment) => (
-                    <li
-                      key={`${assignment.sport_id}-${assignment.participant_id}`}
-                      className="flex items-baseline justify-between gap-3 text-sm"
-                    >
-                      <span className="min-w-0 truncate font-semibold text-ink dark:text-zinc-50">
-                        {capitalizeFirstLetter(
-                          participantNameById.get(assignment.participant_id) ??
-                            `Participant ${assignment.participant_id}`
-                        )}
-                      </span>
-                      <span className="flex shrink-0 items-baseline gap-2">
-                        <span className="text-ink-muted dark:text-zinc-400">
-                          {entityNameById.get(assignment.entity_id) ??
-                            `Entity ${assignment.entity_id}`}
-                        </span>
-                        {assignment.tier_index !== null ? (
-                          <span className="rounded border border-line-muted px-1 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-[0.06em] text-ink-muted dark:text-zinc-400">
-                            T{assignment.tier_index + 1}
-                          </span>
-                        ) : null}
-                      </span>
-                    </li>
-                  ))}
-              </ul>
-            </div>
-          );
-        })}
+                <span className="flex shrink-0 items-baseline gap-2">
+                  <span className="text-ink-muted dark:text-zinc-400">
+                    {entityNameById.get(assignment.entity_id) ??
+                      `Entity ${assignment.entity_id}`}
+                  </span>
+                  {assignment.tier_index !== null ? (
+                    <span className="rounded border border-line-muted px-1 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-[0.06em] text-ink-muted dark:text-zinc-400">
+                      T{assignment.tier_index + 1}
+                    </span>
+                  ) : null}
+                </span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="text-sm leading-[1.6] text-ink-muted dark:text-zinc-400">
+            {selectedSport.revealed_at === null
+              ? "Hidden until its turn at the Draw."
+              : "Revealed — assignments land here shortly."}
+          </p>
+        )}
       </div>
     </section>
   );
@@ -643,44 +694,15 @@ export default function TourDeSport() {
             </p>
           </div>
         </section>
-      ) : (
-        <RevealedAssignmentsSection
+      ) : null}
+
+      {sports.length > 0 ? (
+        <SportsTabsSection
           sports={sports}
           participants={participants}
           assignments={assignments}
         />
-      )}
-
-      <section className="mb-9">
-        <FantasySectionHeading>The Sports</FantasySectionHeading>
-        {sports.length > 0 ? (
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-            {sports.map((sport) => (
-              <Link
-                key={sport.id}
-                to={`/fantasy_football/tour_de_sport/${sport.sport_key}`}
-                prefetch="intent"
-                className="block rounded-md border border-line-muted bg-paper-muted p-4 transition hover:border-accent dark:bg-zinc-900"
-              >
-                <div className="mb-1.5 font-mono text-[11px] font-semibold text-accent">
-                  {String(sport.sport_index + 1).padStart(2, "0")}
-                </div>
-                <div className="font-display text-lg leading-tight text-ink dark:text-zinc-50">
-                  {sport.name}
-                </div>
-                <div className="mt-1.5 text-xs leading-[1.5] text-ink-muted dark:text-zinc-400">
-                  {metricModeLabel[sport.metric_mode]}
-                </div>
-              </Link>
-            ))}
-          </div>
-        ) : (
-          <p className="text-[15px] leading-[1.7] text-ink-muted">
-            The Season 1 slate — twelve sports, one Entity per Participant in
-            each — will be published here once the season is set up.
-          </p>
-        )}
-      </section>
+      ) : null}
 
       <section>
         <FantasySectionHeading>The Participants</FantasySectionHeading>

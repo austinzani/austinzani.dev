@@ -16,9 +16,6 @@ import {
   FantasyMain,
   FantasyPanel,
   FantasySectionHeading,
-  fantasyTableBodyClass,
-  fantasyTableHeadRowClass,
-  fantasyTableShellClass,
 } from "~/components/FantasyFootballUI";
 import { capitalizeFirstLetter } from "~/utils/helpers";
 import { createSupabaseServerClient } from "~/utils/supabase.server";
@@ -147,8 +144,18 @@ function formatMetricValue(value: number | null): string | null {
   return String(Math.round(value * 1000) / 1000);
 }
 
-const tableHeadCellClass =
-  "h-11 whitespace-nowrap px-3 text-left align-middle font-mono text-[11px] font-semibold uppercase tracking-[0.06em]";
+// One board row = one shared grid reflowing by breakpoint: two stacked lines
+// on phones (rank/participant/points, then entity + standing full-width), a
+// single table-like line at md+. Explicit md col/row starts do the reflow —
+// no parallel mobile/desktop renderings.
+const boardRowGridClass =
+  "grid grid-cols-[2.5rem_minmax(0,1fr)_auto] items-center gap-x-3 gap-y-2 md:grid-cols-[3rem_minmax(0,5fr)_minmax(0,6fr)_5.5rem] md:gap-x-4";
+
+const boardFlagChipClass =
+  "rounded border border-amber-500 px-2 py-1.5 text-xs leading-[1.5] text-amber-600 dark:text-amber-400";
+
+const boardFlagLabelClass =
+  "mr-1.5 font-mono text-[9px] font-semibold uppercase tracking-[0.06em]";
 
 export default function TourDeSportSport() {
   const { sport, rows, managerIdByParticipantId, now } =
@@ -224,105 +231,94 @@ export default function TourDeSportSport() {
           ) : null}
 
           {rows.length > 0 ? (
-            <div className={fantasyTableShellClass}>
-              <table className="w-full min-w-[680px] border-collapse text-sm">
-                <thead>
-                  <tr className={fantasyTableHeadRowClass}>
-                    <th className={tableHeadCellClass}>Rank</th>
-                    <th className={tableHeadCellClass}>Participant</th>
-                    <th className={tableHeadCellClass}>Entity</th>
-                    <th className={tableHeadCellClass}>Real-World Standing</th>
-                    <th className={`${tableHeadCellClass} text-right`}>
-                      Points
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className={fantasyTableBodyClass}>
-                  {rows.map((row) => {
-                    const tiedOrdinal =
-                      (ordinalCounts.get(row.ordinal) ?? 0) > 1;
-                    return (
-                      <tr key={row.participant_id} className="align-middle">
-                        <td className="px-3 py-3 font-mono text-sm font-semibold text-accent">
+            <div>
+              <div
+                className={`mb-2 hidden px-3 font-mono text-[11px] font-semibold uppercase tracking-[0.06em] text-zinc-500 dark:text-zinc-400 md:grid md:grid-cols-[3rem_minmax(0,5fr)_minmax(0,6fr)_5.5rem] md:gap-x-4`}
+              >
+                <span>Rank</span>
+                <span>Participant</span>
+                <span>Entity · Standing</span>
+                <span className="text-right">Points</span>
+              </div>
+              <ul className="space-y-2">
+                {rows.map((row) => {
+                  const tiedOrdinal = (ordinalCounts.get(row.ordinal) ?? 0) > 1;
+                  const metricValue = formatMetricValue(row.metric_value);
+                  return (
+                    <li
+                      key={row.participant_id}
+                      className="rounded-md border border-line-muted bg-paper-muted p-3 dark:bg-zinc-900"
+                    >
+                      <div className={boardRowGridClass}>
+                        <span className="font-mono text-sm font-semibold text-accent">
                           {tiedOrdinal ? "T" : ""}
                           {formatPoints(row.ordinal)}
-                        </td>
-                        <td className="px-3 py-3">
-                          <span className="flex items-center gap-2.5">
-                            <ManagerAvatar
-                              id={
-                                managerIdByParticipantId[row.participant_id] ??
-                                row.display_name
-                              }
-                              name={row.display_name}
-                              className="h-8 w-8 text-xs"
+                        </span>
+                        <span className="flex min-w-0 items-center gap-2.5">
+                          <ManagerAvatar
+                            id={
+                              managerIdByParticipantId[row.participant_id] ??
+                              row.display_name
+                            }
+                            name={row.display_name}
+                            className="h-8 w-8 text-xs"
+                          />
+                          <span className="min-w-0 truncate text-sm font-semibold text-ink dark:text-zinc-50">
+                            {capitalizeFirstLetter(row.display_name)}
+                          </span>
+                        </span>
+                        <span className="text-right font-display text-[22px] leading-none text-ink dark:text-zinc-50 md:col-start-4 md:row-start-1 md:text-xl">
+                          {formatPoints(row.points)}
+                        </span>
+                        <span className="col-span-3 flex min-w-0 items-center gap-2 md:col-span-1 md:col-start-3 md:row-start-1">
+                          {row.entity_image_url ? (
+                            <img
+                              src={row.entity_image_url}
+                              alt=""
+                              loading="lazy"
+                              className="h-6 w-6 shrink-0 object-contain"
                             />
-                            <span className="min-w-0 truncate font-semibold text-ink dark:text-zinc-50">
-                              {capitalizeFirstLetter(row.display_name)}
-                            </span>
+                          ) : null}
+                          <span className="min-w-0 truncate text-sm text-ink dark:text-zinc-50">
+                            {row.entity_name}
                           </span>
-                        </td>
-                        <td className="px-3 py-3">
-                          <span className="flex items-center gap-2">
-                            {row.entity_image_url ? (
-                              <img
-                                src={row.entity_image_url}
-                                alt=""
-                                loading="lazy"
-                                className="h-6 w-6 shrink-0 object-contain"
-                              />
-                            ) : null}
-                            <span className="min-w-0 truncate text-ink dark:text-zinc-50">
-                              {row.entity_name}
+                          {row.real_rank !== null ? (
+                            <span className="shrink-0 font-mono text-xs text-ink-muted dark:text-zinc-400">
+                              #{row.real_rank}
+                              {metricValue ? ` · ${metricValue}` : ""}
                             </span>
-                          </span>
+                          ) : (
+                            <span className="shrink-0 text-xs text-ink-muted dark:text-zinc-400">
+                              Not in standings
+                            </span>
+                          )}
+                        </span>
+                      </div>
+                      {row.reassigned || row.overridden ? (
+                        <div className="mt-2 space-y-1.5">
                           {row.reassigned ? (
-                            <div className="mt-1 max-w-[320px] text-xs leading-[1.5] text-amber-600 dark:text-amber-400">
-                              <span className="mr-1.5 rounded border border-amber-500 px-1 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.06em]">
+                            <div className={boardFlagChipClass}>
+                              <span className={boardFlagLabelClass}>
                                 Reassigned
                               </span>
                               {row.reassignment_reason}
                             </div>
                           ) : null}
-                          {row.overridden && row.override_reason ? (
-                            <div className="mt-1 max-w-[320px] text-xs leading-[1.5] text-amber-600 dark:text-amber-400">
+                          {row.overridden ? (
+                            <div className={boardFlagChipClass}>
+                              <span className={boardFlagLabelClass}>
+                                Override — computed{" "}
+                                {formatPoints(row.base_points)}
+                              </span>
                               {row.override_reason}
                             </div>
                           ) : null}
-                        </td>
-                        <td className="px-3 py-3">
-                          {row.real_rank !== null ? (
-                            <span className="flex items-baseline gap-2">
-                              <span className="font-mono font-semibold text-ink dark:text-zinc-50">
-                                #{row.real_rank}
-                              </span>
-                              {formatMetricValue(row.metric_value) ? (
-                                <span className="font-mono text-xs text-ink-muted dark:text-zinc-400">
-                                  {formatMetricValue(row.metric_value)}
-                                </span>
-                              ) : null}
-                            </span>
-                          ) : (
-                            <span className="text-xs text-ink-muted dark:text-zinc-400">
-                              Not in standings
-                            </span>
-                          )}
-                        </td>
-                        <td className="px-3 py-3 text-right">
-                          <span className="font-mono text-sm font-semibold text-ink dark:text-zinc-50">
-                            {formatPoints(row.points)}
-                          </span>
-                          {row.overridden ? (
-                            <div className="mt-0.5 font-mono text-[10px] font-semibold uppercase tracking-[0.06em] text-amber-600 dark:text-amber-400">
-                              Override — computed {formatPoints(row.base_points)}
-                            </div>
-                          ) : null}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+                        </div>
+                      ) : null}
+                    </li>
+                  );
+                })}
+              </ul>
             </div>
           ) : (
             <FantasyPanel>
