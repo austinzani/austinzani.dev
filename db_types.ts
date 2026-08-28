@@ -7,6 +7,31 @@ export type Json =
   | Json[]
 
 export type Database = {
+  graphql_public: {
+    Tables: {
+      [_ in never]: never
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      graphql: {
+        Args: {
+          extensions?: Json
+          operationName?: string
+          query?: string
+          variables?: Json
+        }
+        Returns: Json
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
   public: {
     Tables: {
       albums_of_the_year: {
@@ -169,6 +194,69 @@ export type Database = {
           },
         ]
       }
+      league_memberships: {
+        Row: {
+          created_at: string
+          id: number
+          league_id: number
+          manager_id: number
+          role: Database["public"]["Enums"]["league_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: never
+          league_id: number
+          manager_id: number
+          role?: Database["public"]["Enums"]["league_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: never
+          league_id?: number
+          manager_id?: number
+          role?: Database["public"]["Enums"]["league_role"]
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "league_memberships_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "leagues"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "league_memberships_manager_id_fkey"
+            columns: ["manager_id"]
+            isOneToOne: false
+            referencedRelation: "manager"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      leagues: {
+        Row: {
+          created_at: string
+          id: number
+          name: string
+          slug: string
+        }
+        Insert: {
+          created_at?: string
+          id?: never
+          name: string
+          slug: string
+        }
+        Update: {
+          created_at?: string
+          id?: never
+          name?: string
+          slug?: string
+        }
+        Relationships: []
+      }
       manager: {
         Row: {
           created_at: string
@@ -229,6 +317,54 @@ export type Database = {
         }
         Relationships: []
       }
+      rule_submissions: {
+        Row: {
+          content: string
+          created_at: string
+          deleted_at: string | null
+          id: number
+          league_id: number
+          manager_id: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          deleted_at?: string | null
+          id?: never
+          league_id: number
+          manager_id: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          deleted_at?: string | null
+          id?: never
+          league_id?: number
+          manager_id?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rule_submissions_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "leagues"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "rule_submissions_manager_id_fkey"
+            columns: ["manager_id"]
+            isOneToOne: false
+            referencedRelation: "manager"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       season: {
         Row: {
           champ: number | null
@@ -276,6 +412,346 @@ export type Database = {
             columns: ["toilet_bowl_champ"]
             isOneToOne: false
             referencedRelation: "manager"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tds_assignments: {
+        Row: {
+          created_at: string
+          entity_id: number
+          id: number
+          participant_id: number
+          sport_id: number
+          tier_index: number | null
+          tier_slot: number | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          entity_id: number
+          id?: never
+          participant_id: number
+          sport_id: number
+          tier_index?: number | null
+          tier_slot?: number | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          entity_id?: number
+          id?: never
+          participant_id?: number
+          sport_id?: number
+          tier_index?: number | null
+          tier_slot?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tds_assignments_entity_id_fkey"
+            columns: ["entity_id"]
+            isOneToOne: false
+            referencedRelation: "tds_entities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tds_assignments_participant_id_fkey"
+            columns: ["participant_id"]
+            isOneToOne: false
+            referencedRelation: "tds_participants"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tds_assignments_sport_id_fkey"
+            columns: ["sport_id"]
+            isOneToOne: false
+            referencedRelation: "tds_sports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tds_entities: {
+        Row: {
+          created_at: string
+          id: number
+          image_url: string | null
+          name: string
+          source_ids: Json
+          sport_id: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: never
+          image_url?: string | null
+          name: string
+          source_ids?: Json
+          sport_id: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: never
+          image_url?: string | null
+          name?: string
+          source_ids?: Json
+          sport_id?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tds_entities_sport_id_fkey"
+            columns: ["sport_id"]
+            isOneToOne: false
+            referencedRelation: "tds_sports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tds_manual_scores: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: number
+          participant_id: number
+          points: number
+          reason: string
+          sport_id: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: never
+          participant_id: number
+          points: number
+          reason: string
+          sport_id: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: never
+          participant_id?: number
+          points?: number
+          reason?: string
+          sport_id?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tds_manual_scores_participant_id_fkey"
+            columns: ["participant_id"]
+            isOneToOne: false
+            referencedRelation: "tds_participants"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tds_manual_scores_sport_id_fkey"
+            columns: ["sport_id"]
+            isOneToOne: false
+            referencedRelation: "tds_sports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tds_participants: {
+        Row: {
+          created_at: string
+          display_name: string
+          id: number
+          manager_id: number | null
+          season_id: number
+        }
+        Insert: {
+          created_at?: string
+          display_name: string
+          id?: never
+          manager_id?: number | null
+          season_id: number
+        }
+        Update: {
+          created_at?: string
+          display_name?: string
+          id?: never
+          manager_id?: number | null
+          season_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tds_participants_manager_id_fkey"
+            columns: ["manager_id"]
+            isOneToOne: false
+            referencedRelation: "manager"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tds_participants_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "tds_seasons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tds_seasons: {
+        Row: {
+          created_at: string
+          cutoff_date: string
+          id: number
+          locked_at: string | null
+          name: string
+          rng_seed: string | null
+          updated_at: string
+          year: number
+        }
+        Insert: {
+          created_at?: string
+          cutoff_date: string
+          id?: never
+          locked_at?: string | null
+          name: string
+          rng_seed?: string | null
+          updated_at?: string
+          year: number
+        }
+        Update: {
+          created_at?: string
+          cutoff_date?: string
+          id?: never
+          locked_at?: string | null
+          name?: string
+          rng_seed?: string | null
+          updated_at?: string
+          year?: number
+        }
+        Relationships: []
+      }
+      tds_snapshots: {
+        Row: {
+          error: string | null
+          fetched_at: string
+          id: number
+          payload: Json | null
+          snapshot_date: string
+          sport_id: number
+          status: Database["public"]["Enums"]["tds_snapshot_status"]
+        }
+        Insert: {
+          error?: string | null
+          fetched_at?: string
+          id?: never
+          payload?: Json | null
+          snapshot_date: string
+          sport_id: number
+          status?: Database["public"]["Enums"]["tds_snapshot_status"]
+        }
+        Update: {
+          error?: string | null
+          fetched_at?: string
+          id?: never
+          payload?: Json | null
+          snapshot_date?: string
+          sport_id?: number
+          status?: Database["public"]["Enums"]["tds_snapshot_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tds_snapshots_sport_id_fkey"
+            columns: ["sport_id"]
+            isOneToOne: false
+            referencedRelation: "tds_sports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tds_sports: {
+        Row: {
+          created_at: string
+          id: number
+          metric_mode: Database["public"]["Enums"]["tds_metric_mode"]
+          name: string
+          revealed_at: string | null
+          season_id: number
+          sport_index: number
+          sport_key: string
+          status: Database["public"]["Enums"]["tds_sport_status"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: never
+          metric_mode: Database["public"]["Enums"]["tds_metric_mode"]
+          name: string
+          revealed_at?: string | null
+          season_id: number
+          sport_index: number
+          sport_key: string
+          status?: Database["public"]["Enums"]["tds_sport_status"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: never
+          metric_mode?: Database["public"]["Enums"]["tds_metric_mode"]
+          name?: string
+          revealed_at?: string | null
+          season_id?: number
+          sport_index?: number
+          sport_key?: string
+          status?: Database["public"]["Enums"]["tds_sport_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tds_sports_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "tds_seasons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tds_standings: {
+        Row: {
+          created_at: string
+          entity_id: number
+          id: number
+          metric_value: number | null
+          rank: number
+          snapshot_id: number
+        }
+        Insert: {
+          created_at?: string
+          entity_id: number
+          id?: never
+          metric_value?: number | null
+          rank: number
+          snapshot_id: number
+        }
+        Update: {
+          created_at?: string
+          entity_id?: number
+          id?: never
+          metric_value?: number | null
+          rank?: number
+          snapshot_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tds_standings_entity_id_fkey"
+            columns: ["entity_id"]
+            isOneToOne: false
+            referencedRelation: "tds_entities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tds_standings_snapshot_id_fkey"
+            columns: ["snapshot_id"]
+            isOneToOne: false
+            referencedRelation: "tds_snapshots"
             referencedColumns: ["id"]
           },
         ]
@@ -373,57 +849,285 @@ export type Database = {
         }
         Relationships: []
       }
+      town_hall_answer_options: {
+        Row: {
+          created_at: string
+          display_order: number
+          id: number
+          is_status_quo: boolean
+          label: string
+          question_id: number
+        }
+        Insert: {
+          created_at?: string
+          display_order?: number
+          id?: never
+          is_status_quo?: boolean
+          label: string
+          question_id: number
+        }
+        Update: {
+          created_at?: string
+          display_order?: number
+          id?: never
+          is_status_quo?: boolean
+          label?: string
+          question_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "town_hall_answer_options_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "town_hall_questions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      town_hall_ballots: {
+        Row: {
+          closes_at: string | null
+          created_at: string
+          created_by: string | null
+          id: number
+          league_id: number
+          opens_at: string | null
+          published_at: string | null
+          results_visible: boolean
+          status: Database["public"]["Enums"]["town_hall_ballot_status"]
+          title: string
+        }
+        Insert: {
+          closes_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: never
+          league_id: number
+          opens_at?: string | null
+          published_at?: string | null
+          results_visible?: boolean
+          status?: Database["public"]["Enums"]["town_hall_ballot_status"]
+          title?: string
+        }
+        Update: {
+          closes_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: never
+          league_id?: number
+          opens_at?: string | null
+          published_at?: string | null
+          results_visible?: boolean
+          status?: Database["public"]["Enums"]["town_hall_ballot_status"]
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "town_hall_ballots_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "leagues"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      town_hall_questions: {
+        Row: {
+          ballot_id: number
+          created_at: string
+          display_order: number
+          id: number
+          is_required: boolean
+          prompt: string
+          section: string
+        }
+        Insert: {
+          ballot_id: number
+          created_at?: string
+          display_order?: number
+          id?: never
+          is_required?: boolean
+          prompt: string
+          section?: string
+        }
+        Update: {
+          ballot_id?: number
+          created_at?: string
+          display_order?: number
+          id?: never
+          is_required?: boolean
+          prompt?: string
+          section?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "town_hall_questions_ballot_id_fkey"
+            columns: ["ballot_id"]
+            isOneToOne: false
+            referencedRelation: "town_hall_ballots"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      town_hall_responses: {
+        Row: {
+          ballot_id: number
+          created_at: string
+          id: number
+          league_id: number
+          manager_id: number
+          option_id: number
+          question_id: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          ballot_id: number
+          created_at?: string
+          id?: never
+          league_id: number
+          manager_id: number
+          option_id: number
+          question_id: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          ballot_id?: number
+          created_at?: string
+          id?: never
+          league_id?: number
+          manager_id?: number
+          option_id?: number
+          question_id?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "town_hall_responses_ballot_id_fkey"
+            columns: ["ballot_id"]
+            isOneToOne: false
+            referencedRelation: "town_hall_ballots"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "town_hall_responses_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "leagues"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "town_hall_responses_manager_id_fkey"
+            columns: ["manager_id"]
+            isOneToOne: false
+            referencedRelation: "manager"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "town_hall_responses_option_id_fkey"
+            columns: ["option_id"]
+            isOneToOne: false
+            referencedRelation: "town_hall_answer_options"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "town_hall_responses_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "town_hall_questions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
       all_time: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: Database["public"]["CompositeTypes"]["all_time_object"][]
+        SetofOptions: {
+          from: "*"
+          to: "all_time_object"
+          isOneToOne: false
+          isSetofReturn: true
+        }
       }
       head_to_head: {
-        Args: {
-          team_one: number
-          team_two: number
-        }
+        Args: { team_one: number; team_two: number }
         Returns: Database["public"]["CompositeTypes"]["head_to_head_object"][]
+        SetofOptions: {
+          from: "*"
+          to: "head_to_head_object"
+          isOneToOne: false
+          isSetofReturn: true
+        }
       }
       head_to_head_matchups: {
-        Args: {
-          team_one: number
-          team_two: number
-        }
+        Args: { team_one: number; team_two: number }
         Returns: Database["public"]["CompositeTypes"]["game_details"][]
+        SetofOptions: {
+          from: "*"
+          to: "game_details"
+          isOneToOne: false
+          isSetofReturn: true
+        }
       }
       manager_seasons: {
-        Args: {
-          manager_id: number
-        }
+        Args: { manager_id: number }
         Returns: Database["public"]["CompositeTypes"]["manager_season_object"][]
+        SetofOptions: {
+          from: "*"
+          to: "manager_season_object"
+          isOneToOne: false
+          isSetofReturn: true
+        }
       }
       opponents: {
-        Args: {
-          manager_id: number
-        }
+        Args: { manager_id: number }
         Returns: Database["public"]["CompositeTypes"]["opponents_object"][]
+        SetofOptions: {
+          from: "*"
+          to: "opponents_object"
+          isOneToOne: false
+          isSetofReturn: true
+        }
       }
       season_details: {
-        Args: {
-          season_year: number
-        }
+        Args: { season_year: number }
         Returns: Database["public"]["CompositeTypes"]["season_details_object"][]
+        SetofOptions: {
+          from: "*"
+          to: "season_details_object"
+          isOneToOne: false
+          isSetofReturn: true
+        }
       }
       week_matchups: {
-        Args: {
-          season_year: number
-          selected_week: number
-        }
+        Args: { season_year: number; selected_week: number }
         Returns: Database["public"]["CompositeTypes"]["game_details"][]
+        SetofOptions: {
+          from: "*"
+          to: "game_details"
+          isOneToOne: false
+          isSetofReturn: true
+        }
       }
     }
     Enums: {
-      [_ in never]: never
+      league_role: "commissioner" | "manager"
+      tds_metric_mode: "live" | "final_prior"
+      tds_snapshot_status: "good" | "failed"
+      tds_sport_status: "pending" | "counting" | "final"
+      town_hall_ballot_status:
+        | "draft"
+        | "open"
+        | "closed"
+        | "upcoming"
+        | "finished"
     }
     CompositeTypes: {
       all_time_object: {
@@ -514,27 +1218,33 @@ export type Database = {
   }
 }
 
-type PublicSchema = Database[Extract<keyof Database, "public">]
+type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">
+
+type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">]
 
 export type Tables<
-  PublicTableNameOrOptions extends
-    | keyof (PublicSchema["Tables"] & PublicSchema["Views"])
-    | { schema: keyof Database },
-  TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
-    ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
-        Database[PublicTableNameOrOptions["schema"]]["Views"])
+  DefaultSchemaTableNameOrOptions extends
+    | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+        DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
     : never = never,
-> = PublicTableNameOrOptions extends { schema: keyof Database }
-  ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
-      Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+      DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
       Row: infer R
     }
     ? R
     : never
-  : PublicTableNameOrOptions extends keyof (PublicSchema["Tables"] &
-        PublicSchema["Views"])
-    ? (PublicSchema["Tables"] &
-        PublicSchema["Views"])[PublicTableNameOrOptions] extends {
+  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])
+    ? (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
         Row: infer R
       }
       ? R
@@ -542,20 +1252,24 @@ export type Tables<
     : never
 
 export type TablesInsert<
-  PublicTableNameOrOptions extends
-    | keyof PublicSchema["Tables"]
-    | { schema: keyof Database },
-  TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
-    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
+  DefaultSchemaTableNameOrOptions extends
+    | keyof DefaultSchema["Tables"]
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
     : never = never,
-> = PublicTableNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Insert: infer I
     }
     ? I
     : never
-  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
-    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
         Insert: infer I
       }
       ? I
@@ -563,20 +1277,24 @@ export type TablesInsert<
     : never
 
 export type TablesUpdate<
-  PublicTableNameOrOptions extends
-    | keyof PublicSchema["Tables"]
-    | { schema: keyof Database },
-  TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
-    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
+  DefaultSchemaTableNameOrOptions extends
+    | keyof DefaultSchema["Tables"]
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
     : never = never,
-> = PublicTableNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Update: infer U
     }
     ? U
     : never
-  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
-    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
         Update: infer U
       }
       ? U
@@ -584,14 +1302,57 @@ export type TablesUpdate<
     : never
 
 export type Enums<
-  PublicEnumNameOrOptions extends
-    | keyof PublicSchema["Enums"]
-    | { schema: keyof Database },
-  EnumName extends PublicEnumNameOrOptions extends { schema: keyof Database }
-    ? keyof Database[PublicEnumNameOrOptions["schema"]]["Enums"]
+  DefaultSchemaEnumNameOrOptions extends
+    | keyof DefaultSchema["Enums"]
+    | { schema: keyof DatabaseWithoutInternals },
+  EnumName extends DefaultSchemaEnumNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
     : never = never,
-> = PublicEnumNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
-  : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
-    ? PublicSchema["Enums"][PublicEnumNameOrOptions]
+> = DefaultSchemaEnumNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
+  : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
+    ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
     : never
+
+export type CompositeTypes<
+  PublicCompositeTypeNameOrOptions extends
+    | keyof DefaultSchema["CompositeTypes"]
+    | { schema: keyof DatabaseWithoutInternals },
+  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    : never = never,
+> = PublicCompositeTypeNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
+    ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
+    : never
+
+export const Constants = {
+  graphql_public: {
+    Enums: {},
+  },
+  public: {
+    Enums: {
+      league_role: ["commissioner", "manager"],
+      tds_metric_mode: ["live", "final_prior"],
+      tds_snapshot_status: ["good", "failed"],
+      tds_sport_status: ["pending", "counting", "final"],
+      town_hall_ballot_status: [
+        "draft",
+        "open",
+        "closed",
+        "upcoming",
+        "finished",
+      ],
+    },
+  },
+} as const
+

@@ -97,6 +97,15 @@ function getFantasyHeroCopy(pathname: string, latestChampionFirstName: string | 
         };
     }
 
+    if (pathname.includes("/tour_de_sport")) {
+        return {
+            eyebrow: "Season 1 — 2027",
+            title: "Tour de Sport",
+            subtitle: "Fourteen participants, twelve sports, one entity apiece — assigned by a live Draw and scored off real-world results all year.",
+            showBack: true,
+        };
+    }
+
     if (pathname.includes("/constitution")) {
         return {
             eyebrow: "League Governance",

@@ -1,5 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 
+import type { Database } from "../../db_types";
+
 /**
  * Creates a Supabase client for Remix loaders/actions.
  *
@@ -17,7 +19,7 @@ export function createSupabaseServerClient(accessToken?: string) {
       }
     : undefined;
 
-  return createClient<any>(
+  return createClient<Database>(
     process.env.SUPABASE_URL!,
     process.env.SUPABASE_ANON_KEY!,
     options

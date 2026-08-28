@@ -108,9 +108,9 @@ export async function requireFantasyMember(
     );
   }
 
-  const leagueValue = Array.isArray((membershipRow as any).league)
-    ? (membershipRow as any).league[0]
-    : (membershipRow as any).league;
+  const leagueValue = Array.isArray(membershipRow.league)
+    ? membershipRow.league[0]
+    : membershipRow.league;
 
   if (!leagueValue) {
     throw new Response("League configuration is missing for this membership.", {

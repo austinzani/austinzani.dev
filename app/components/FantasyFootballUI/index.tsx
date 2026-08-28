@@ -25,8 +25,12 @@ type FantasyMenuItem = {
   to: string;
 };
 
-const memberMenuItems: FantasyMenuItem[] = [
+const baseMenuItems: FantasyMenuItem[] = [
+  { label: "Tour de Sport", to: "/fantasy_football/tour_de_sport" },
   { label: "Constitution", to: "/fantasy_football/constitution" },
+];
+
+const memberMenuItems: FantasyMenuItem[] = [
   { label: "Town Hall", to: "/fantasy_football/town_hall" },
   { label: "Rule Submission", to: "/fantasy_football/rule_submission" },
 ];
@@ -38,7 +42,10 @@ const signedOutMenuItems: FantasyMenuItem[] = [
 export const FantasyMenu = ({ isMember }: { isMember: boolean }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-  const menuItems = isMember ? memberMenuItems : signedOutMenuItems;
+  const menuItems = [
+    ...baseMenuItems,
+    ...(isMember ? memberMenuItems : signedOutMenuItems),
+  ];
 
   useEffect(() => {
     if (!isMenuOpen) return;
