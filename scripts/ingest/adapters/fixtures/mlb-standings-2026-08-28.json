@@ -1,0 +1,497 @@
+{
+  "copyright": "Copyright 2026 MLB Advanced Media, L.P.  Use of any content on this page acknowledges agreement to the terms posted here http://gdx.mlb.com/components/copyright.txt",
+  "records": [
+    {
+      "standingsType": "regularSeason",
+      "league": {
+        "id": 103
+      },
+      "division": {
+        "id": 201
+      },
+      "lastUpdated": "2026-08-28T02:02:40.087Z",
+      "teamRecords": [
+        {
+          "team": {
+            "id": 139,
+            "name": "Tampa Bay Rays",
+            "abbreviation": "TB"
+          },
+          "divisionRank": "1",
+          "leagueRank": "1",
+          "sportRank": "3",
+          "gamesPlayed": 133,
+          "wins": 79,
+          "losses": 54,
+          "winningPercentage": ".594"
+        },
+        {
+          "team": {
+            "id": 147,
+            "name": "New York Yankees",
+            "abbreviation": "NYY"
+          },
+          "divisionRank": "2",
+          "leagueRank": "2",
+          "sportRank": "6",
+          "gamesPlayed": 133,
+          "wins": 75,
+          "losses": 58,
+          "winningPercentage": ".564"
+        },
+        {
+          "team": {
+            "id": 111,
+            "name": "Boston Red Sox",
+            "abbreviation": "BOS"
+          },
+          "divisionRank": "3",
+          "leagueRank": "3",
+          "sportRank": "8",
+          "gamesPlayed": 133,
+          "wins": 73,
+          "losses": 60,
+          "winningPercentage": ".549"
+        },
+        {
+          "team": {
+            "id": 110,
+            "name": "Baltimore Orioles",
+            "abbreviation": "BAL"
+          },
+          "divisionRank": "4",
+          "leagueRank": "8",
+          "sportRank": "17",
+          "gamesPlayed": 134,
+          "wins": 65,
+          "losses": 69,
+          "winningPercentage": ".485"
+        },
+        {
+          "team": {
+            "id": 141,
+            "name": "Toronto Blue Jays",
+            "abbreviation": "TOR"
+          },
+          "divisionRank": "5",
+          "leagueRank": "9",
+          "sportRank": "18",
+          "gamesPlayed": 135,
+          "wins": 65,
+          "losses": 70,
+          "winningPercentage": ".481"
+        }
+      ]
+    },
+    {
+      "standingsType": "regularSeason",
+      "league": {
+        "id": 103
+      },
+      "division": {
+        "id": 202
+      },
+      "lastUpdated": "2026-08-28T01:58:45.911Z",
+      "teamRecords": [
+        {
+          "team": {
+            "id": 145,
+            "name": "Chicago White Sox",
+            "abbreviation": "CWS"
+          },
+          "divisionRank": "1",
+          "leagueRank": "4",
+          "sportRank": "10",
+          "gamesPlayed": 133,
+          "wins": 70,
+          "losses": 63,
+          "winningPercentage": ".526"
+        },
+        {
+          "team": {
+            "id": 114,
+            "name": "Cleveland Guardians",
+            "abbreviation": "CLE"
+          },
+          "divisionRank": "2",
+          "leagueRank": "5",
+          "sportRank": "12",
+          "gamesPlayed": 134,
+          "wins": 68,
+          "losses": 66,
+          "winningPercentage": ".507"
+        },
+        {
+          "team": {
+            "id": 142,
+            "name": "Minnesota Twins",
+            "abbreviation": "MIN"
+          },
+          "divisionRank": "3",
+          "leagueRank": "11",
+          "sportRank": "21",
+          "gamesPlayed": 134,
+          "wins": 64,
+          "losses": 70,
+          "winningPercentage": ".478"
+        },
+        {
+          "team": {
+            "id": 116,
+            "name": "Detroit Tigers",
+            "abbreviation": "DET"
+          },
+          "divisionRank": "4",
+          "leagueRank": "12",
+          "sportRank": "23",
+          "gamesPlayed": 133,
+          "wins": 62,
+          "losses": 71,
+          "winningPercentage": ".466"
+        },
+        {
+          "team": {
+            "id": 118,
+            "name": "Kansas City Royals",
+            "abbreviation": "KC"
+          },
+          "divisionRank": "5",
+          "leagueRank": "13",
+          "sportRank": "26",
+          "gamesPlayed": 135,
+          "wins": 60,
+          "losses": 75,
+          "winningPercentage": ".444"
+        }
+      ]
+    },
+    {
+      "standingsType": "regularSeason",
+      "league": {
+        "id": 103
+      },
+      "division": {
+        "id": 200
+      },
+      "lastUpdated": "2026-08-28T02:02:41.273Z",
+      "teamRecords": [
+        {
+          "team": {
+            "id": 117,
+            "name": "Houston Astros",
+            "abbreviation": "HOU"
+          },
+          "divisionRank": "1",
+          "leagueRank": "6",
+          "sportRank": "14",
+          "gamesPlayed": 134,
+          "wins": 67,
+          "losses": 67,
+          "winningPercentage": ".500"
+        },
+        {
+          "team": {
+            "id": 140,
+            "name": "Texas Rangers",
+            "abbreviation": "TEX"
+          },
+          "divisionRank": "2",
+          "leagueRank": "7",
+          "sportRank": "16",
+          "gamesPlayed": 134,
+          "wins": 66,
+          "losses": 68,
+          "winningPercentage": ".493"
+        },
+        {
+          "team": {
+            "id": 136,
+            "name": "Seattle Mariners",
+            "abbreviation": "SEA"
+          },
+          "divisionRank": "3",
+          "leagueRank": "10",
+          "sportRank": "20",
+          "gamesPlayed": 134,
+          "wins": 64,
+          "losses": 70,
+          "winningPercentage": ".478"
+        },
+        {
+          "team": {
+            "id": 133,
+            "name": "Athletics",
+            "abbreviation": "ATH"
+          },
+          "divisionRank": "4",
+          "leagueRank": "14",
+          "sportRank": "28",
+          "gamesPlayed": 134,
+          "wins": 53,
+          "losses": 81,
+          "winningPercentage": ".396"
+        },
+        {
+          "team": {
+            "id": 108,
+            "name": "Los Angeles Angels",
+            "abbreviation": "LAA"
+          },
+          "divisionRank": "5",
+          "leagueRank": "15",
+          "sportRank": "30",
+          "gamesPlayed": 134,
+          "wins": 52,
+          "losses": 82,
+          "winningPercentage": ".388"
+        }
+      ]
+    },
+    {
+      "standingsType": "regularSeason",
+      "league": {
+        "id": 104
+      },
+      "division": {
+        "id": 204
+      },
+      "lastUpdated": "2026-08-28T02:08:00.083Z",
+      "teamRecords": [
+        {
+          "team": {
+            "id": 144,
+            "name": "Atlanta Braves",
+            "abbreviation": "ATL"
+          },
+          "divisionRank": "1",
+          "leagueRank": "3",
+          "sportRank": "4",
+          "gamesPlayed": 134,
+          "wins": 79,
+          "losses": 55,
+          "winningPercentage": ".590"
+        },
+        {
+          "team": {
+            "id": 143,
+            "name": "Philadelphia Phillies",
+            "abbreviation": "PHI"
+          },
+          "divisionRank": "2",
+          "leagueRank": "5",
+          "sportRank": "7",
+          "gamesPlayed": 134,
+          "wins": 74,
+          "losses": 60,
+          "winningPercentage": ".552"
+        },
+        {
+          "team": {
+            "id": 146,
+            "name": "Miami Marlins",
+            "abbreviation": "MIA"
+          },
+          "divisionRank": "3",
+          "leagueRank": "8",
+          "sportRank": "13",
+          "gamesPlayed": 134,
+          "wins": 68,
+          "losses": 66,
+          "winningPercentage": ".507"
+        },
+        {
+          "team": {
+            "id": 120,
+            "name": "Washington Nationals",
+            "abbreviation": "WSH"
+          },
+          "divisionRank": "4",
+          "leagueRank": "12",
+          "sportRank": "24",
+          "gamesPlayed": 136,
+          "wins": 63,
+          "losses": 73,
+          "winningPercentage": ".463"
+        },
+        {
+          "team": {
+            "id": 121,
+            "name": "New York Mets",
+            "abbreviation": "NYM"
+          },
+          "divisionRank": "5",
+          "leagueRank": "13",
+          "sportRank": "25",
+          "gamesPlayed": 134,
+          "wins": 60,
+          "losses": 74,
+          "winningPercentage": ".448"
+        }
+      ]
+    },
+    {
+      "standingsType": "regularSeason",
+      "league": {
+        "id": 104
+      },
+      "division": {
+        "id": 205
+      },
+      "lastUpdated": "2026-08-28T02:08:01.653Z",
+      "teamRecords": [
+        {
+          "team": {
+            "id": 158,
+            "name": "Milwaukee Brewers",
+            "abbreviation": "MIL"
+          },
+          "divisionRank": "1",
+          "leagueRank": "1",
+          "sportRank": "1",
+          "gamesPlayed": 134,
+          "wins": 83,
+          "losses": 51,
+          "winningPercentage": ".619"
+        },
+        {
+          "team": {
+            "id": 112,
+            "name": "Chicago Cubs",
+            "abbreviation": "CHC"
+          },
+          "divisionRank": "2",
+          "leagueRank": "4",
+          "sportRank": "5",
+          "gamesPlayed": 134,
+          "wins": 76,
+          "losses": 58,
+          "winningPercentage": ".567"
+        },
+        {
+          "team": {
+            "id": 138,
+            "name": "St. Louis Cardinals",
+            "abbreviation": "STL"
+          },
+          "divisionRank": "3",
+          "leagueRank": "9",
+          "sportRank": "15",
+          "gamesPlayed": 135,
+          "wins": 67,
+          "losses": 68,
+          "winningPercentage": ".496"
+        },
+        {
+          "team": {
+            "id": 134,
+            "name": "Pittsburgh Pirates",
+            "abbreviation": "PIT"
+          },
+          "divisionRank": "4",
+          "leagueRank": "10",
+          "sportRank": "19",
+          "gamesPlayed": 135,
+          "wins": 65,
+          "losses": 70,
+          "winningPercentage": ".481"
+        },
+        {
+          "team": {
+            "id": 113,
+            "name": "Cincinnati Reds",
+            "abbreviation": "CIN"
+          },
+          "divisionRank": "5",
+          "leagueRank": "11",
+          "sportRank": "22",
+          "gamesPlayed": 134,
+          "wins": 63,
+          "losses": 71,
+          "winningPercentage": ".470"
+        }
+      ]
+    },
+    {
+      "standingsType": "regularSeason",
+      "league": {
+        "id": 104
+      },
+      "division": {
+        "id": 203
+      },
+      "lastUpdated": "2026-08-28T04:37:56.060Z",
+      "teamRecords": [
+        {
+          "team": {
+            "id": 119,
+            "name": "Los Angeles Dodgers",
+            "abbreviation": "LAD"
+          },
+          "divisionRank": "1",
+          "leagueRank": "2",
+          "sportRank": "2",
+          "gamesPlayed": 134,
+          "wins": 80,
+          "losses": 54,
+          "winningPercentage": ".597"
+        },
+        {
+          "team": {
+            "id": 135,
+            "name": "San Diego Padres",
+            "abbreviation": "SD"
+          },
+          "divisionRank": "2",
+          "leagueRank": "6",
+          "sportRank": "9",
+          "gamesPlayed": 134,
+          "wins": 72,
+          "losses": 62,
+          "winningPercentage": ".537"
+        },
+        {
+          "team": {
+            "id": 109,
+            "name": "Arizona Diamondbacks",
+            "abbreviation": "AZ"
+          },
+          "divisionRank": "3",
+          "leagueRank": "7",
+          "sportRank": "11",
+          "gamesPlayed": 135,
+          "wins": 71,
+          "losses": 64,
+          "winningPercentage": ".526"
+        },
+        {
+          "team": {
+            "id": 137,
+            "name": "San Francisco Giants",
+            "abbreviation": "SF"
+          },
+          "divisionRank": "4",
+          "leagueRank": "14",
+          "sportRank": "27",
+          "gamesPlayed": 134,
+          "wins": 55,
+          "losses": 79,
+          "winningPercentage": ".410"
+        },
+        {
+          "team": {
+            "id": 115,
+            "name": "Colorado Rockies",
+            "abbreviation": "COL"
+          },
+          "divisionRank": "5",
+          "leagueRank": "15",
+          "sportRank": "29",
+          "gamesPlayed": 134,
+          "wins": 52,
+          "losses": 82,
+          "winningPercentage": ".388"
+        }
+      ]
+    }
+  ]
+}
