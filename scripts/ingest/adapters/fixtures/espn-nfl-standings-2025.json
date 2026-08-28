@@ -1,0 +1,1213 @@
+{
+  "id": "9",
+  "name": "National Football League",
+  "abbreviation": "NFL",
+  "season": {
+    "year": 2025,
+    "displayName": "2025"
+  },
+  "children": [
+    {
+      "id": "8",
+      "name": "American Football Conference",
+      "abbreviation": "AFC",
+      "standings": {
+        "entries": [
+          {
+            "team": {
+              "id": "17",
+              "displayName": "New England Patriots",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nfl/500/ne.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 3,
+                "displayValue": "3"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 170,
+                "displayValue": "+170"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.8235294,
+                "displayValue": ".824"
+              },
+              {
+                "name": "wins",
+                "value": 14,
+                "displayValue": "14"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "30",
+              "displayName": "Jacksonville Jaguars",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nfl/500/jax.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 4,
+                "displayValue": "4"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 138,
+                "displayValue": "+138"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.7647059,
+                "displayValue": ".765"
+              },
+              {
+                "name": "wins",
+                "value": 13,
+                "displayValue": "13"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "23",
+              "displayName": "Pittsburgh Steelers",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nfl/500/pit.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 7,
+                "displayValue": "7"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 10,
+                "displayValue": "+10"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.5882353,
+                "displayValue": ".588"
+              },
+              {
+                "name": "wins",
+                "value": 10,
+                "displayValue": "10"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "34",
+              "displayName": "Houston Texans",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nfl/500/hou.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 5,
+                "displayValue": "5"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 109,
+                "displayValue": "+109"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.7058824,
+                "displayValue": ".706"
+              },
+              {
+                "name": "wins",
+                "value": 12,
+                "displayValue": "12"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "2",
+              "displayName": "Buffalo Bills",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nfl/500/buf.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 5,
+                "displayValue": "5"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 116,
+                "displayValue": "+116"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.7058824,
+                "displayValue": ".706"
+              },
+              {
+                "name": "wins",
+                "value": 12,
+                "displayValue": "12"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "24",
+              "displayName": "Los Angeles Chargers",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nfl/500/lac.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 6,
+                "displayValue": "6"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 28,
+                "displayValue": "+28"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.64705884,
+                "displayValue": ".647"
+              },
+              {
+                "name": "wins",
+                "value": 11,
+                "displayValue": "11"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "11",
+              "displayName": "Indianapolis Colts",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nfl/500/ind.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 9,
+                "displayValue": "9"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 54,
+                "displayValue": "+54"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.47058824,
+                "displayValue": ".471"
+              },
+              {
+                "name": "wins",
+                "value": 8,
+                "displayValue": "8"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "33",
+              "displayName": "Baltimore Ravens",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nfl/500/bal.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 9,
+                "displayValue": "9"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 26,
+                "displayValue": "+26"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.47058824,
+                "displayValue": ".471"
+              },
+              {
+                "name": "wins",
+                "value": 8,
+                "displayValue": "8"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "15",
+              "displayName": "Miami Dolphins",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nfl/500/mia.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 10,
+                "displayValue": "10"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -77,
+                "displayValue": "-77"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.4117647,
+                "displayValue": ".412"
+              },
+              {
+                "name": "wins",
+                "value": 7,
+                "displayValue": "7"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "4",
+              "displayName": "Cincinnati Bengals",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nfl/500/cin.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 11,
+                "displayValue": "11"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -78,
+                "displayValue": "-78"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.3529412,
+                "displayValue": ".353"
+              },
+              {
+                "name": "wins",
+                "value": 6,
+                "displayValue": "6"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "12",
+              "displayName": "Kansas City Chiefs",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nfl/500/kc.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 11,
+                "displayValue": "11"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 34,
+                "displayValue": "+34"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.3529412,
+                "displayValue": ".353"
+              },
+              {
+                "name": "wins",
+                "value": 6,
+                "displayValue": "6"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "5",
+              "displayName": "Cleveland Browns",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nfl/500/cle.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 12,
+                "displayValue": "12"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -100,
+                "displayValue": "-100"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.29411766,
+                "displayValue": ".294"
+              },
+              {
+                "name": "wins",
+                "value": 5,
+                "displayValue": "5"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "13",
+              "displayName": "Las Vegas Raiders",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nfl/500/lv.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 14,
+                "displayValue": "14"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -191,
+                "displayValue": "-191"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.1764706,
+                "displayValue": ".176"
+              },
+              {
+                "name": "wins",
+                "value": 3,
+                "displayValue": "3"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "20",
+              "displayName": "New York Jets",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nfl/500/nyj.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 14,
+                "displayValue": "14"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -203,
+                "displayValue": "-203"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.1764706,
+                "displayValue": ".176"
+              },
+              {
+                "name": "wins",
+                "value": 3,
+                "displayValue": "3"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "10",
+              "displayName": "Tennessee Titans",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nfl/500/ten.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 14,
+                "displayValue": "14"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -194,
+                "displayValue": "-194"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.1764706,
+                "displayValue": ".176"
+              },
+              {
+                "name": "wins",
+                "value": 3,
+                "displayValue": "3"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "7",
+              "displayName": "Denver Broncos",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nfl/500/den.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 3,
+                "displayValue": "3"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 90,
+                "displayValue": "+90"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.8235294,
+                "displayValue": ".824"
+              },
+              {
+                "name": "wins",
+                "value": 14,
+                "displayValue": "14"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "7",
+      "name": "National Football Conference",
+      "abbreviation": "NFC",
+      "standings": {
+        "entries": [
+          {
+            "team": {
+              "id": "3",
+              "displayName": "Chicago Bears",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nfl/500/chi.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 6,
+                "displayValue": "6"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 26,
+                "displayValue": "+26"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.64705884,
+                "displayValue": ".647"
+              },
+              {
+                "name": "wins",
+                "value": 11,
+                "displayValue": "11"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "21",
+              "displayName": "Philadelphia Eagles",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nfl/500/phi.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 6,
+                "displayValue": "6"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 54,
+                "displayValue": "+54"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.64705884,
+                "displayValue": ".647"
+              },
+              {
+                "name": "wins",
+                "value": 11,
+                "displayValue": "11"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "29",
+              "displayName": "Carolina Panthers",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nfl/500/car.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 9,
+                "displayValue": "9"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -69,
+                "displayValue": "-69"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.47058824,
+                "displayValue": ".471"
+              },
+              {
+                "name": "wins",
+                "value": 8,
+                "displayValue": "8"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "14",
+              "displayName": "Los Angeles Rams",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nfl/500/lar.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 5,
+                "displayValue": "5"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 172,
+                "displayValue": "+172"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.7058824,
+                "displayValue": ".706"
+              },
+              {
+                "name": "wins",
+                "value": 12,
+                "displayValue": "12"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "25",
+              "displayName": "San Francisco 49ers",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nfl/500/sf.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 5,
+                "displayValue": "5"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 66,
+                "displayValue": "+66"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.7058824,
+                "displayValue": ".706"
+              },
+              {
+                "name": "wins",
+                "value": 12,
+                "displayValue": "12"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "9",
+              "displayName": "Green Bay Packers",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nfl/500/gb.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 7,
+                "displayValue": "7"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 31,
+                "displayValue": "+31"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.5588235,
+                "displayValue": ".559"
+              },
+              {
+                "name": "wins",
+                "value": 9,
+                "displayValue": "9"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "16",
+              "displayName": "Minnesota Vikings",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nfl/500/min.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 8,
+                "displayValue": "8"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 11,
+                "displayValue": "+11"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.5294118,
+                "displayValue": ".529"
+              },
+              {
+                "name": "wins",
+                "value": 9,
+                "displayValue": "9"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "8",
+              "displayName": "Detroit Lions",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nfl/500/det.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 8,
+                "displayValue": "8"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 68,
+                "displayValue": "+68"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.5294118,
+                "displayValue": ".529"
+              },
+              {
+                "name": "wins",
+                "value": 9,
+                "displayValue": "9"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "27",
+              "displayName": "Tampa Bay Buccaneers",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nfl/500/tb.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 9,
+                "displayValue": "9"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -31,
+                "displayValue": "-31"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.47058824,
+                "displayValue": ".471"
+              },
+              {
+                "name": "wins",
+                "value": 8,
+                "displayValue": "8"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "1",
+              "displayName": "Atlanta Falcons",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nfl/500/atl.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 9,
+                "displayValue": "9"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -48,
+                "displayValue": "-48"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.47058824,
+                "displayValue": ".471"
+              },
+              {
+                "name": "wins",
+                "value": 8,
+                "displayValue": "8"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "6",
+              "displayName": "Dallas Cowboys",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nfl/500/dal.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 9,
+                "displayValue": "9"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -40,
+                "displayValue": "-40"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.44117647,
+                "displayValue": ".441"
+              },
+              {
+                "name": "wins",
+                "value": 7,
+                "displayValue": "7"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "18",
+              "displayName": "New Orleans Saints",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nfl/500/no.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 11,
+                "displayValue": "11"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -77,
+                "displayValue": "-77"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.3529412,
+                "displayValue": ".353"
+              },
+              {
+                "name": "wins",
+                "value": 6,
+                "displayValue": "6"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "28",
+              "displayName": "Washington Commanders",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nfl/500/wsh.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 12,
+                "displayValue": "12"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -95,
+                "displayValue": "-95"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.29411766,
+                "displayValue": ".294"
+              },
+              {
+                "name": "wins",
+                "value": 5,
+                "displayValue": "5"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "19",
+              "displayName": "New York Giants",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nfl/500/nyg.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 13,
+                "displayValue": "13"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -58,
+                "displayValue": "-58"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.23529412,
+                "displayValue": ".235"
+              },
+              {
+                "name": "wins",
+                "value": 4,
+                "displayValue": "4"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "22",
+              "displayName": "Arizona Cardinals",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nfl/500/ari.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 14,
+                "displayValue": "14"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -133,
+                "displayValue": "-133"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.1764706,
+                "displayValue": ".176"
+              },
+              {
+                "name": "wins",
+                "value": 3,
+                "displayValue": "3"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "26",
+              "displayName": "Seattle Seahawks",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nfl/500/sea.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 3,
+                "displayValue": "3"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 191,
+                "displayValue": "+191"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.8235294,
+                "displayValue": ".824"
+              },
+              {
+                "name": "wins",
+                "value": 14,
+                "displayValue": "14"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

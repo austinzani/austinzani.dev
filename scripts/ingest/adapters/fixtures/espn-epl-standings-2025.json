@@ -1,0 +1,960 @@
+{
+  "id": "23",
+  "name": "English Premier League",
+  "abbreviation": "Premier League",
+  "season": {
+    "year": 2025,
+    "displayName": "2025-26 English Premier League"
+  },
+  "children": [
+    {
+      "id": "1",
+      "name": "English Premier League 2025-2026",
+      "abbreviation": "2025-2026",
+      "standings": {
+        "entries": [
+          {
+            "team": {
+              "id": "359",
+              "displayName": "Arsenal",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/soccer/500/359.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "gamesPlayed",
+                "value": 38,
+                "displayValue": "38"
+              },
+              {
+                "name": "losses",
+                "value": 5,
+                "displayValue": "5"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 44,
+                "displayValue": "+44"
+              },
+              {
+                "name": "points",
+                "value": 85,
+                "displayValue": "85"
+              },
+              {
+                "name": "wins",
+                "value": 26,
+                "displayValue": "26"
+              },
+              {
+                "name": "rank",
+                "value": 1,
+                "displayValue": "1"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "382",
+              "displayName": "Manchester City",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/soccer/500/382.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "gamesPlayed",
+                "value": 38,
+                "displayValue": "38"
+              },
+              {
+                "name": "losses",
+                "value": 6,
+                "displayValue": "6"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 42,
+                "displayValue": "+42"
+              },
+              {
+                "name": "points",
+                "value": 78,
+                "displayValue": "78"
+              },
+              {
+                "name": "wins",
+                "value": 23,
+                "displayValue": "23"
+              },
+              {
+                "name": "rank",
+                "value": 2,
+                "displayValue": "2"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "360",
+              "displayName": "Manchester United",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/soccer/500/360.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "gamesPlayed",
+                "value": 38,
+                "displayValue": "38"
+              },
+              {
+                "name": "losses",
+                "value": 7,
+                "displayValue": "7"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 19,
+                "displayValue": "+19"
+              },
+              {
+                "name": "points",
+                "value": 71,
+                "displayValue": "71"
+              },
+              {
+                "name": "wins",
+                "value": 20,
+                "displayValue": "20"
+              },
+              {
+                "name": "rank",
+                "value": 3,
+                "displayValue": "3"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "362",
+              "displayName": "Aston Villa",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/soccer/500/362.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "gamesPlayed",
+                "value": 38,
+                "displayValue": "38"
+              },
+              {
+                "name": "losses",
+                "value": 11,
+                "displayValue": "11"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 7,
+                "displayValue": "+7"
+              },
+              {
+                "name": "points",
+                "value": 65,
+                "displayValue": "65"
+              },
+              {
+                "name": "wins",
+                "value": 19,
+                "displayValue": "19"
+              },
+              {
+                "name": "rank",
+                "value": 4,
+                "displayValue": "4"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "364",
+              "displayName": "Liverpool",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/soccer/500/364.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "gamesPlayed",
+                "value": 38,
+                "displayValue": "38"
+              },
+              {
+                "name": "losses",
+                "value": 12,
+                "displayValue": "12"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 10,
+                "displayValue": "+10"
+              },
+              {
+                "name": "points",
+                "value": 60,
+                "displayValue": "60"
+              },
+              {
+                "name": "wins",
+                "value": 17,
+                "displayValue": "17"
+              },
+              {
+                "name": "rank",
+                "value": 5,
+                "displayValue": "5"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "349",
+              "displayName": "AFC Bournemouth",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/soccer/500/349.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "gamesPlayed",
+                "value": 38,
+                "displayValue": "38"
+              },
+              {
+                "name": "losses",
+                "value": 7,
+                "displayValue": "7"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 4,
+                "displayValue": "+4"
+              },
+              {
+                "name": "points",
+                "value": 57,
+                "displayValue": "57"
+              },
+              {
+                "name": "wins",
+                "value": 13,
+                "displayValue": "13"
+              },
+              {
+                "name": "rank",
+                "value": 6,
+                "displayValue": "6"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "366",
+              "displayName": "Sunderland",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/soccer/500/366.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "gamesPlayed",
+                "value": 38,
+                "displayValue": "38"
+              },
+              {
+                "name": "losses",
+                "value": 12,
+                "displayValue": "12"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -6,
+                "displayValue": "-6"
+              },
+              {
+                "name": "points",
+                "value": 54,
+                "displayValue": "54"
+              },
+              {
+                "name": "wins",
+                "value": 14,
+                "displayValue": "14"
+              },
+              {
+                "name": "rank",
+                "value": 7,
+                "displayValue": "7"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "331",
+              "displayName": "Brighton & Hove Albion",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/soccer/500/331.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "gamesPlayed",
+                "value": 38,
+                "displayValue": "38"
+              },
+              {
+                "name": "losses",
+                "value": 13,
+                "displayValue": "13"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 6,
+                "displayValue": "+6"
+              },
+              {
+                "name": "points",
+                "value": 53,
+                "displayValue": "53"
+              },
+              {
+                "name": "wins",
+                "value": 14,
+                "displayValue": "14"
+              },
+              {
+                "name": "rank",
+                "value": 8,
+                "displayValue": "8"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "337",
+              "displayName": "Brentford",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/soccer/500/337.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "gamesPlayed",
+                "value": 38,
+                "displayValue": "38"
+              },
+              {
+                "name": "losses",
+                "value": 13,
+                "displayValue": "13"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 3,
+                "displayValue": "+3"
+              },
+              {
+                "name": "points",
+                "value": 53,
+                "displayValue": "53"
+              },
+              {
+                "name": "wins",
+                "value": 14,
+                "displayValue": "14"
+              },
+              {
+                "name": "rank",
+                "value": 9,
+                "displayValue": "9"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "363",
+              "displayName": "Chelsea",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/soccer/500/363.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "gamesPlayed",
+                "value": 38,
+                "displayValue": "38"
+              },
+              {
+                "name": "losses",
+                "value": 14,
+                "displayValue": "14"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 6,
+                "displayValue": "+6"
+              },
+              {
+                "name": "points",
+                "value": 52,
+                "displayValue": "52"
+              },
+              {
+                "name": "wins",
+                "value": 14,
+                "displayValue": "14"
+              },
+              {
+                "name": "rank",
+                "value": 10,
+                "displayValue": "10"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "370",
+              "displayName": "Fulham",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/soccer/500/370.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "gamesPlayed",
+                "value": 38,
+                "displayValue": "38"
+              },
+              {
+                "name": "losses",
+                "value": 16,
+                "displayValue": "16"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -4,
+                "displayValue": "-4"
+              },
+              {
+                "name": "points",
+                "value": 52,
+                "displayValue": "52"
+              },
+              {
+                "name": "wins",
+                "value": 15,
+                "displayValue": "15"
+              },
+              {
+                "name": "rank",
+                "value": 11,
+                "displayValue": "11"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "361",
+              "displayName": "Newcastle United",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/soccer/500/361.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "gamesPlayed",
+                "value": 38,
+                "displayValue": "38"
+              },
+              {
+                "name": "losses",
+                "value": 17,
+                "displayValue": "17"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -2,
+                "displayValue": "-2"
+              },
+              {
+                "name": "points",
+                "value": 49,
+                "displayValue": "49"
+              },
+              {
+                "name": "wins",
+                "value": 14,
+                "displayValue": "14"
+              },
+              {
+                "name": "rank",
+                "value": 12,
+                "displayValue": "12"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "368",
+              "displayName": "Everton",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/soccer/500/368.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "gamesPlayed",
+                "value": 38,
+                "displayValue": "38"
+              },
+              {
+                "name": "losses",
+                "value": 15,
+                "displayValue": "15"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -3,
+                "displayValue": "-3"
+              },
+              {
+                "name": "points",
+                "value": 49,
+                "displayValue": "49"
+              },
+              {
+                "name": "wins",
+                "value": 13,
+                "displayValue": "13"
+              },
+              {
+                "name": "rank",
+                "value": 13,
+                "displayValue": "13"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "357",
+              "displayName": "Leeds United",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/soccer/500/357.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "gamesPlayed",
+                "value": 38,
+                "displayValue": "38"
+              },
+              {
+                "name": "losses",
+                "value": 13,
+                "displayValue": "13"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -7,
+                "displayValue": "-7"
+              },
+              {
+                "name": "points",
+                "value": 47,
+                "displayValue": "47"
+              },
+              {
+                "name": "wins",
+                "value": 11,
+                "displayValue": "11"
+              },
+              {
+                "name": "rank",
+                "value": 14,
+                "displayValue": "14"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "384",
+              "displayName": "Crystal Palace",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/soccer/500/384.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "gamesPlayed",
+                "value": 38,
+                "displayValue": "38"
+              },
+              {
+                "name": "losses",
+                "value": 15,
+                "displayValue": "15"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -10,
+                "displayValue": "-10"
+              },
+              {
+                "name": "points",
+                "value": 45,
+                "displayValue": "45"
+              },
+              {
+                "name": "wins",
+                "value": 11,
+                "displayValue": "11"
+              },
+              {
+                "name": "rank",
+                "value": 15,
+                "displayValue": "15"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "393",
+              "displayName": "Nottingham Forest",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/soccer/500/393.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "gamesPlayed",
+                "value": 38,
+                "displayValue": "38"
+              },
+              {
+                "name": "losses",
+                "value": 16,
+                "displayValue": "16"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -3,
+                "displayValue": "-3"
+              },
+              {
+                "name": "points",
+                "value": 44,
+                "displayValue": "44"
+              },
+              {
+                "name": "wins",
+                "value": 11,
+                "displayValue": "11"
+              },
+              {
+                "name": "rank",
+                "value": 16,
+                "displayValue": "16"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "367",
+              "displayName": "Tottenham Hotspur",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/soccer/500/367.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "gamesPlayed",
+                "value": 38,
+                "displayValue": "38"
+              },
+              {
+                "name": "losses",
+                "value": 17,
+                "displayValue": "17"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -9,
+                "displayValue": "-9"
+              },
+              {
+                "name": "points",
+                "value": 41,
+                "displayValue": "41"
+              },
+              {
+                "name": "wins",
+                "value": 10,
+                "displayValue": "10"
+              },
+              {
+                "name": "rank",
+                "value": 17,
+                "displayValue": "17"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "371",
+              "displayName": "West Ham United",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/soccer/500/371.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "gamesPlayed",
+                "value": 38,
+                "displayValue": "38"
+              },
+              {
+                "name": "losses",
+                "value": 19,
+                "displayValue": "19"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -19,
+                "displayValue": "-19"
+              },
+              {
+                "name": "points",
+                "value": 39,
+                "displayValue": "39"
+              },
+              {
+                "name": "wins",
+                "value": 10,
+                "displayValue": "10"
+              },
+              {
+                "name": "rank",
+                "value": 18,
+                "displayValue": "18"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "379",
+              "displayName": "Burnley",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/soccer/500/379.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "gamesPlayed",
+                "value": 38,
+                "displayValue": "38"
+              },
+              {
+                "name": "losses",
+                "value": 24,
+                "displayValue": "24"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -37,
+                "displayValue": "-37"
+              },
+              {
+                "name": "points",
+                "value": 22,
+                "displayValue": "22"
+              },
+              {
+                "name": "wins",
+                "value": 4,
+                "displayValue": "4"
+              },
+              {
+                "name": "rank",
+                "value": 19,
+                "displayValue": "19"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "380",
+              "displayName": "Wolverhampton Wanderers",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/soccer/500/380.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "gamesPlayed",
+                "value": 38,
+                "displayValue": "38"
+              },
+              {
+                "name": "losses",
+                "value": 24,
+                "displayValue": "24"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -41,
+                "displayValue": "-41"
+              },
+              {
+                "name": "points",
+                "value": 20,
+                "displayValue": "20"
+              },
+              {
+                "name": "wins",
+                "value": 3,
+                "displayValue": "3"
+              },
+              {
+                "name": "rank",
+                "value": 20,
+                "displayValue": "20"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

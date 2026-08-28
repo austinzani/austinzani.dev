@@ -1,0 +1,1289 @@
+{
+  "id": "7",
+  "name": "National Basketball Association",
+  "abbreviation": "NBA",
+  "season": {
+    "year": 2026,
+    "displayName": "2025-26"
+  },
+  "children": [
+    {
+      "id": "5",
+      "name": "Eastern Conference",
+      "abbreviation": "East",
+      "standings": {
+        "entries": [
+          {
+            "team": {
+              "id": "8",
+              "displayName": "Detroit Pistons",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nba/500/det.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 22,
+                "displayValue": "22"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 669,
+                "displayValue": "+669"
+              },
+              {
+                "name": "points",
+                "value": 19,
+                "displayValue": "19.0"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.73170733,
+                "displayValue": ".732"
+              },
+              {
+                "name": "wins",
+                "value": 60,
+                "displayValue": "60"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "1",
+              "displayName": "Atlanta Hawks",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nba/500/atl.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 36,
+                "displayValue": "36"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 198,
+                "displayValue": "+198"
+              },
+              {
+                "name": "points",
+                "value": 5,
+                "displayValue": "5.0"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.5609756,
+                "displayValue": ".561"
+              },
+              {
+                "name": "wins",
+                "value": 46,
+                "displayValue": "46"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "2",
+              "displayName": "Boston Celtics",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nba/500/bos.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 26,
+                "displayValue": "26"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 631,
+                "displayValue": "+631"
+              },
+              {
+                "name": "points",
+                "value": 15,
+                "displayValue": "15.0"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.68292683,
+                "displayValue": ".683"
+              },
+              {
+                "name": "wins",
+                "value": 56,
+                "displayValue": "56"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "20",
+              "displayName": "Philadelphia 76ers",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nba/500/phi.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 37,
+                "displayValue": "37"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -15,
+                "displayValue": "-15"
+              },
+              {
+                "name": "points",
+                "value": 4,
+                "displayValue": "4.0"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.5487805,
+                "displayValue": ".549"
+              },
+              {
+                "name": "wins",
+                "value": 45,
+                "displayValue": "45"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "19",
+              "displayName": "Orlando Magic",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nba/500/orl.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 37,
+                "displayValue": "37"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 52,
+                "displayValue": "+52"
+              },
+              {
+                "name": "points",
+                "value": 4,
+                "displayValue": "4.0"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.5487805,
+                "displayValue": ".549"
+              },
+              {
+                "name": "wins",
+                "value": 45,
+                "displayValue": "45"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "28",
+              "displayName": "Toronto Raptors",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nba/500/tor.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 36,
+                "displayValue": "36"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 232,
+                "displayValue": "+232"
+              },
+              {
+                "name": "points",
+                "value": 5,
+                "displayValue": "5.0"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.5609756,
+                "displayValue": ".561"
+              },
+              {
+                "name": "wins",
+                "value": 46,
+                "displayValue": "46"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "5",
+              "displayName": "Cleveland Cavaliers",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nba/500/cle.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 30,
+                "displayValue": "30"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 336,
+                "displayValue": "+336"
+              },
+              {
+                "name": "points",
+                "value": 11,
+                "displayValue": "11.0"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.63414633,
+                "displayValue": ".634"
+              },
+              {
+                "name": "wins",
+                "value": 52,
+                "displayValue": "52"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "18",
+              "displayName": "New York Knicks",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nba/500/ny.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 29,
+                "displayValue": "29"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 519,
+                "displayValue": "+519"
+              },
+              {
+                "name": "points",
+                "value": 12,
+                "displayValue": "12.0"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.64634144,
+                "displayValue": ".646"
+              },
+              {
+                "name": "wins",
+                "value": 53,
+                "displayValue": "53"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "14",
+              "displayName": "Miami Heat",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nba/500/mia.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 39,
+                "displayValue": "39"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 191,
+                "displayValue": "+191"
+              },
+              {
+                "name": "points",
+                "value": 2,
+                "displayValue": "2.0"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.5243902,
+                "displayValue": ".524"
+              },
+              {
+                "name": "wins",
+                "value": 43,
+                "displayValue": "43"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "30",
+              "displayName": "Charlotte Hornets",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nba/500/cha.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 38,
+                "displayValue": "38"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 396,
+                "displayValue": "+396"
+              },
+              {
+                "name": "points",
+                "value": 3,
+                "displayValue": "3.0"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.5365854,
+                "displayValue": ".537"
+              },
+              {
+                "name": "wins",
+                "value": 44,
+                "displayValue": "44"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "27",
+              "displayName": "Washington Wizards",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nba/500/wsh.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 65,
+                "displayValue": "65"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -982,
+                "displayValue": "-982"
+              },
+              {
+                "name": "points",
+                "value": -24,
+                "displayValue": "-24.0"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.20731707,
+                "displayValue": ".207"
+              },
+              {
+                "name": "wins",
+                "value": 17,
+                "displayValue": "17"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "11",
+              "displayName": "Indiana Pacers",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nba/500/ind.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 63,
+                "displayValue": "63"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -655,
+                "displayValue": "-655"
+              },
+              {
+                "name": "points",
+                "value": -22,
+                "displayValue": "-22.0"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.23170732,
+                "displayValue": ".232"
+              },
+              {
+                "name": "wins",
+                "value": 19,
+                "displayValue": "19"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "17",
+              "displayName": "Brooklyn Nets",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nba/500/bkn.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 62,
+                "displayValue": "62"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -819,
+                "displayValue": "-819"
+              },
+              {
+                "name": "points",
+                "value": -21,
+                "displayValue": "-21.0"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.24390244,
+                "displayValue": ".244"
+              },
+              {
+                "name": "wins",
+                "value": 20,
+                "displayValue": "20"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "4",
+              "displayName": "Chicago Bulls",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nba/500/chi.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 51,
+                "displayValue": "51"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -427,
+                "displayValue": "-427"
+              },
+              {
+                "name": "points",
+                "value": -10,
+                "displayValue": "-10.0"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.37804878,
+                "displayValue": ".378"
+              },
+              {
+                "name": "wins",
+                "value": 31,
+                "displayValue": "31"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "15",
+              "displayName": "Milwaukee Bucks",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nba/500/mil.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 50,
+                "displayValue": "50"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -509,
+                "displayValue": "-509"
+              },
+              {
+                "name": "points",
+                "value": -9,
+                "displayValue": "-9.0"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.3902439,
+                "displayValue": ".390"
+              },
+              {
+                "name": "wins",
+                "value": 32,
+                "displayValue": "32"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "6",
+      "name": "Western Conference",
+      "abbreviation": "West",
+      "standings": {
+        "entries": [
+          {
+            "team": {
+              "id": "13",
+              "displayName": "Los Angeles Lakers",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nba/500/lal.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 29,
+                "displayValue": "29"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 145,
+                "displayValue": "+145"
+              },
+              {
+                "name": "points",
+                "value": 12,
+                "displayValue": "12.0"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.64634144,
+                "displayValue": ".646"
+              },
+              {
+                "name": "wins",
+                "value": 53,
+                "displayValue": "53"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "24",
+              "displayName": "San Antonio Spurs",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nba/500/sa.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 20,
+                "displayValue": "20"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 681,
+                "displayValue": "+681"
+              },
+              {
+                "name": "points",
+                "value": 21,
+                "displayValue": "21.0"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.75609756,
+                "displayValue": ".756"
+              },
+              {
+                "name": "wins",
+                "value": 62,
+                "displayValue": "62"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "22",
+              "displayName": "Portland Trail Blazers",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nba/500/por.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 40,
+                "displayValue": "40"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -24,
+                "displayValue": "-24"
+              },
+              {
+                "name": "points",
+                "value": 1,
+                "displayValue": "1.0"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.5121951,
+                "displayValue": ".512"
+              },
+              {
+                "name": "wins",
+                "value": 42,
+                "displayValue": "42"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "21",
+              "displayName": "Phoenix Suns",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nba/500/phx.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 37,
+                "displayValue": "37"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 120,
+                "displayValue": "+120"
+              },
+              {
+                "name": "points",
+                "value": 4,
+                "displayValue": "4.0"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.5487805,
+                "displayValue": ".549"
+              },
+              {
+                "name": "wins",
+                "value": 45,
+                "displayValue": "45"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "16",
+              "displayName": "Minnesota Timberwolves",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nba/500/min.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 33,
+                "displayValue": "33"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 275,
+                "displayValue": "+275"
+              },
+              {
+                "name": "points",
+                "value": 8,
+                "displayValue": "8.0"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.597561,
+                "displayValue": ".598"
+              },
+              {
+                "name": "wins",
+                "value": 49,
+                "displayValue": "49"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "10",
+              "displayName": "Houston Rockets",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nba/500/hou.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 30,
+                "displayValue": "30"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 428,
+                "displayValue": "+428"
+              },
+              {
+                "name": "points",
+                "value": 11,
+                "displayValue": "11.0"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.63414633,
+                "displayValue": ".634"
+              },
+              {
+                "name": "wins",
+                "value": 52,
+                "displayValue": "52"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "7",
+              "displayName": "Denver Nuggets",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nba/500/den.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 28,
+                "displayValue": "28"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 423,
+                "displayValue": "+423"
+              },
+              {
+                "name": "points",
+                "value": 13,
+                "displayValue": "13.0"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.6585366,
+                "displayValue": ".659"
+              },
+              {
+                "name": "wins",
+                "value": 54,
+                "displayValue": "54"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "9",
+              "displayName": "Golden State Warriors",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nba/500/gs.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 45,
+                "displayValue": "45"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -46,
+                "displayValue": "-46"
+              },
+              {
+                "name": "points",
+                "value": -4,
+                "displayValue": "-4.0"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.4512195,
+                "displayValue": ".451"
+              },
+              {
+                "name": "wins",
+                "value": 37,
+                "displayValue": "37"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "12",
+              "displayName": "LA Clippers",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nba/500/lac.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 40,
+                "displayValue": "40"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 93,
+                "displayValue": "+93"
+              },
+              {
+                "name": "points",
+                "value": 1,
+                "displayValue": "1.0"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.5121951,
+                "displayValue": ".512"
+              },
+              {
+                "name": "wins",
+                "value": 42,
+                "displayValue": "42"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "23",
+              "displayName": "Sacramento Kings",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nba/500/sac.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 60,
+                "displayValue": "60"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -820,
+                "displayValue": "-820"
+              },
+              {
+                "name": "points",
+                "value": -19,
+                "displayValue": "-19.0"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.2682927,
+                "displayValue": ".268"
+              },
+              {
+                "name": "wins",
+                "value": 22,
+                "displayValue": "22"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "26",
+              "displayName": "Utah Jazz",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nba/500/utah.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 60,
+                "displayValue": "60"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -692,
+                "displayValue": "-692"
+              },
+              {
+                "name": "points",
+                "value": -19,
+                "displayValue": "-19.0"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.2682927,
+                "displayValue": ".268"
+              },
+              {
+                "name": "wins",
+                "value": 22,
+                "displayValue": "22"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "29",
+              "displayName": "Memphis Grizzlies",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nba/500/mem.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 57,
+                "displayValue": "57"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -493,
+                "displayValue": "-493"
+              },
+              {
+                "name": "points",
+                "value": -16,
+                "displayValue": "-16.0"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.30487806,
+                "displayValue": ".305"
+              },
+              {
+                "name": "wins",
+                "value": 25,
+                "displayValue": "25"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "3",
+              "displayName": "New Orleans Pelicans",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nba/500/no.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 56,
+                "displayValue": "56"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -369,
+                "displayValue": "-369"
+              },
+              {
+                "name": "points",
+                "value": -15,
+                "displayValue": "-15.0"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.31707317,
+                "displayValue": ".317"
+              },
+              {
+                "name": "wins",
+                "value": 26,
+                "displayValue": "26"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "6",
+              "displayName": "Dallas Mavericks",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nba/500/dal.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 56,
+                "displayValue": "56"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -452,
+                "displayValue": "-452"
+              },
+              {
+                "name": "points",
+                "value": -15,
+                "displayValue": "-15.0"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.31707317,
+                "displayValue": ".317"
+              },
+              {
+                "name": "wins",
+                "value": 26,
+                "displayValue": "26"
+              }
+            ]
+          },
+          {
+            "team": {
+              "id": "25",
+              "displayName": "Oklahoma City Thunder",
+              "logos": [
+                {
+                  "href": "https://a.espncdn.com/i/teamlogos/nba/500/okc.png",
+                  "rel": [
+                    "full",
+                    "default"
+                  ]
+                }
+              ]
+            },
+            "stats": [
+              {
+                "name": "losses",
+                "value": 18,
+                "displayValue": "18"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 914,
+                "displayValue": "+914"
+              },
+              {
+                "name": "points",
+                "value": 23,
+                "displayValue": "23.0"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.7804878,
+                "displayValue": ".780"
+              },
+              {
+                "name": "wins",
+                "value": 64,
+                "displayValue": "64"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

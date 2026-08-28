@@ -1,0 +1,411 @@
+{
+  "requestedSeason": {
+    "year": 2025,
+    "type": {
+      "name": "Postseason"
+    }
+  },
+  "weeks": [
+    {
+      "display": "Preseason",
+      "week": "1",
+      "type": "1"
+    },
+    {
+      "display": "Week 2",
+      "week": "2",
+      "type": "2"
+    },
+    {
+      "display": "Week 3",
+      "week": "3",
+      "type": "2"
+    },
+    {
+      "display": "Week 4",
+      "week": "4",
+      "type": "2"
+    },
+    {
+      "display": "Week 5",
+      "week": "5",
+      "type": "2"
+    },
+    {
+      "display": "Week 6",
+      "week": "6",
+      "type": "2"
+    },
+    {
+      "display": "Week 7",
+      "week": "7",
+      "type": "2"
+    },
+    {
+      "display": "Week 8",
+      "week": "8",
+      "type": "2"
+    },
+    {
+      "display": "Week 9",
+      "week": "9",
+      "type": "2"
+    },
+    {
+      "display": "Week 10",
+      "week": "10",
+      "type": "2"
+    },
+    {
+      "display": "Week 11",
+      "week": "11",
+      "type": "2"
+    },
+    {
+      "display": "Week 12",
+      "week": "12",
+      "type": "2"
+    },
+    {
+      "display": "Week 13",
+      "week": "13",
+      "type": "2"
+    },
+    {
+      "display": "Week 14",
+      "week": "14",
+      "type": "2"
+    },
+    {
+      "display": "Week 15",
+      "week": "15",
+      "type": "2"
+    },
+    {
+      "display": "Week 16",
+      "week": "16",
+      "type": "2"
+    },
+    {
+      "display": "Final Rankings",
+      "week": "1",
+      "type": "3"
+    }
+  ],
+  "rankings": [
+    {
+      "id": "1",
+      "name": "AP Top 25",
+      "headline": "2025 NCAA Football Rankings - AP Poll Final Rankings",
+      "occurrence": {
+        "number": 1,
+        "type": "week",
+        "last": true,
+        "value": "1",
+        "displayValue": "Final Rankings"
+      },
+      "ranks": [
+        {
+          "current": 1,
+          "points": 1650,
+          "recordSummary": "16-0",
+          "team": {
+            "id": "84",
+            "location": "Indiana",
+            "name": "Hoosiers",
+            "nickname": "Indiana",
+            "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/84.png"
+          }
+        },
+        {
+          "current": 2,
+          "points": 1584,
+          "recordSummary": "13-3",
+          "team": {
+            "id": "2390",
+            "location": "Miami",
+            "name": "Hurricanes",
+            "nickname": "Miami",
+            "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2390.png"
+          }
+        },
+        {
+          "current": 3,
+          "points": 1492,
+          "recordSummary": "13-2",
+          "team": {
+            "id": "145",
+            "location": "Ole Miss",
+            "name": "Rebels",
+            "nickname": "Ole Miss",
+            "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/145.png"
+          }
+        },
+        {
+          "current": 4,
+          "points": 1429,
+          "recordSummary": "13-2",
+          "team": {
+            "id": "2483",
+            "location": "Oregon",
+            "name": "Ducks",
+            "nickname": "Oregon",
+            "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2483.png"
+          }
+        },
+        {
+          "current": 5,
+          "points": 1378,
+          "recordSummary": "12-2",
+          "team": {
+            "id": "194",
+            "location": "Ohio State",
+            "name": "Buckeyes",
+            "nickname": "Ohio State",
+            "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/194.png"
+          }
+        },
+        {
+          "current": 6,
+          "points": 1364,
+          "recordSummary": "12-2",
+          "team": {
+            "id": "61",
+            "location": "Georgia",
+            "name": "Bulldogs",
+            "nickname": "Georgia",
+            "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/61.png"
+          }
+        },
+        {
+          "current": 7,
+          "points": 1232,
+          "recordSummary": "12-2",
+          "team": {
+            "id": "2641",
+            "location": "Texas Tech",
+            "name": "Red Raiders",
+            "nickname": "Texas Tech",
+            "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2641.png"
+          }
+        },
+        {
+          "current": 8,
+          "points": 1157,
+          "recordSummary": "11-2",
+          "team": {
+            "id": "245",
+            "location": "Texas A&M",
+            "name": "Aggies",
+            "nickname": "Texas A&M",
+            "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/245.png"
+          }
+        },
+        {
+          "current": 9,
+          "points": 1065,
+          "recordSummary": "11-4",
+          "team": {
+            "id": "333",
+            "location": "Alabama",
+            "name": "Crimson Tide",
+            "nickname": "Alabama",
+            "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/333.png"
+          }
+        },
+        {
+          "current": 10,
+          "points": 1049,
+          "recordSummary": "10-2",
+          "team": {
+            "id": "87",
+            "location": "Notre Dame",
+            "name": "Fighting Irish",
+            "nickname": "Notre Dame",
+            "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/87.png"
+          }
+        },
+        {
+          "current": 11,
+          "points": 961,
+          "recordSummary": "12-2",
+          "team": {
+            "id": "252",
+            "location": "BYU",
+            "name": "Cougars",
+            "nickname": "BYU",
+            "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/252.png"
+          }
+        },
+        {
+          "current": 12,
+          "points": 952,
+          "recordSummary": "10-3",
+          "team": {
+            "id": "251",
+            "location": "Texas",
+            "name": "Longhorns",
+            "nickname": "Texas",
+            "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/251.png"
+          }
+        },
+        {
+          "current": 13,
+          "points": 941,
+          "recordSummary": "10-3",
+          "team": {
+            "id": "201",
+            "location": "Oklahoma",
+            "name": "Sooners",
+            "nickname": "Oklahoma",
+            "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/201.png"
+          }
+        },
+        {
+          "current": 14,
+          "points": 812,
+          "recordSummary": "11-2",
+          "team": {
+            "id": "254",
+            "location": "Utah",
+            "name": "Utes",
+            "nickname": "Utah",
+            "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/254.png"
+          }
+        },
+        {
+          "current": 15,
+          "points": 623,
+          "recordSummary": "10-3",
+          "team": {
+            "id": "238",
+            "location": "Vanderbilt",
+            "name": "Commodores",
+            "nickname": "Vanderbilt",
+            "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/238.png"
+          }
+        },
+        {
+          "current": 16,
+          "points": 603,
+          "recordSummary": "11-3",
+          "team": {
+            "id": "258",
+            "location": "Virginia",
+            "name": "Cavaliers",
+            "nickname": "Virginia",
+            "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/258.png"
+          }
+        },
+        {
+          "current": 17,
+          "points": 430,
+          "recordSummary": "9-4",
+          "team": {
+            "id": "2294",
+            "location": "Iowa",
+            "name": "Hawkeyes",
+            "nickname": "Iowa",
+            "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2294.png"
+          }
+        },
+        {
+          "current": 18,
+          "points": 404,
+          "recordSummary": "11-3",
+          "team": {
+            "id": "2655",
+            "location": "Tulane",
+            "name": "Green Wave",
+            "nickname": "Tulane",
+            "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2655.png"
+          }
+        },
+        {
+          "current": 19,
+          "points": 399,
+          "recordSummary": "12-2",
+          "team": {
+            "id": "256",
+            "location": "James Madison",
+            "name": "Dukes",
+            "nickname": "James Madison",
+            "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/256.png"
+          }
+        },
+        {
+          "current": 20,
+          "points": 378,
+          "recordSummary": "9-4",
+          "team": {
+            "id": "30",
+            "location": "USC",
+            "name": "Trojans",
+            "nickname": "USC",
+            "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/30.png"
+          }
+        },
+        {
+          "current": 21,
+          "points": 276,
+          "recordSummary": "9-4",
+          "team": {
+            "id": "130",
+            "location": "Michigan",
+            "name": "Wolverines",
+            "nickname": "Michigan",
+            "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/130.png"
+          }
+        },
+        {
+          "current": 22,
+          "points": 270,
+          "recordSummary": "10-3",
+          "team": {
+            "id": "248",
+            "location": "Houston",
+            "name": "Cougars",
+            "nickname": "Houston",
+            "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/248.png"
+          }
+        },
+        {
+          "current": 23,
+          "points": 227,
+          "recordSummary": "11-2",
+          "team": {
+            "id": "2426",
+            "location": "Navy",
+            "name": "Midshipmen",
+            "nickname": "Navy",
+            "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2426.png"
+          }
+        },
+        {
+          "current": 24,
+          "points": 191,
+          "recordSummary": "12-2",
+          "team": {
+            "id": "249",
+            "location": "North Texas",
+            "name": "Mean Green",
+            "nickname": "North Texas",
+            "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/249.png"
+          }
+        },
+        {
+          "current": 25,
+          "points": 125,
+          "recordSummary": "9-4",
+          "team": {
+            "id": "2628",
+            "location": "TCU",
+            "name": "Horned Frogs",
+            "nickname": "TCU",
+            "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2628.png"
+          }
+        }
+      ]
+    }
+  ]
+}

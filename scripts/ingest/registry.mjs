@@ -5,6 +5,7 @@
 // one import + one entry here. Zero orchestrator changes required — run.mjs
 // silently skips any sport row without a registry entry (those sports are
 // simply still 'pending').
+import espnAdapters from "./adapters/espn.mjs";
 import f1 from "./adapters/f1.mjs";
 import mlb from "./adapters/mlb.mjs";
 import nhl from "./adapters/nhl.mjs";
@@ -13,4 +14,6 @@ export const adapters = {
   [f1.sportKey]: f1,
   [mlb.sportKey]: mlb,
   [nhl.sportKey]: nhl,
+  // The config-driven ESPN family: nfl, nba, mls, epl, cfb, cbb.
+  ...espnAdapters,
 };
