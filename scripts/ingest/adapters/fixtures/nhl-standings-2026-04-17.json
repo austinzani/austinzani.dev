@@ -1,0 +1,999 @@
+{
+ "wildCardIndicator": true,
+ "standingsDateTimeUtc": "2026-08-28T05:15:45Z",
+ "standings": [
+  {
+   "seasonId": 20252026,
+   "date": "2026-04-17",
+   "gameTypeId": 2,
+   "teamName": {
+    "default": "Colorado Avalanche",
+    "fr": "Avalanche du Colorado"
+   },
+   "teamCommonName": {
+    "default": "Avalanche"
+   },
+   "teamAbbrev": {
+    "default": "COL"
+   },
+   "teamLogo": "https://assets.nhle.com/logos/nhl/svg/COL_light.svg",
+   "conferenceAbbrev": "W",
+   "conferenceName": "Western",
+   "divisionAbbrev": "C",
+   "divisionName": "Central",
+   "gamesPlayed": 82,
+   "wins": 55,
+   "losses": 16,
+   "otLosses": 11,
+   "points": 121,
+   "pointPctg": 0.737805,
+   "regulationWins": 48,
+   "regulationPlusOtWins": 51,
+   "leagueSequence": 1,
+   "conferenceSequence": 1,
+   "divisionSequence": 1
+  },
+  {
+   "seasonId": 20252026,
+   "date": "2026-04-17",
+   "gameTypeId": 2,
+   "teamName": {
+    "default": "Carolina Hurricanes",
+    "fr": "Hurricanes de la Caroline"
+   },
+   "teamCommonName": {
+    "default": "Hurricanes"
+   },
+   "teamAbbrev": {
+    "default": "CAR"
+   },
+   "teamLogo": "https://assets.nhle.com/logos/nhl/svg/CAR_light.svg",
+   "conferenceAbbrev": "E",
+   "conferenceName": "Eastern",
+   "divisionAbbrev": "M",
+   "divisionName": "Metropolitan",
+   "gamesPlayed": 82,
+   "wins": 53,
+   "losses": 22,
+   "otLosses": 7,
+   "points": 113,
+   "pointPctg": 0.689024,
+   "regulationWins": 39,
+   "regulationPlusOtWins": 48,
+   "leagueSequence": 2,
+   "conferenceSequence": 1,
+   "divisionSequence": 1
+  },
+  {
+   "seasonId": 20252026,
+   "date": "2026-04-17",
+   "gameTypeId": 2,
+   "teamName": {
+    "default": "Dallas Stars",
+    "fr": "Stars de Dallas"
+   },
+   "teamCommonName": {
+    "default": "Stars"
+   },
+   "teamAbbrev": {
+    "default": "DAL"
+   },
+   "teamLogo": "https://assets.nhle.com/logos/nhl/svg/DAL_light.svg",
+   "conferenceAbbrev": "W",
+   "conferenceName": "Western",
+   "divisionAbbrev": "C",
+   "divisionName": "Central",
+   "gamesPlayed": 82,
+   "wins": 50,
+   "losses": 20,
+   "otLosses": 12,
+   "points": 112,
+   "pointPctg": 0.682927,
+   "regulationWins": 38,
+   "regulationPlusOtWins": 44,
+   "leagueSequence": 3,
+   "conferenceSequence": 2,
+   "divisionSequence": 2
+  },
+  {
+   "seasonId": 20252026,
+   "date": "2026-04-17",
+   "gameTypeId": 2,
+   "teamName": {
+    "default": "Buffalo Sabres",
+    "fr": "Sabres de Buffalo"
+   },
+   "teamCommonName": {
+    "default": "Sabres"
+   },
+   "teamAbbrev": {
+    "default": "BUF"
+   },
+   "teamLogo": "https://assets.nhle.com/logos/nhl/svg/BUF_light.svg",
+   "conferenceAbbrev": "E",
+   "conferenceName": "Eastern",
+   "divisionAbbrev": "A",
+   "divisionName": "Atlantic",
+   "gamesPlayed": 82,
+   "wins": 50,
+   "losses": 23,
+   "otLosses": 9,
+   "points": 109,
+   "pointPctg": 0.664634,
+   "regulationWins": 42,
+   "regulationPlusOtWins": 45,
+   "leagueSequence": 4,
+   "conferenceSequence": 2,
+   "divisionSequence": 1
+  },
+  {
+   "seasonId": 20252026,
+   "date": "2026-04-17",
+   "gameTypeId": 2,
+   "teamName": {
+    "default": "Tampa Bay Lightning",
+    "fr": "Lightning de Tampa Bay"
+   },
+   "teamCommonName": {
+    "default": "Lightning"
+   },
+   "teamAbbrev": {
+    "default": "TBL"
+   },
+   "teamLogo": "https://assets.nhle.com/logos/nhl/svg/TBL_light.svg",
+   "conferenceAbbrev": "E",
+   "conferenceName": "Eastern",
+   "divisionAbbrev": "A",
+   "divisionName": "Atlantic",
+   "gamesPlayed": 82,
+   "wins": 50,
+   "losses": 26,
+   "otLosses": 6,
+   "points": 106,
+   "pointPctg": 0.646341,
+   "regulationWins": 40,
+   "regulationPlusOtWins": 46,
+   "leagueSequence": 5,
+   "conferenceSequence": 3,
+   "divisionSequence": 2
+  },
+  {
+   "seasonId": 20252026,
+   "date": "2026-04-17",
+   "gameTypeId": 2,
+   "teamName": {
+    "default": "Montr\u00e9al Canadiens",
+    "fr": "Canadiens de Montr\u00e9al"
+   },
+   "teamCommonName": {
+    "default": "Canadiens"
+   },
+   "teamAbbrev": {
+    "default": "MTL"
+   },
+   "teamLogo": "https://assets.nhle.com/logos/nhl/svg/MTL_light.svg",
+   "conferenceAbbrev": "E",
+   "conferenceName": "Eastern",
+   "divisionAbbrev": "A",
+   "divisionName": "Atlantic",
+   "gamesPlayed": 82,
+   "wins": 48,
+   "losses": 24,
+   "otLosses": 10,
+   "points": 106,
+   "pointPctg": 0.646341,
+   "regulationWins": 34,
+   "regulationPlusOtWins": 44,
+   "leagueSequence": 6,
+   "conferenceSequence": 4,
+   "divisionSequence": 3
+  },
+  {
+   "seasonId": 20252026,
+   "date": "2026-04-17",
+   "gameTypeId": 2,
+   "teamName": {
+    "default": "Minnesota Wild",
+    "fr": "Wild du Minnesota"
+   },
+   "teamCommonName": {
+    "default": "Wild"
+   },
+   "teamAbbrev": {
+    "default": "MIN"
+   },
+   "teamLogo": "https://assets.nhle.com/logos/nhl/svg/MIN_light.svg",
+   "conferenceAbbrev": "W",
+   "conferenceName": "Western",
+   "divisionAbbrev": "C",
+   "divisionName": "Central",
+   "gamesPlayed": 82,
+   "wins": 46,
+   "losses": 24,
+   "otLosses": 12,
+   "points": 104,
+   "pointPctg": 0.634146,
+   "regulationWins": 31,
+   "regulationPlusOtWins": 42,
+   "leagueSequence": 7,
+   "conferenceSequence": 3,
+   "divisionSequence": 3
+  },
+  {
+   "seasonId": 20252026,
+   "date": "2026-04-17",
+   "gameTypeId": 2,
+   "teamName": {
+    "default": "Boston Bruins",
+    "fr": "Bruins de Boston"
+   },
+   "teamCommonName": {
+    "default": "Bruins"
+   },
+   "teamAbbrev": {
+    "default": "BOS"
+   },
+   "teamLogo": "https://assets.nhle.com/logos/nhl/svg/BOS_light.svg?season=20252026",
+   "conferenceAbbrev": "E",
+   "conferenceName": "Eastern",
+   "divisionAbbrev": "A",
+   "divisionName": "Atlantic",
+   "gamesPlayed": 82,
+   "wins": 45,
+   "losses": 27,
+   "otLosses": 10,
+   "points": 100,
+   "pointPctg": 0.609756,
+   "regulationWins": 33,
+   "regulationPlusOtWins": 41,
+   "leagueSequence": 8,
+   "conferenceSequence": 5,
+   "divisionSequence": 4
+  },
+  {
+   "seasonId": 20252026,
+   "date": "2026-04-17",
+   "gameTypeId": 2,
+   "teamName": {
+    "default": "Ottawa Senators",
+    "fr": "S\u00e9nateurs d'Ottawa"
+   },
+   "teamCommonName": {
+    "default": "Senators",
+    "fr": "S\u00e9nateurs"
+   },
+   "teamAbbrev": {
+    "default": "OTT"
+   },
+   "teamLogo": "https://assets.nhle.com/logos/nhl/svg/OTT_light.svg",
+   "conferenceAbbrev": "E",
+   "conferenceName": "Eastern",
+   "divisionAbbrev": "A",
+   "divisionName": "Atlantic",
+   "gamesPlayed": 82,
+   "wins": 44,
+   "losses": 27,
+   "otLosses": 11,
+   "points": 99,
+   "pointPctg": 0.603659,
+   "regulationWins": 38,
+   "regulationPlusOtWins": 41,
+   "leagueSequence": 9,
+   "conferenceSequence": 6,
+   "divisionSequence": 5
+  },
+  {
+   "seasonId": 20252026,
+   "date": "2026-04-17",
+   "gameTypeId": 2,
+   "teamName": {
+    "default": "Pittsburgh Penguins",
+    "fr": "Penguins de Pittsburgh"
+   },
+   "teamCommonName": {
+    "default": "Penguins"
+   },
+   "teamAbbrev": {
+    "default": "PIT"
+   },
+   "teamLogo": "https://assets.nhle.com/logos/nhl/svg/PIT_light.svg",
+   "conferenceAbbrev": "E",
+   "conferenceName": "Eastern",
+   "divisionAbbrev": "M",
+   "divisionName": "Metropolitan",
+   "gamesPlayed": 82,
+   "wins": 41,
+   "losses": 25,
+   "otLosses": 16,
+   "points": 98,
+   "pointPctg": 0.597561,
+   "regulationWins": 34,
+   "regulationPlusOtWins": 38,
+   "leagueSequence": 10,
+   "conferenceSequence": 7,
+   "divisionSequence": 2
+  },
+  {
+   "seasonId": 20252026,
+   "date": "2026-04-17",
+   "gameTypeId": 2,
+   "teamName": {
+    "default": "Philadelphia Flyers",
+    "fr": "Flyers de Philadelphie"
+   },
+   "teamCommonName": {
+    "default": "Flyers"
+   },
+   "teamAbbrev": {
+    "default": "PHI"
+   },
+   "teamLogo": "https://assets.nhle.com/logos/nhl/svg/PHI_light.svg",
+   "conferenceAbbrev": "E",
+   "conferenceName": "Eastern",
+   "divisionAbbrev": "M",
+   "divisionName": "Metropolitan",
+   "gamesPlayed": 82,
+   "wins": 43,
+   "losses": 27,
+   "otLosses": 12,
+   "points": 98,
+   "pointPctg": 0.597561,
+   "regulationWins": 27,
+   "regulationPlusOtWins": 33,
+   "leagueSequence": 11,
+   "conferenceSequence": 8,
+   "divisionSequence": 3
+  },
+  {
+   "seasonId": 20252026,
+   "date": "2026-04-17",
+   "gameTypeId": 2,
+   "teamName": {
+    "default": "Washington Capitals",
+    "fr": "Capitals de Washington"
+   },
+   "teamCommonName": {
+    "default": "Capitals"
+   },
+   "teamAbbrev": {
+    "default": "WSH"
+   },
+   "teamLogo": "https://assets.nhle.com/logos/nhl/svg/WSH_secondary_light.svg",
+   "conferenceAbbrev": "E",
+   "conferenceName": "Eastern",
+   "divisionAbbrev": "M",
+   "divisionName": "Metropolitan",
+   "gamesPlayed": 82,
+   "wins": 43,
+   "losses": 30,
+   "otLosses": 9,
+   "points": 95,
+   "pointPctg": 0.579268,
+   "regulationWins": 37,
+   "regulationPlusOtWins": 41,
+   "leagueSequence": 12,
+   "conferenceSequence": 9,
+   "divisionSequence": 4
+  },
+  {
+   "seasonId": 20252026,
+   "date": "2026-04-17",
+   "gameTypeId": 2,
+   "teamName": {
+    "default": "Vegas Golden Knights",
+    "fr": "Golden Knights de Vegas"
+   },
+   "teamCommonName": {
+    "default": "Golden Knights"
+   },
+   "teamAbbrev": {
+    "default": "VGK"
+   },
+   "teamLogo": "https://assets.nhle.com/logos/nhl/svg/VGK_light.svg",
+   "conferenceAbbrev": "W",
+   "conferenceName": "Western",
+   "divisionAbbrev": "P",
+   "divisionName": "Pacific",
+   "gamesPlayed": 82,
+   "wins": 39,
+   "losses": 26,
+   "otLosses": 17,
+   "points": 95,
+   "pointPctg": 0.579268,
+   "regulationWins": 30,
+   "regulationPlusOtWins": 38,
+   "leagueSequence": 13,
+   "conferenceSequence": 4,
+   "divisionSequence": 1
+  },
+  {
+   "seasonId": 20252026,
+   "date": "2026-04-17",
+   "gameTypeId": 2,
+   "teamName": {
+    "default": "Edmonton Oilers",
+    "fr": "Oilers d'Edmonton"
+   },
+   "teamCommonName": {
+    "default": "Oilers"
+   },
+   "teamAbbrev": {
+    "default": "EDM"
+   },
+   "teamLogo": "https://assets.nhle.com/logos/nhl/svg/EDM_light.svg",
+   "conferenceAbbrev": "W",
+   "conferenceName": "Western",
+   "divisionAbbrev": "P",
+   "divisionName": "Pacific",
+   "gamesPlayed": 82,
+   "wins": 41,
+   "losses": 30,
+   "otLosses": 11,
+   "points": 93,
+   "pointPctg": 0.567073,
+   "regulationWins": 32,
+   "regulationPlusOtWins": 41,
+   "leagueSequence": 14,
+   "conferenceSequence": 5,
+   "divisionSequence": 2
+  },
+  {
+   "seasonId": 20252026,
+   "date": "2026-04-17",
+   "gameTypeId": 2,
+   "teamName": {
+    "default": "Utah Mammoth",
+    "fr": "Mammoth de l'Utah"
+   },
+   "teamCommonName": {
+    "default": "Mammoth"
+   },
+   "teamAbbrev": {
+    "default": "UTA"
+   },
+   "teamLogo": "https://assets.nhle.com/logos/nhl/svg/UTA_light.svg?season=20252026",
+   "conferenceAbbrev": "W",
+   "conferenceName": "Western",
+   "divisionAbbrev": "C",
+   "divisionName": "Central",
+   "gamesPlayed": 82,
+   "wins": 43,
+   "losses": 33,
+   "otLosses": 6,
+   "points": 92,
+   "pointPctg": 0.560976,
+   "regulationWins": 33,
+   "regulationPlusOtWins": 43,
+   "leagueSequence": 15,
+   "conferenceSequence": 6,
+   "divisionSequence": 4
+  },
+  {
+   "seasonId": 20252026,
+   "date": "2026-04-17",
+   "gameTypeId": 2,
+   "teamName": {
+    "default": "Detroit Red Wings",
+    "fr": "Red Wings de Detroit"
+   },
+   "teamCommonName": {
+    "default": "Red Wings"
+   },
+   "teamAbbrev": {
+    "default": "DET"
+   },
+   "teamLogo": "https://assets.nhle.com/logos/nhl/svg/DET_light.svg?season=20252026",
+   "conferenceAbbrev": "E",
+   "conferenceName": "Eastern",
+   "divisionAbbrev": "A",
+   "divisionName": "Atlantic",
+   "gamesPlayed": 82,
+   "wins": 41,
+   "losses": 31,
+   "otLosses": 10,
+   "points": 92,
+   "pointPctg": 0.560976,
+   "regulationWins": 30,
+   "regulationPlusOtWins": 39,
+   "leagueSequence": 16,
+   "conferenceSequence": 10,
+   "divisionSequence": 6
+  },
+  {
+   "seasonId": 20252026,
+   "date": "2026-04-17",
+   "gameTypeId": 2,
+   "teamName": {
+    "default": "Columbus Blue Jackets",
+    "fr": "Blue Jackets de Columbus"
+   },
+   "teamCommonName": {
+    "default": "Blue Jackets"
+   },
+   "teamAbbrev": {
+    "default": "CBJ"
+   },
+   "teamLogo": "https://assets.nhle.com/logos/nhl/svg/CBJ_light.svg",
+   "conferenceAbbrev": "E",
+   "conferenceName": "Eastern",
+   "divisionAbbrev": "M",
+   "divisionName": "Metropolitan",
+   "gamesPlayed": 82,
+   "wins": 40,
+   "losses": 30,
+   "otLosses": 12,
+   "points": 92,
+   "pointPctg": 0.560976,
+   "regulationWins": 28,
+   "regulationPlusOtWins": 33,
+   "leagueSequence": 17,
+   "conferenceSequence": 11,
+   "divisionSequence": 5
+  },
+  {
+   "seasonId": 20252026,
+   "date": "2026-04-17",
+   "gameTypeId": 2,
+   "teamName": {
+    "default": "Anaheim Ducks",
+    "fr": "Ducks d'Anaheim"
+   },
+   "teamCommonName": {
+    "default": "Ducks"
+   },
+   "teamAbbrev": {
+    "default": "ANA"
+   },
+   "teamLogo": "https://assets.nhle.com/logos/nhl/svg/ANA_light.svg",
+   "conferenceAbbrev": "W",
+   "conferenceName": "Western",
+   "divisionAbbrev": "P",
+   "divisionName": "Pacific",
+   "gamesPlayed": 82,
+   "wins": 43,
+   "losses": 33,
+   "otLosses": 6,
+   "points": 92,
+   "pointPctg": 0.560976,
+   "regulationWins": 26,
+   "regulationPlusOtWins": 35,
+   "leagueSequence": 18,
+   "conferenceSequence": 7,
+   "divisionSequence": 3
+  },
+  {
+   "seasonId": 20252026,
+   "date": "2026-04-17",
+   "gameTypeId": 2,
+   "teamName": {
+    "default": "New York Islanders",
+    "fr": "Islanders de New York"
+   },
+   "teamCommonName": {
+    "default": "Islanders"
+   },
+   "teamAbbrev": {
+    "default": "NYI"
+   },
+   "teamLogo": "https://assets.nhle.com/logos/nhl/svg/NYI_light.svg",
+   "conferenceAbbrev": "E",
+   "conferenceName": "Eastern",
+   "divisionAbbrev": "M",
+   "divisionName": "Metropolitan",
+   "gamesPlayed": 82,
+   "wins": 43,
+   "losses": 34,
+   "otLosses": 5,
+   "points": 91,
+   "pointPctg": 0.554878,
+   "regulationWins": 29,
+   "regulationPlusOtWins": 39,
+   "leagueSequence": 19,
+   "conferenceSequence": 12,
+   "divisionSequence": 6
+  },
+  {
+   "seasonId": 20252026,
+   "date": "2026-04-17",
+   "gameTypeId": 2,
+   "teamName": {
+    "default": "Los Angeles Kings",
+    "fr": "Kings de Los Angeles"
+   },
+   "teamCommonName": {
+    "default": "Kings"
+   },
+   "teamAbbrev": {
+    "default": "LAK"
+   },
+   "teamLogo": "https://assets.nhle.com/logos/nhl/svg/LAK_light.svg",
+   "conferenceAbbrev": "W",
+   "conferenceName": "Western",
+   "divisionAbbrev": "P",
+   "divisionName": "Pacific",
+   "gamesPlayed": 82,
+   "wins": 35,
+   "losses": 27,
+   "otLosses": 20,
+   "points": 90,
+   "pointPctg": 0.54878,
+   "regulationWins": 22,
+   "regulationPlusOtWins": 30,
+   "leagueSequence": 20,
+   "conferenceSequence": 8,
+   "divisionSequence": 4
+  },
+  {
+   "seasonId": 20252026,
+   "date": "2026-04-17",
+   "gameTypeId": 2,
+   "teamName": {
+    "default": "New Jersey Devils",
+    "fr": "Devils du New Jersey"
+   },
+   "teamCommonName": {
+    "default": "Devils"
+   },
+   "teamAbbrev": {
+    "default": "NJD"
+   },
+   "teamLogo": "https://assets.nhle.com/logos/nhl/svg/NJD_light.svg",
+   "conferenceAbbrev": "E",
+   "conferenceName": "Eastern",
+   "divisionAbbrev": "M",
+   "divisionName": "Metropolitan",
+   "gamesPlayed": 82,
+   "wins": 42,
+   "losses": 37,
+   "otLosses": 3,
+   "points": 87,
+   "pointPctg": 0.530488,
+   "regulationWins": 29,
+   "regulationPlusOtWins": 38,
+   "leagueSequence": 21,
+   "conferenceSequence": 13,
+   "divisionSequence": 7
+  },
+  {
+   "seasonId": 20252026,
+   "date": "2026-04-17",
+   "gameTypeId": 2,
+   "teamName": {
+    "default": "St. Louis Blues",
+    "fr": "Blues de St. Louis"
+   },
+   "teamCommonName": {
+    "default": "Blues"
+   },
+   "teamAbbrev": {
+    "default": "STL"
+   },
+   "teamLogo": "https://assets.nhle.com/logos/nhl/svg/STL_light.svg?season=20252026",
+   "conferenceAbbrev": "W",
+   "conferenceName": "Western",
+   "divisionAbbrev": "C",
+   "divisionName": "Central",
+   "gamesPlayed": 82,
+   "wins": 37,
+   "losses": 33,
+   "otLosses": 12,
+   "points": 86,
+   "pointPctg": 0.52439,
+   "regulationWins": 33,
+   "regulationPlusOtWins": 36,
+   "leagueSequence": 22,
+   "conferenceSequence": 9,
+   "divisionSequence": 5
+  },
+  {
+   "seasonId": 20252026,
+   "date": "2026-04-17",
+   "gameTypeId": 2,
+   "teamName": {
+    "default": "Nashville Predators",
+    "fr": "Predators de Nashville"
+   },
+   "teamCommonName": {
+    "default": "Predators"
+   },
+   "teamAbbrev": {
+    "default": "NSH"
+   },
+   "teamLogo": "https://assets.nhle.com/logos/nhl/svg/NSH_light.svg",
+   "conferenceAbbrev": "W",
+   "conferenceName": "Western",
+   "divisionAbbrev": "C",
+   "divisionName": "Central",
+   "gamesPlayed": 82,
+   "wins": 38,
+   "losses": 34,
+   "otLosses": 10,
+   "points": 86,
+   "pointPctg": 0.52439,
+   "regulationWins": 28,
+   "regulationPlusOtWins": 33,
+   "leagueSequence": 23,
+   "conferenceSequence": 10,
+   "divisionSequence": 6
+  },
+  {
+   "seasonId": 20252026,
+   "date": "2026-04-17",
+   "gameTypeId": 2,
+   "teamName": {
+    "default": "San Jose Sharks",
+    "fr": "Sharks de San Jose"
+   },
+   "teamCommonName": {
+    "default": "Sharks"
+   },
+   "teamAbbrev": {
+    "default": "SJS"
+   },
+   "teamLogo": "https://assets.nhle.com/logos/nhl/svg/SJS_light.svg",
+   "conferenceAbbrev": "W",
+   "conferenceName": "Western",
+   "divisionAbbrev": "P",
+   "divisionName": "Pacific",
+   "gamesPlayed": 82,
+   "wins": 39,
+   "losses": 35,
+   "otLosses": 8,
+   "points": 86,
+   "pointPctg": 0.52439,
+   "regulationWins": 27,
+   "regulationPlusOtWins": 37,
+   "leagueSequence": 24,
+   "conferenceSequence": 11,
+   "divisionSequence": 5
+  },
+  {
+   "seasonId": 20252026,
+   "date": "2026-04-17",
+   "gameTypeId": 2,
+   "teamName": {
+    "default": "Florida Panthers",
+    "fr": "Panthers de la Floride"
+   },
+   "teamCommonName": {
+    "default": "Panthers"
+   },
+   "teamAbbrev": {
+    "default": "FLA"
+   },
+   "teamLogo": "https://assets.nhle.com/logos/nhl/svg/FLA_light.svg",
+   "conferenceAbbrev": "E",
+   "conferenceName": "Eastern",
+   "divisionAbbrev": "A",
+   "divisionName": "Atlantic",
+   "gamesPlayed": 82,
+   "wins": 40,
+   "losses": 38,
+   "otLosses": 4,
+   "points": 84,
+   "pointPctg": 0.512195,
+   "regulationWins": 32,
+   "regulationPlusOtWins": 35,
+   "leagueSequence": 25,
+   "conferenceSequence": 14,
+   "divisionSequence": 7
+  },
+  {
+   "seasonId": 20252026,
+   "date": "2026-04-17",
+   "gameTypeId": 2,
+   "teamName": {
+    "default": "Winnipeg Jets",
+    "fr": "Jets de Winnipeg"
+   },
+   "teamCommonName": {
+    "default": "Jets"
+   },
+   "teamAbbrev": {
+    "default": "WPG"
+   },
+   "teamLogo": "https://assets.nhle.com/logos/nhl/svg/WPG_light.svg",
+   "conferenceAbbrev": "W",
+   "conferenceName": "Western",
+   "divisionAbbrev": "C",
+   "divisionName": "Central",
+   "gamesPlayed": 82,
+   "wins": 35,
+   "losses": 35,
+   "otLosses": 12,
+   "points": 82,
+   "pointPctg": 0.5,
+   "regulationWins": 28,
+   "regulationPlusOtWins": 33,
+   "leagueSequence": 26,
+   "conferenceSequence": 12,
+   "divisionSequence": 7
+  },
+  {
+   "seasonId": 20252026,
+   "date": "2026-04-17",
+   "gameTypeId": 2,
+   "teamName": {
+    "default": "Seattle Kraken",
+    "fr": "Kraken de Seattle"
+   },
+   "teamCommonName": {
+    "default": "Kraken"
+   },
+   "teamAbbrev": {
+    "default": "SEA"
+   },
+   "teamLogo": "https://assets.nhle.com/logos/nhl/svg/SEA_light.svg",
+   "conferenceAbbrev": "W",
+   "conferenceName": "Western",
+   "divisionAbbrev": "P",
+   "divisionName": "Pacific",
+   "gamesPlayed": 82,
+   "wins": 34,
+   "losses": 37,
+   "otLosses": 11,
+   "points": 79,
+   "pointPctg": 0.481707,
+   "regulationWins": 26,
+   "regulationPlusOtWins": 32,
+   "leagueSequence": 27,
+   "conferenceSequence": 13,
+   "divisionSequence": 6
+  },
+  {
+   "seasonId": 20252026,
+   "date": "2026-04-17",
+   "gameTypeId": 2,
+   "teamName": {
+    "default": "Toronto Maple Leafs",
+    "fr": "Maple Leafs de Toronto"
+   },
+   "teamCommonName": {
+    "default": "Maple Leafs"
+   },
+   "teamAbbrev": {
+    "default": "TOR"
+   },
+   "teamLogo": "https://assets.nhle.com/logos/nhl/svg/TOR_light.svg",
+   "conferenceAbbrev": "E",
+   "conferenceName": "Eastern",
+   "divisionAbbrev": "A",
+   "divisionName": "Atlantic",
+   "gamesPlayed": 82,
+   "wins": 32,
+   "losses": 36,
+   "otLosses": 14,
+   "points": 78,
+   "pointPctg": 0.47561,
+   "regulationWins": 23,
+   "regulationPlusOtWins": 31,
+   "leagueSequence": 28,
+   "conferenceSequence": 15,
+   "divisionSequence": 8
+  },
+  {
+   "seasonId": 20252026,
+   "date": "2026-04-17",
+   "gameTypeId": 2,
+   "teamName": {
+    "default": "Calgary Flames",
+    "fr": "Flames de Calgary"
+   },
+   "teamCommonName": {
+    "default": "Flames"
+   },
+   "teamAbbrev": {
+    "default": "CGY"
+   },
+   "teamLogo": "https://assets.nhle.com/logos/nhl/svg/CGY_light.svg",
+   "conferenceAbbrev": "W",
+   "conferenceName": "Western",
+   "divisionAbbrev": "P",
+   "divisionName": "Pacific",
+   "gamesPlayed": 82,
+   "wins": 34,
+   "losses": 39,
+   "otLosses": 9,
+   "points": 77,
+   "pointPctg": 0.469512,
+   "regulationWins": 27,
+   "regulationPlusOtWins": 30,
+   "leagueSequence": 29,
+   "conferenceSequence": 14,
+   "divisionSequence": 7
+  },
+  {
+   "seasonId": 20252026,
+   "date": "2026-04-17",
+   "gameTypeId": 2,
+   "teamName": {
+    "default": "New York Rangers",
+    "fr": "Rangers de New York"
+   },
+   "teamCommonName": {
+    "default": "Rangers"
+   },
+   "teamAbbrev": {
+    "default": "NYR"
+   },
+   "teamLogo": "https://assets.nhle.com/logos/nhl/svg/NYR_light.svg",
+   "conferenceAbbrev": "E",
+   "conferenceName": "Eastern",
+   "divisionAbbrev": "M",
+   "divisionName": "Metropolitan",
+   "gamesPlayed": 82,
+   "wins": 34,
+   "losses": 39,
+   "otLosses": 9,
+   "points": 77,
+   "pointPctg": 0.469512,
+   "regulationWins": 25,
+   "regulationPlusOtWins": 31,
+   "leagueSequence": 30,
+   "conferenceSequence": 16,
+   "divisionSequence": 8
+  },
+  {
+   "seasonId": 20252026,
+   "date": "2026-04-17",
+   "gameTypeId": 2,
+   "teamName": {
+    "default": "Chicago Blackhawks",
+    "fr": "Blackhawks de Chicago"
+   },
+   "teamCommonName": {
+    "default": "Blackhawks"
+   },
+   "teamAbbrev": {
+    "default": "CHI"
+   },
+   "teamLogo": "https://assets.nhle.com/logos/nhl/svg/CHI_light.svg?season=20252026",
+   "conferenceAbbrev": "W",
+   "conferenceName": "Western",
+   "divisionAbbrev": "C",
+   "divisionName": "Central",
+   "gamesPlayed": 82,
+   "wins": 29,
+   "losses": 39,
+   "otLosses": 14,
+   "points": 72,
+   "pointPctg": 0.439024,
+   "regulationWins": 22,
+   "regulationPlusOtWins": 26,
+   "leagueSequence": 31,
+   "conferenceSequence": 15,
+   "divisionSequence": 8
+  },
+  {
+   "seasonId": 20252026,
+   "date": "2026-04-17",
+   "gameTypeId": 2,
+   "teamName": {
+    "default": "Vancouver Canucks",
+    "fr": "Canucks de Vancouver"
+   },
+   "teamCommonName": {
+    "default": "Canucks"
+   },
+   "teamAbbrev": {
+    "default": "VAN"
+   },
+   "teamLogo": "https://assets.nhle.com/logos/nhl/svg/VAN_light.svg",
+   "conferenceAbbrev": "W",
+   "conferenceName": "Western",
+   "divisionAbbrev": "P",
+   "divisionName": "Pacific",
+   "gamesPlayed": 82,
+   "wins": 25,
+   "losses": 49,
+   "otLosses": 8,
+   "points": 58,
+   "pointPctg": 0.353659,
+   "regulationWins": 15,
+   "regulationPlusOtWins": 19,
+   "leagueSequence": 32,
+   "conferenceSequence": 16,
+   "divisionSequence": 8
+  }
+ ]
+}
