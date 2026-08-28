@@ -9,6 +9,10 @@
     "resolveJsonModule": true,
     "target": "ES2019",
     "strict": true,
+    // Third-party .d.ts (vitest's modern @types/node, react-aria) can't be
+    // checked under this TS version + node10 resolution; app code is still
+    // fully checked.
+    "skipLibCheck": true,
     "allowJs": true,
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
