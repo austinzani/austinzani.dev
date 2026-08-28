@@ -188,27 +188,9 @@ const metricModeLabel: Record<TourDeSportSport["metric_mode"], string> = {
   final_prior: "Most recent completed season",
 };
 
-const howItWorksBlocks = [
-  {
-    index: "01",
-    title: "The Draw",
-    body: "Assignments happen live at the 2027 draft party. The commissioner runs the Draw one Sport at a time from a projected screen — every Participant has equal odds, and each Sport's assignments go public the moment they hit the screen. Not a second before.",
-  },
-  {
-    index: "02",
-    title: "Tiers",
-    body: "Before anything is drawable, each Sport's entities are banded into strength Tiers built from real-world standings. The Draw mixes Tiers so every portfolio lands at roughly equal expected strength. Luck lives inside a Tier — you might pull its best Entity or its worst.",
-  },
-  {
-    index: "03",
-    title: "Verifiably Fair",
-    body: "Season Lock freezes the Tiers and the RNG seed before the party, and the seed is published after the reveal. Anyone can re-run the Draw from the frozen inputs and get identical assignments. Rigging it isn't hard to catch — it's impossible to hide.",
-  },
-  {
-    index: "04",
-    title: "Scoring",
-    body: "Every Sport pays out the same 105-point pool, first place to last, ties averaging their ranks. Your total is your twelve entities' real-world results — nothing else. The Cutoff Date decides whether a Sport counts live standings or its most recent completed season.",
-  },
+const howItWorksParagraphs = [
+  "Everyone gets one Entity in each of the twelve Sports, dealt by a live Draw at the 2027 draft party. Strength Tiers keep the portfolios fair, a published seed proves nobody rigged it, and a revealed Sport is final.",
+  "Scoring is simple. Each Sport ranks the fourteen Entities by their real-world results: 14 points for first down to 1 for last, ties split the difference. Add up all twelve Sports and the biggest total wins the year.",
 ];
 
 const detailsSummaryClass =
@@ -272,7 +254,7 @@ function DrawRecordSection({
         <p className="mb-2 max-w-[640px] text-[15px] leading-[1.7] text-ink">
           The Draw's inputs are frozen and published here. Re-run the
           methodology below from the seed and you must land on the exact
-          assignments — if you don't, shout.
+          assignments. If you don't, shout.
         </p>
         <div className="mb-1 font-mono text-[11px] font-semibold uppercase tracking-[0.06em] text-zinc-500 dark:text-zinc-400">
           Published RNG seed
@@ -385,9 +367,8 @@ function RevealedAssignmentsSection({
     <section className="mb-9">
       <FantasySectionHeading>Assignments</FantasySectionHeading>
       <p className="mb-4 max-w-[640px] text-[15px] leading-[1.7] text-ink-muted">
-        {revealedSports.length} of {sports.length} Sports revealed. Each
-        Sport's assignments appear here the moment the Draw reveals it — the
-        rest stay hidden until their turn.
+        {revealedSports.length} of {sports.length} Sports revealed. The rest
+        stay hidden until their turn at the Draw.
       </p>
       <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
         {revealedSports.map((sport) => {
@@ -483,9 +464,8 @@ function ScoreboardSection({
     <section className="mb-9">
       <FantasySectionHeading>Scoreboard</FantasySectionHeading>
       <p className="mb-4 max-w-[640px] text-[15px] leading-[1.7] text-ink-muted">
-        Every Participant, ranked by total points across the Sports that
-        count so far. Expand a row for the per-sport breakdown — each chip
-        opens that Sport's full board.
+        Totals across every Sport that counts so far. Expand a row for the
+        breakdown.
       </p>
       <div className="space-y-2">
         {ranked.map((row) => (
@@ -628,9 +608,9 @@ export default function TourDeSport() {
           subtitle="One Entity apiece"
         />
         <FantasyStatCard
-          label="Point Pool Per Sport"
-          value={105}
-          subtitle="First to last, ties averaged"
+          label="Scoring"
+          value="14 → 1"
+          subtitle="First to last, every Sport"
         />
         <FantasyStatCard
           label="Cutoff Date"
@@ -641,19 +621,9 @@ export default function TourDeSport() {
 
       <section className="mb-9">
         <FantasySectionHeading>How It Works</FantasySectionHeading>
-        <div className="grid grid-cols-1 gap-7 md:grid-cols-2">
-          {howItWorksBlocks.map((block) => (
-            <div key={block.index}>
-              <div className="mb-2 flex items-baseline gap-2 border-b-[1.5px] border-line pb-2 dark:border-zinc-500">
-                <span className="font-mono text-xs font-semibold text-accent">
-                  {block.index}
-                </span>
-                <span className="font-mono text-xs font-semibold uppercase tracking-[0.06em] text-zinc-500 dark:text-zinc-400">
-                  {block.title}
-                </span>
-              </div>
-              <p className="text-[15px] leading-[1.7] text-ink">{block.body}</p>
-            </div>
+        <div className="max-w-[640px] space-y-3 text-[15px] leading-[1.7] text-ink">
+          {howItWorksParagraphs.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
           ))}
         </div>
       </section>
@@ -668,10 +638,8 @@ export default function TourDeSport() {
               Coming at the draft party
             </div>
             <p className="max-w-[640px] text-[15px] leading-[1.7] text-ink">
-              The board is empty on purpose. Nothing is drawable until Season
-              Lock, and no assignment shows here until the Draw reveals its
-              Sport — live, in front of the league. Once a Sport is revealed,
-              its assignments are public and final.
+              The board fills in live at the draft party. No assignment shows
+              until the Draw reveals its Sport, and a revealed Sport is final.
             </p>
           </div>
         </section>

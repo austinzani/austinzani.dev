@@ -136,7 +136,7 @@ function getFantasyHeroCopy(pathname: string, latestChampionFirstName: string | 
         return {
             eyebrow: "Season 1 — 2027",
             title: "Tour de Sport",
-            subtitle: "Fourteen participants, twelve sports, one entity apiece — assigned by a live Draw and scored off real-world results all year.",
+            subtitle: "Fourteen participants, twelve sports, one entity apiece. Real-world results decide the year.",
             showBack: true,
         };
     }
