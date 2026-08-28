@@ -1,0 +1,317 @@
+{
+    "note": "Captured from the local 2027 demo season on 2026-08-28 (AUS-845 chunk B). published = what the landing page publishes; saved_assignments = the DB rows the draw action persisted.",
+    "published": {
+        "seed": "0bb0089c2654cdae3fe84ef2f0f266f3",
+        "locked_inputs": {
+            "tier_rule": "Entities are ranked best to worst from the frozen standings and split, in that order, into consecutive tiers of four when the pool has 28 or more entities, or tiers of two for smaller pools, with the final tier taking any remainder.",
+            "participants": [
+                {
+                    "id": 1,
+                    "display_name": "Local Manager 01"
+                },
+                {
+                    "id": 2,
+                    "display_name": "Local Manager 02"
+                },
+                {
+                    "id": 3,
+                    "display_name": "Local Manager 03"
+                },
+                {
+                    "id": 4,
+                    "display_name": "Local Manager 04"
+                },
+                {
+                    "id": 5,
+                    "display_name": "Local Manager 05"
+                },
+                {
+                    "id": 6,
+                    "display_name": "Local Manager 06"
+                },
+                {
+                    "id": 7,
+                    "display_name": "Local Manager 07"
+                },
+                {
+                    "id": 8,
+                    "display_name": "Local Manager 08"
+                },
+                {
+                    "id": 9,
+                    "display_name": "Local Manager 09"
+                },
+                {
+                    "id": 10,
+                    "display_name": "Local Manager 10"
+                },
+                {
+                    "id": 11,
+                    "display_name": "Local Manager 11"
+                },
+                {
+                    "id": 12,
+                    "display_name": "Local Manager 12"
+                },
+                {
+                    "id": 13,
+                    "display_name": "Local Manager 13"
+                },
+                {
+                    "id": 14,
+                    "display_name": "Local Manager 14"
+                }
+            ],
+            "sport_indexes": {
+                "f1": 2,
+                "atp": 11,
+                "cbb": 8,
+                "cfb": 7,
+                "epl": 6,
+                "mlb": 1,
+                "mls": 5,
+                "nba": 4,
+                "nfl": 3,
+                "nhl": 0,
+                "pga": 10,
+                "nascar": 9
+            }
+        },
+        "sport": {
+            "sport_key": "nhl",
+            "sport_index": 0,
+            "tiers": [
+                [
+                    {
+                        "id": 1,
+                        "name": "Colorado Avalanche"
+                    },
+                    {
+                        "id": 2,
+                        "name": "Carolina Hurricanes"
+                    },
+                    {
+                        "id": 3,
+                        "name": "Dallas Stars"
+                    },
+                    {
+                        "id": 4,
+                        "name": "Buffalo Sabres"
+                    }
+                ],
+                [
+                    {
+                        "id": 5,
+                        "name": "Tampa Bay Lightning"
+                    },
+                    {
+                        "id": 6,
+                        "name": "Montr\u00e9al Canadiens"
+                    },
+                    {
+                        "id": 7,
+                        "name": "Minnesota Wild"
+                    },
+                    {
+                        "id": 8,
+                        "name": "Boston Bruins"
+                    }
+                ],
+                [
+                    {
+                        "id": 9,
+                        "name": "Ottawa Senators"
+                    },
+                    {
+                        "id": 10,
+                        "name": "Pittsburgh Penguins"
+                    },
+                    {
+                        "id": 11,
+                        "name": "Philadelphia Flyers"
+                    },
+                    {
+                        "id": 12,
+                        "name": "Washington Capitals"
+                    }
+                ],
+                [
+                    {
+                        "id": 13,
+                        "name": "Vegas Golden Knights"
+                    },
+                    {
+                        "id": 14,
+                        "name": "Edmonton Oilers"
+                    },
+                    {
+                        "id": 15,
+                        "name": "Utah Mammoth"
+                    },
+                    {
+                        "id": 16,
+                        "name": "Detroit Red Wings"
+                    }
+                ],
+                [
+                    {
+                        "id": 17,
+                        "name": "Columbus Blue Jackets"
+                    },
+                    {
+                        "id": 18,
+                        "name": "Anaheim Ducks"
+                    },
+                    {
+                        "id": 19,
+                        "name": "New York Islanders"
+                    },
+                    {
+                        "id": 20,
+                        "name": "Los Angeles Kings"
+                    }
+                ],
+                [
+                    {
+                        "id": 21,
+                        "name": "New Jersey Devils"
+                    },
+                    {
+                        "id": 22,
+                        "name": "St. Louis Blues"
+                    },
+                    {
+                        "id": 23,
+                        "name": "Nashville Predators"
+                    },
+                    {
+                        "id": 24,
+                        "name": "San Jose Sharks"
+                    }
+                ],
+                [
+                    {
+                        "id": 25,
+                        "name": "Florida Panthers"
+                    },
+                    {
+                        "id": 26,
+                        "name": "Winnipeg Jets"
+                    },
+                    {
+                        "id": 27,
+                        "name": "Seattle Kraken"
+                    },
+                    {
+                        "id": 28,
+                        "name": "Toronto Maple Leafs"
+                    }
+                ],
+                [
+                    {
+                        "id": 29,
+                        "name": "Calgary Flames"
+                    },
+                    {
+                        "id": 30,
+                        "name": "New York Rangers"
+                    },
+                    {
+                        "id": 31,
+                        "name": "Chicago Blackhawks"
+                    },
+                    {
+                        "id": 32,
+                        "name": "Vancouver Canucks"
+                    }
+                ]
+            ]
+        }
+    },
+    "saved_assignments": [
+        {
+            "participant_id": 8,
+            "entity_id": 3,
+            "tier_index": 0,
+            "tier_slot": 0
+        },
+        {
+            "participant_id": 12,
+            "entity_id": 1,
+            "tier_index": 0,
+            "tier_slot": 1
+        },
+        {
+            "participant_id": 6,
+            "entity_id": 2,
+            "tier_index": 0,
+            "tier_slot": 2
+        },
+        {
+            "participant_id": 1,
+            "entity_id": 4,
+            "tier_index": 0,
+            "tier_slot": 3
+        },
+        {
+            "participant_id": 11,
+            "entity_id": 5,
+            "tier_index": 1,
+            "tier_slot": 4
+        },
+        {
+            "participant_id": 10,
+            "entity_id": 6,
+            "tier_index": 1,
+            "tier_slot": 5
+        },
+        {
+            "participant_id": 3,
+            "entity_id": 7,
+            "tier_index": 1,
+            "tier_slot": 6
+        },
+        {
+            "participant_id": 7,
+            "entity_id": 8,
+            "tier_index": 1,
+            "tier_slot": 7
+        },
+        {
+            "participant_id": 14,
+            "entity_id": 10,
+            "tier_index": 2,
+            "tier_slot": 8
+        },
+        {
+            "participant_id": 13,
+            "entity_id": 12,
+            "tier_index": 2,
+            "tier_slot": 9
+        },
+        {
+            "participant_id": 5,
+            "entity_id": 9,
+            "tier_index": 2,
+            "tier_slot": 10
+        },
+        {
+            "participant_id": 9,
+            "entity_id": 11,
+            "tier_index": 2,
+            "tier_slot": 11
+        },
+        {
+            "participant_id": 4,
+            "entity_id": 13,
+            "tier_index": 3,
+            "tier_slot": 12
+        },
+        {
+            "participant_id": 2,
+            "entity_id": 15,
+            "tier_index": 3,
+            "tier_slot": 13
+        }
+    ]
+}

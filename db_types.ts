@@ -602,6 +602,7 @@ export type Database = {
           cutoff_date: string
           id: number
           locked_at: string | null
+          locked_inputs: Json | null
           name: string
           rng_seed: string | null
           updated_at: string
@@ -612,6 +613,7 @@ export type Database = {
           cutoff_date: string
           id?: never
           locked_at?: string | null
+          locked_inputs?: Json | null
           name: string
           rng_seed?: string | null
           updated_at?: string
@@ -622,6 +624,7 @@ export type Database = {
           cutoff_date?: string
           id?: never
           locked_at?: string | null
+          locked_inputs?: Json | null
           name?: string
           rng_seed?: string | null
           updated_at?: string
@@ -678,6 +681,7 @@ export type Database = {
           sport_index: number
           sport_key: string
           status: Database["public"]["Enums"]["tds_sport_status"]
+          tiers: Json | null
           updated_at: string
         }
         Insert: {
@@ -690,6 +694,7 @@ export type Database = {
           sport_index: number
           sport_key: string
           status?: Database["public"]["Enums"]["tds_sport_status"]
+          tiers?: Json | null
           updated_at?: string
         }
         Update: {
@@ -702,6 +707,7 @@ export type Database = {
           sport_index?: number
           sport_key?: string
           status?: Database["public"]["Enums"]["tds_sport_status"]
+          tiers?: Json | null
           updated_at?: string
         }
         Relationships: [

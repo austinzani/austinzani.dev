@@ -97,6 +97,15 @@ function getFantasyHeroCopy(pathname: string, latestChampionFirstName: string | 
         };
     }
 
+    if (pathname.includes("/tour_de_sport/draw")) {
+        return {
+            eyebrow: "Commissioner Console",
+            title: "The Draw",
+            subtitle: "Season Lock and the live sport-by-sport Draw. Commissioner only — everything run from here is final.",
+            showBack: true,
+        };
+    }
+
     if (pathname.includes("/tour_de_sport")) {
         return {
             eyebrow: "Season 1 — 2027",
