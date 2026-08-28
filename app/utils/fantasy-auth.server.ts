@@ -1,6 +1,7 @@
 import { redirect } from "@remix-run/node";
 
 import {
+  getAuthenticatedUser,
   requireAuthenticatedUser,
   sanitizeRedirectPath,
 } from "~/utils/auth.server";
@@ -36,6 +37,35 @@ export type FantasyMemberContext = {
 
 const DEFAULT_LEAGUE_SLUG =
   process.env.FANTASY_LEAGUE_SLUG ?? "zaks-league-to-lose";
+
+/**
+ * Reports whether the current request belongs to a league member without
+ * redirecting; logged-out and pending users both resolve to non-members.
+ */
+export async function getFantasyMemberStatus(request: Request): Promise<{
+  headers: Headers;
+  isMember: boolean;
+}> {
+  const auth = await getAuthenticatedUser(request);
+
+  if (!auth.user || !auth.accessToken) {
+    return { headers: auth.headers, isMember: false };
+  }
+
+  const supabase = createSupabaseServerClient(auth.accessToken);
+  const { data: membershipRow, error: membershipError } = await supabase
+    .from("league_memberships")
+    .select("id, league:leagues!inner(id, slug)")
+    .eq("user_id", auth.user.id)
+    .eq("leagues.slug", DEFAULT_LEAGUE_SLUG)
+    .maybeSingle();
+
+  if (membershipError) {
+    return { headers: auth.headers, isMember: false };
+  }
+
+  return { headers: auth.headers, isMember: Boolean(membershipRow) };
+}
 
 /**
  * Resolves the current user as a league member and enforces optional roles.

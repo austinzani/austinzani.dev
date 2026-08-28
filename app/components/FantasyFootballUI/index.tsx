@@ -1,5 +1,7 @@
 import { Link } from "@remix-run/react";
 import type { ReactNode } from "react";
+import { useEffect, useRef, useState } from "react";
+import Icon from "../Icon";
 
 type FantasyHeroMetric = {
   label: string;
@@ -12,28 +14,121 @@ type FantasyHeroProps = {
   title: ReactNode;
   subtitle: ReactNode;
   metrics?: FantasyHeroMetric[];
+  menu?: ReactNode;
 };
 
 export const fantasyContentClass =
   "mx-auto w-full max-w-[1080px] px-[clamp(18px,5vw,64px)]";
+
+type FantasyMenuItem = {
+  label: string;
+  to: string;
+};
+
+const memberMenuItems: FantasyMenuItem[] = [
+  { label: "Town Hall", to: "/fantasy_football/town_hall" },
+  { label: "Rule Submission", to: "/fantasy_football/rule_submission" },
+];
+
+const signedOutMenuItems: FantasyMenuItem[] = [
+  { label: "Sign In", to: "/fantasy_football/login" },
+];
+
+export const FantasyMenu = ({ isMember }: { isMember: boolean }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const menuItems = isMember ? memberMenuItems : signedOutMenuItems;
+
+  useEffect(() => {
+    if (!isMenuOpen) return;
+
+    const handlePointerDown = (event: PointerEvent) => {
+      if (!menuRef.current?.contains(event.target as Node)) {
+        setIsMenuOpen(false);
+      }
+    };
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("pointerdown", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isMenuOpen]);
+
+  return (
+    <div className="relative" ref={menuRef}>
+      <button
+        type="button"
+        aria-label={
+          isMenuOpen ? "Close fantasy football menu" : "Open fantasy football menu"
+        }
+        aria-expanded={isMenuOpen}
+        aria-controls="fantasy-football-menu"
+        onClick={() => setIsMenuOpen((isOpen) => !isOpen)}
+        className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-zinc-700 text-white transition hover:border-[#ffa64d] hover:text-[#ffa64d] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ffa64d]"
+      >
+        <Icon name="ellipsis" className="h-4 w-4" />
+      </button>
+      {isMenuOpen ? (
+        <nav
+          id="fantasy-football-menu"
+          className="absolute right-0 top-12 z-20 w-[min(82vw,15rem)] rounded-lg border border-line-muted bg-surface p-2 shadow-xl"
+          aria-label="Fantasy football"
+        >
+          {menuItems.map((item) => (
+            <Link
+              key={item.to}
+              to={item.to}
+              prefetch="intent"
+              className="block rounded-md px-3 py-2 font-mono text-sm font-semibold uppercase tracking-[0.1em] text-ink transition hover:bg-paper-muted hover:text-accent"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+      ) : null}
+    </div>
+  );
+};
+
+export const FantasyMenuBar = ({ children }: { children: ReactNode }) => (
+  <section className="bg-black text-white dark:bg-[#050505]">
+    <div className={`${fantasyContentClass} flex justify-end py-4`}>
+      {children}
+    </div>
+  </section>
+);
 
 export const FantasyHero = ({
   eyebrow,
   title,
   subtitle,
   metrics,
+  menu,
 }: FantasyHeroProps) => (
   <section className="bg-black text-white dark:bg-[#050505]">
     <div className={`${fantasyContentClass} py-[clamp(32px,6vw,56px)] pb-8`}>
-      <p className="mb-3.5 font-mono text-xs font-semibold uppercase leading-none tracking-[0.14em] text-[#ffa64d]">
-        {eyebrow}
-      </p>
-      <h1 className="mb-2.5 font-display text-[clamp(38px,6.5vw,80px)] leading-none">
-        {title}
-      </h1>
-      <p className="max-w-xl text-sm leading-[1.6] text-zinc-300">
-        {subtitle}
-      </p>
+      <div className="flex items-start justify-between gap-4">
+        <div className="min-w-0">
+          <p className="mb-3.5 font-mono text-xs font-semibold uppercase leading-none tracking-[0.14em] text-[#ffa64d]">
+            {eyebrow}
+          </p>
+          <h1 className="mb-2.5 font-display text-[clamp(38px,6.5vw,80px)] leading-none">
+            {title}
+          </h1>
+          <p className="max-w-xl text-sm leading-[1.6] text-zinc-300">
+            {subtitle}
+          </p>
+        </div>
+        {menu ? <div className="shrink-0">{menu}</div> : null}
+      </div>
 
       {metrics?.length ? (
         <div className="mt-[26px] flex flex-wrap border-t border-dashed border-zinc-700">

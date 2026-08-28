@@ -1,17 +1,25 @@
+import { json } from "@remix-run/node";
 import { Outlet, useLoaderData, useLocation, useOutletContext } from "@remix-run/react";
+import type { ShouldRevalidateFunction } from "@remix-run/react";
 
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import type { Database } from "../../db_types";
 import { getLeagueStats } from "~/utils/league-stats.server";
+import { getFantasyMemberStatus } from "~/utils/fantasy-auth.server";
 import {
     FantasyBackBar,
     FantasyHero,
+    FantasyMenu,
+    FantasyMenuBar,
 } from "~/components/FantasyFootballUI";
 
-export const loader = async (_: LoaderFunctionArgs) => {
-    const leagueStats = await getLeagueStats();
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+    const [leagueStats, memberStatus] = await Promise.all([
+        getLeagueStats(),
+        getFantasyMemberStatus(request),
+    ]);
     if (leagueStats.error) {
-        return {
+        return json({
             error: leagueStats.error,
             managers: [],
             allTime: [],
@@ -21,10 +29,11 @@ export const loader = async (_: LoaderFunctionArgs) => {
             teamSeasonCount: 0,
             matchupCount: 0,
             latestChampionFirstName: null,
-        }
+            isMember: memberStatus.isMember,
+        }, { headers: memberStatus.headers })
     }
 
-    return {
+    return json({
         error: null,
         managers: leagueStats.managers,
         allTime: leagueStats.allTime,
@@ -34,7 +43,19 @@ export const loader = async (_: LoaderFunctionArgs) => {
         teamSeasonCount: leagueStats.teamSeasonCount,
         matchupCount: leagueStats.matchupCount,
         latestChampionFirstName: leagueStats.latestChampionFirstName,
+        isMember: memberStatus.isMember,
+    }, { headers: memberStatus.headers })
+}
+
+export const shouldRevalidate: ShouldRevalidateFunction = ({
+    formAction,
+    defaultShouldRevalidate,
+}) => {
+    if (formAction) {
+        return defaultShouldRevalidate;
     }
+
+    return false;
 }
 type ContextType = { managers: {id: number, name: string}[], allTime: Database["public"]["CompositeTypes"]["all_time_object"][], years: {key: string, value: string}[], latestChampionFirstName: string | null }
 
@@ -101,6 +122,7 @@ export default function Index() {
         seasonCount,
         matchupCount,
         latestChampionFirstName,
+        isMember,
     } = useLoaderData<typeof loader>()
     const location = useLocation();
     const hero = getFantasyHeroCopy(location.pathname, latestChampionFirstName);
@@ -129,6 +151,7 @@ export default function Index() {
                             { label: "Matchups", value: matchupCount },
                             { label: "Reigning Champ", value: latestChampionFirstName ?? "TBD", highlight: true },
                         ] : undefined}
+                        menu={<FantasyMenu isMember={isMember} />}
                     />
                     {hero.showBack ? (
                         <FantasyBackBar to="/fantasy_football">
@@ -136,7 +159,11 @@ export default function Index() {
                         </FantasyBackBar>
                     ) : null}
                 </>
-            ) : null}
+            ) : (
+                <FantasyMenuBar>
+                    <FantasyMenu isMember={isMember} />
+                </FantasyMenuBar>
+            )}
             <Outlet context={{
                 managers,
                 allTime,
