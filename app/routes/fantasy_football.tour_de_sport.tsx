@@ -667,6 +667,23 @@ export default function TourDeSport() {
   const hasCountedSport = scoreboard.some((row) =>
     row.sports.some((sport) => sport.counted)
   );
+  // Once the Draw has revealed anything the page is a tracking surface: the
+  // explainer and the Draw Record drop below the live content.
+  const isTracking = assignments.length > 0;
+
+  const howItWorksSection = (
+    <section className="mb-9">
+      <FantasySectionHeading>How It Works</FantasySectionHeading>
+      <div className="max-w-[640px] space-y-3 text-[15px] leading-[1.7] text-ink">
+        {howItWorksParagraphs.map((paragraph) => (
+          <p key={paragraph}>{paragraph}</p>
+        ))}
+      </div>
+    </section>
+  );
+  const drawRecordSection = season ? (
+    <DrawRecordSection season={season} sports={sports} />
+  ) : null;
 
   return (
     <FantasyMain>
@@ -697,16 +714,12 @@ export default function TourDeSport() {
         />
       </div>
 
-      <section className="mb-9">
-        <FantasySectionHeading>How It Works</FantasySectionHeading>
-        <div className="max-w-[640px] space-y-3 text-[15px] leading-[1.7] text-ink">
-          {howItWorksParagraphs.map((paragraph) => (
-            <p key={paragraph}>{paragraph}</p>
-          ))}
-        </div>
-      </section>
-
-      {season ? <DrawRecordSection season={season} sports={sports} /> : null}
+      {!isTracking ? (
+        <>
+          {howItWorksSection}
+          {drawRecordSection}
+        </>
+      ) : null}
 
       {assignments.length === 0 ? (
         <section className="mb-9">
@@ -732,7 +745,7 @@ export default function TourDeSport() {
         />
       ) : null}
 
-      <section>
+      <section className={isTracking ? "mb-9" : undefined}>
         <FantasySectionHeading>The Participants</FantasySectionHeading>
         {participants.length > 0 ? (
           <>
@@ -765,6 +778,13 @@ export default function TourDeSport() {
           </p>
         )}
       </section>
+
+      {isTracking ? (
+        <>
+          {howItWorksSection}
+          {drawRecordSection}
+        </>
+      ) : null}
     </FantasyMain>
   );
 }
