@@ -27,10 +27,12 @@ type FantasyMenuItem = {
 
 const baseMenuItems: FantasyMenuItem[] = [
   { label: "Tour de Sport", to: "/fantasy_football/tour_de_sport" },
-  { label: "Constitution", to: "/fantasy_football/constitution" },
 ];
 
+// The Constitution page is members-only, so its menu entry is too — outsiders
+// never see a link that just bounces them to login (decided 2026-08-29).
 const memberMenuItems: FantasyMenuItem[] = [
+  { label: "Constitution", to: "/fantasy_football/constitution" },
   { label: "Town Hall", to: "/fantasy_football/town_hall" },
   { label: "Rule Submission", to: "/fantasy_football/rule_submission" },
 ];
