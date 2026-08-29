@@ -392,8 +392,10 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   return failure("unknown", "Unsupported action.", member.headers);
 };
 
+// min-w-0/max-w-full keep a select from inheriting its widest option's
+// intrinsic width and dragging the page past the viewport on phones.
 const controlClass =
-  "rounded-md border border-line-muted bg-paper px-2.5 py-1.5 text-sm text-ink focus:border-accent focus:outline-none dark:bg-zinc-900 dark:text-zinc-50";
+  "min-w-0 max-w-full rounded-md border border-line-muted bg-paper px-2.5 py-1.5 text-sm text-ink focus:border-accent focus:outline-none dark:bg-zinc-900 dark:text-zinc-50";
 
 const primaryButtonClass =
   "rounded-md border border-accent px-4 py-1.5 font-mono text-xs font-semibold uppercase tracking-[0.06em] text-accent transition-colors hover:bg-accent hover:text-white disabled:cursor-wait disabled:opacity-60";
@@ -662,7 +664,7 @@ export default function TourDeSportAdmin() {
           <FantasyPanel>
             <Form method="post" className="flex flex-wrap items-end gap-3">
               <input type="hidden" name="intent" value="save_override" />
-              <label className="flex flex-col gap-1">
+              <label className="flex min-w-0 max-w-full flex-col gap-1">
                 <span className={labelClass}>Sport</span>
                 <select name="sport_id" required className={controlClass}>
                   {revealedSports.map((sport) => (
@@ -672,7 +674,7 @@ export default function TourDeSportAdmin() {
                   ))}
                 </select>
               </label>
-              <label className="flex flex-col gap-1">
+              <label className="flex min-w-0 max-w-full flex-col gap-1">
                 <span className={labelClass}>Participant</span>
                 <select name="participant_id" required className={controlClass}>
                   {participants.map((participant) => (
@@ -682,7 +684,7 @@ export default function TourDeSportAdmin() {
                   ))}
                 </select>
               </label>
-              <label className="flex flex-col gap-1">
+              <label className="flex min-w-0 max-w-full flex-col gap-1">
                 <span className={labelClass}>Points</span>
                 <input
                   type="number"
@@ -783,7 +785,7 @@ export default function TourDeSportAdmin() {
                       value="reassign_entity"
                     />
                     <input type="hidden" name="sport_id" value={sport.id} />
-                    <label className="flex flex-col gap-1">
+                    <label className="flex min-w-0 max-w-full flex-col gap-1">
                       <span className={labelClass}>Assignment</span>
                       <select
                         name="assignment_id"
@@ -800,7 +802,7 @@ export default function TourDeSportAdmin() {
                         ))}
                       </select>
                     </label>
-                    <label className="flex flex-col gap-1">
+                    <label className="flex min-w-0 max-w-full flex-col gap-1">
                       <span className={labelClass}>Replacement entity</span>
                       <select name="entity_id" required className={controlClass}>
                         {availableEntities.map((entity) => (
