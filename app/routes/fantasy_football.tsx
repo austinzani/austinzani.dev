@@ -222,7 +222,7 @@ export default function Index() {
                     />
                     {hero.showBack ? (
                         <FantasyBackBar to="/fantasy_football">
-                            All-Time League
+                            League Home
                         </FantasyBackBar>
                     ) : null}
                 </>
