@@ -682,11 +682,13 @@ export type Database = {
           id: number
           metric_mode: Database["public"]["Enums"]["tds_metric_mode"]
           name: string
+          odds_board: Json | null
           revealed_at: string | null
           season_id: number
           sport_index: number
           sport_key: string
           status: Database["public"]["Enums"]["tds_sport_status"]
+          tier_basis: string | null
           tiers: Json | null
           updated_at: string
         }
@@ -695,11 +697,13 @@ export type Database = {
           id?: never
           metric_mode: Database["public"]["Enums"]["tds_metric_mode"]
           name: string
+          odds_board?: Json | null
           revealed_at?: string | null
           season_id: number
           sport_index: number
           sport_key: string
           status?: Database["public"]["Enums"]["tds_sport_status"]
+          tier_basis?: string | null
           tiers?: Json | null
           updated_at?: string
         }
@@ -708,11 +712,13 @@ export type Database = {
           id?: never
           metric_mode?: Database["public"]["Enums"]["tds_metric_mode"]
           name?: string
+          odds_board?: Json | null
           revealed_at?: string | null
           season_id?: number
           sport_index?: number
           sport_key?: string
           status?: Database["public"]["Enums"]["tds_sport_status"]
+          tier_basis?: string | null
           tiers?: Json | null
           updated_at?: string
         }

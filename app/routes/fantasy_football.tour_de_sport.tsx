@@ -27,6 +27,7 @@ import type {
   ScoreboardSportEntry,
 } from "~/utils/tour_de_sport/scoreboard";
 import { sportScoringShortLabel } from "~/utils/tour_de_sport/scoring-copy";
+import type { OddsBoard } from "~/utils/tour_de_sport/odds-board";
 import { TIER_RULE_SENTENCE } from "~/utils/tour_de_sport/tiers";
 import type { LockedInputs, SportTiers } from "~/utils/tour_de_sport/tiers";
 
@@ -71,6 +72,10 @@ type TourDeSportSport = {
   metric_mode: "live" | "final_prior";
   tiers: SportTiers | null;
   revealed_at: string | null;
+  /** Frozen at Season Lock: 'odds' | 'standings' (null pre-lock). */
+  tier_basis: string | null;
+  /** The published futures board this sport's tiers were ranked by, if any. */
+  odds_board: OddsBoard | null;
 };
 
 type TourDeSportParticipant = {
@@ -118,7 +123,9 @@ export const loader = async () => {
       await Promise.all([
         supabase
           .from("tds_sports")
-          .select("id, sport_key, name, sport_index, metric_mode, tiers, revealed_at")
+          .select(
+            "id, sport_key, name, sport_index, metric_mode, tiers, revealed_at, tier_basis, odds_board"
+          )
           .eq("season_id", season.id)
           .order("sport_index", { ascending: true }),
         supabase
@@ -254,7 +261,7 @@ function DrawRecordSection({
     },
     {
       title: "The tiers",
-      body: `${tierRule} Within a tier, the published order is the frozen standings order — feed each tier to the shuffle exactly as printed below.`,
+      body: `${tierRule} Within a tier, the published order is the frozen standings order — feed each tier to the shuffle exactly as printed below. A Sport marked "odds basis" was instead ranked by the sportsbook futures board published inside its tier table (board order first, any pool entity the board omits following in frozen standings order) — the printed tiers remain the exact frozen input either way.`,
     },
   ];
 
@@ -326,7 +333,8 @@ function DrawRecordSection({
           <summary className={detailsSummaryClass}>
             {sport.name} tiers — {sport.tiers?.length ?? 0} tiers,{" "}
             {sport.tiers?.reduce((sum, tier) => sum + tier.length, 0) ?? 0}{" "}
-            entities
+            entities · {sport.tier_basis === "odds" ? "odds" : "standings"}{" "}
+            basis
           </summary>
           <div className="mt-3 space-y-2">
             {(sport.tiers ?? []).map((tier, tierIndex) => (
@@ -341,6 +349,22 @@ function DrawRecordSection({
               </p>
             ))}
           </div>
+          {sport.tier_basis === "odds" && sport.odds_board ? (
+            <details className="mt-3 rounded-md border border-line-muted p-3">
+              <summary className={detailsSummaryClass}>
+                The published odds board — {sport.odds_board.source},{" "}
+                {sport.odds_board.retrieved_on}
+              </summary>
+              <p className="mt-2 max-w-[640px] text-xs leading-[1.5] text-ink-muted dark:text-zinc-400">
+                This Sport's pool was ranked by this published board exactly
+                as pasted at lock time; pool entities not listed on it follow
+                in frozen standings order.
+              </p>
+              <pre className="mt-2 overflow-x-auto rounded-md bg-paper-muted p-3 font-mono text-xs leading-[1.6] text-ink dark:bg-zinc-900 dark:text-zinc-50">
+                {sport.odds_board.lines.join("\n")}
+              </pre>
+            </details>
+          ) : null}
         </details>
       ))}
 

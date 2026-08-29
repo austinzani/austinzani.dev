@@ -22,11 +22,21 @@ import {
 } from "~/components/FantasyFootballUI";
 import { capitalizeFirstLetter } from "~/utils/helpers";
 import { requireFantasyMember } from "~/utils/fantasy-auth.server";
+import type { Json } from "../../db_types";
 import {
   drawSportForSeason,
   type DrawSportResult,
 } from "~/utils/tour_de_sport/draw-sport.server";
-import { lockSeason } from "~/utils/tour_de_sport/season-lock.server";
+import {
+  matchBoardToEntities,
+  parseBoardLines,
+  parseOddsBoard,
+  type OddsBoard,
+} from "~/utils/tour_de_sport/odds-board";
+import {
+  lockSeason,
+  rankedPoolForSport,
+} from "~/utils/tour_de_sport/season-lock.server";
 import type { LockedInputs, SportTiers } from "~/utils/tour_de_sport/tiers";
 
 // Commissioner console: never cached, anywhere.
@@ -56,7 +66,58 @@ type ConsoleSport = {
   sport_index: number;
   tiers: SportTiers | null;
   revealed_at: string | null;
+  board: OddsBoard | null;
+  tier_basis: string | null;
 };
+
+/**
+ * How a saved board lines up against the sport's current standings pool —
+ * recomputed on every console load (and after every save) so unmatched names
+ * stay loudly visible until fixed or cleared.
+ */
+type BoardSummary = {
+  matched: number;
+  poolSize: number;
+  unmatched: string[];
+  unlisted: number;
+  /** No standings pool ingested yet — nothing to match against. */
+  noPool: boolean;
+};
+
+type BoardActionResult =
+  | {
+      ok: true;
+      board_intent: "save_board" | "clear_board";
+      sportKey: string;
+      summary: BoardSummary | null;
+    }
+  | { ok: false; error: string };
+
+async function summarizeBoardAgainstPool(
+  supabase: Parameters<typeof rankedPoolForSport>[0],
+  sportId: number,
+  board: OddsBoard
+): Promise<BoardSummary> {
+  const pool = await rankedPoolForSport(supabase, sportId);
+  const names = parseBoardLines(board.lines.join("\n"));
+  if (!pool || pool.length === 0) {
+    return {
+      matched: 0,
+      poolSize: 0,
+      unmatched: [],
+      unlisted: 0,
+      noPool: true,
+    };
+  }
+  const match = matchBoardToEntities(names, pool);
+  return {
+    matched: match.orderedEntityIds.length,
+    poolSize: pool.length,
+    unmatched: match.unmatchedBoardNames,
+    unlisted: match.unlistedEntityIds.length,
+    noPool: false,
+  };
+}
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const member = await requireFantasyMember(request, ["commissioner"]);
@@ -70,13 +131,41 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
   let sports: ConsoleSport[] = [];
   let drawnSportIds: number[] = [];
+  const boardSummaries: Record<number, BoardSummary> = {};
   if (season) {
     const { data } = await member.supabase
       .from("tds_sports")
-      .select("id, sport_key, name, sport_index, tiers, revealed_at")
+      .select(
+        "id, sport_key, name, sport_index, tiers, revealed_at, odds_board, tier_basis"
+      )
       .eq("season_id", season.id)
       .order("sport_index", { ascending: true });
-    sports = data ?? [];
+    type SportRow = Omit<ConsoleSport, "board"> & { odds_board: unknown };
+    sports = ((data ?? []) as SportRow[]).map((row) => ({
+      id: row.id,
+      sport_key: row.sport_key,
+      name: row.name,
+      sport_index: row.sport_index,
+      tiers: row.tiers as unknown as SportTiers | null,
+      revealed_at: row.revealed_at,
+      board: parseOddsBoard(row.odds_board),
+      tier_basis: row.tier_basis,
+    }));
+
+    // Pre-lock, re-check every saved board against the live pool so a
+    // returning commissioner sees outstanding unmatched names without
+    // re-saving. (Post-lock the editors are gone; the frozen basis shows.)
+    if (!season.locked_at) {
+      for (const sport of sports) {
+        if (sport.board) {
+          boardSummaries[sport.id] = await summarizeBoardAgainstPool(
+            member.supabase,
+            sport.id,
+            sport.board
+          );
+        }
+      }
+    }
 
     // Saved assignments are the truth for "drawn" (revealed_at is stamped a
     // beat later; the draw action heals a gap between the two).
@@ -99,7 +188,12 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   }
 
   return json(
-    { season: (season ?? null) as ConsoleSeason | null, sports, drawnSportIds },
+    {
+      season: (season ?? null) as ConsoleSeason | null,
+      sports,
+      drawnSportIds,
+      boardSummaries,
+    },
     { headers: member.headers }
   );
 };
@@ -116,6 +210,107 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return json(
       { result },
       { headers: member.headers, status: result.ok ? 200 : 400 }
+    );
+  }
+
+  if (intent === "save_board" || intent === "clear_board") {
+    const fail = (error: string) =>
+      json(
+        { result: { ok: false, error } as BoardActionResult },
+        { headers: member.headers, status: 400 }
+      );
+
+    const sportId = Number(formData.get("sport_id"));
+    if (!Number.isInteger(sportId) || sportId <= 0) {
+      return fail("Missing sport.");
+    }
+    const { data: sport } = await member.supabase
+      .from("tds_sports")
+      .select("id, sport_key, season_id")
+      .eq("id", sportId)
+      .maybeSingle();
+    if (!sport) {
+      return fail("Unknown sport.");
+    }
+    // Boards are editable ONLY while the season is unlocked: the lock froze
+    // tier_basis from whatever board existed at that moment, so a later edit
+    // would rewrite published provenance.
+    const { data: sportSeason } = await member.supabase
+      .from("tds_seasons")
+      .select("locked_at")
+      .eq("id", sport.season_id)
+      .maybeSingle();
+    if (!sportSeason || sportSeason.locked_at) {
+      return fail("The season is locked — odds boards are frozen.");
+    }
+
+    if (intent === "clear_board") {
+      const { data: updated, error: updateError } = await member.supabase
+        .from("tds_sports")
+        .update({ odds_board: null })
+        .eq("id", sportId)
+        .select("id");
+      if (updateError || !updated || updated.length !== 1) {
+        return fail("Clearing the board failed — commissioner access required.");
+      }
+      return json(
+        {
+          result: {
+            ok: true,
+            board_intent: "clear_board",
+            sportKey: sport.sport_key,
+            summary: null,
+          } as BoardActionResult,
+        },
+        { headers: member.headers }
+      );
+    }
+
+    const rawBoard = String(formData.get("board") ?? "");
+    const source = String(formData.get("source") ?? "").trim();
+    const retrievedOn = String(formData.get("retrieved_on") ?? "").trim();
+    // Raw lines are stored VERBATIM (prices and all) as the published
+    // provenance record; only blank lines are dropped.
+    const lines = rawBoard
+      .split(/\r?\n/)
+      .filter((line) => line.trim().length > 0);
+    if (parseBoardLines(rawBoard).length === 0) {
+      return fail("Paste at least one board line (one entity per line).");
+    }
+    if (!source) {
+      return fail("Name the board's source — it is published as provenance.");
+    }
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(retrievedOn)) {
+      return fail("Give the date the board was retrieved.");
+    }
+
+    const board: OddsBoard = { source, retrieved_on: retrievedOn, lines };
+    const { data: updated, error: updateError } = await member.supabase
+      .from("tds_sports")
+      .update({ odds_board: board as unknown as Json })
+      .eq("id", sportId)
+      .select("id");
+    if (updateError || !updated || updated.length !== 1) {
+      return fail("Saving the board failed — commissioner access required.");
+    }
+    // Saving with unmatched names is allowed (fix iteratively pre-lock), but
+    // the summary must make them impossible to miss — and the lock itself
+    // refuses while any remain.
+    const summary = await summarizeBoardAgainstPool(
+      member.supabase,
+      sportId,
+      board
+    );
+    return json(
+      {
+        result: {
+          ok: true,
+          board_intent: "save_board",
+          sportKey: sport.sport_key,
+          summary,
+        } as BoardActionResult,
+      },
+      { headers: member.headers }
     );
   }
 
@@ -412,8 +607,194 @@ function SportCard({
   );
 }
 
+/**
+ * One sport's pre-lock odds-board editor: paste the futures board (prices
+ * tolerated and preserved), record its provenance, and see immediately which
+ * names matched the standings pool. Unmatched names are loud on purpose —
+ * they are allowed to be saved (fix iteratively) but they BLOCK Season Lock.
+ */
+function BoardEditor({
+  sport,
+  summary,
+}: {
+  sport: ConsoleSport;
+  summary: BoardSummary | undefined;
+}) {
+  const fetcher = useFetcher<typeof action>();
+  const busy = fetcher.state !== "idle";
+  const data = fetcher.data;
+  const saveError = data && !data.result.ok ? data.result.error : null;
+  const freshSummary =
+    data?.result.ok && "board_intent" in data.result
+      ? data.result.summary
+      : undefined;
+  const cleared =
+    data?.result.ok &&
+    "board_intent" in data.result &&
+    data.result.board_intent === "clear_board";
+  // The freshest picture wins: an in-session save beats the loader's
+  // (already revalidated) summary; a clear shows the no-board state.
+  const shown = cleared ? undefined : (freshSummary ?? summary);
+
+  const inputClass =
+    "rounded-md border border-line-muted bg-paper px-2.5 py-1.5 text-sm text-ink outline-none focus:border-accent dark:bg-zinc-900 dark:text-zinc-50";
+
+  return (
+    <details className="mb-3 rounded-md border border-line-muted p-4">
+      <summary className="cursor-pointer select-none">
+        <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.06em] text-accent">
+          {sport.name}
+        </span>
+        <span className="ml-3 font-mono text-[11px] font-semibold uppercase tracking-[0.06em]">
+          {!sport.board || cleared ? (
+            <span className="text-ink-muted dark:text-zinc-400">
+              No board — standings basis
+            </span>
+          ) : shown?.noPool ? (
+            <span className="text-amber-700 dark:text-amber-400">
+              Board saved — no standings pool to match yet
+            </span>
+          ) : shown && shown.unmatched.length > 0 ? (
+            <span className="text-amber-700 dark:text-amber-400">
+              {shown.unmatched.length} unmatched — blocks lock
+            </span>
+          ) : shown ? (
+            <span className="text-ink-muted dark:text-zinc-400">
+              {shown.matched} of {shown.poolSize} pool entities matched
+            </span>
+          ) : null}
+        </span>
+      </summary>
+      <fetcher.Form method="post" className="mt-3">
+        <input type="hidden" name="sport_id" value={sport.id} />
+        <label className="mb-1 block font-mono text-[11px] font-semibold uppercase tracking-[0.06em] text-zinc-500 dark:text-zinc-400">
+          Board — one entity per line, best odds first (prices are kept)
+          <textarea
+            name="board"
+            rows={8}
+            defaultValue={sport.board?.lines.join("\n") ?? ""}
+            placeholder={"Arsenal -110\nManchester City +400\n…"}
+            className={`mt-1 block w-full font-mono text-xs leading-[1.6] ${inputClass}`}
+          />
+        </label>
+        <div className="mt-2 flex flex-wrap items-end gap-3">
+          <label className="font-mono text-[11px] font-semibold uppercase tracking-[0.06em] text-zinc-500 dark:text-zinc-400">
+            Source
+            <input
+              type="text"
+              name="source"
+              defaultValue={sport.board?.source ?? ""}
+              placeholder="DraftKings"
+              className={`mt-1 block w-44 ${inputClass}`}
+            />
+          </label>
+          <label className="font-mono text-[11px] font-semibold uppercase tracking-[0.06em] text-zinc-500 dark:text-zinc-400">
+            Retrieved on
+            <input
+              type="date"
+              name="retrieved_on"
+              defaultValue={sport.board?.retrieved_on ?? ""}
+              className={`mt-1 block ${inputClass}`}
+            />
+          </label>
+          <button
+            type="submit"
+            name="intent"
+            value="save_board"
+            disabled={busy}
+            className={`rounded-md border border-accent px-4 py-1.5 font-mono text-xs font-semibold uppercase tracking-[0.06em] text-accent transition-colors hover:bg-accent hover:text-white ${
+              busy ? "cursor-wait opacity-60" : ""
+            }`}
+          >
+            {busy ? "Saving…" : "Save board"}
+          </button>
+          {sport.board && !cleared ? (
+            <button
+              type="submit"
+              name="intent"
+              value="clear_board"
+              disabled={busy}
+              className="rounded-md border border-line-muted px-3 py-1.5 font-mono text-xs font-semibold uppercase tracking-[0.06em] text-ink-muted transition-colors hover:border-red-500 hover:text-red-600 dark:text-zinc-400"
+            >
+              Clear board
+            </button>
+          ) : null}
+        </div>
+      </fetcher.Form>
+      {saveError ? (
+        <p className="mt-2 text-xs font-semibold leading-[1.5] text-red-600 dark:text-red-400">
+          {saveError}
+        </p>
+      ) : null}
+      {shown && !cleared ? (
+        shown.noPool ? (
+          <p className="mt-3 max-w-[640px] text-xs leading-[1.6] font-semibold text-amber-700 dark:text-amber-400">
+            No standings pool has been ingested for this Sport yet, so the
+            board cannot be checked — and will not apply — until standings
+            exist.
+          </p>
+        ) : (
+          <div className="mt-3">
+            <p className="text-xs leading-[1.6] text-ink-muted dark:text-zinc-400">
+              {shown.matched} of {shown.poolSize} pool entities matched
+              {shown.unlisted > 0
+                ? ` · ${shown.unlisted} pool ${
+                    shown.unlisted === 1 ? "entity" : "entities"
+                  } not on the board will tail in standings order`
+                : " · every pool entity is on the board"}
+            </p>
+            {shown.unmatched.length > 0 ? (
+              <div className="mt-2 rounded-md border border-amber-500 bg-amber-500/10 p-3">
+                <p className="text-xs font-semibold leading-[1.6] text-amber-700 dark:text-amber-400">
+                  Unmatched board names — Season Lock will REFUSE until these
+                  are fixed or the board is cleared:
+                </p>
+                <p className="mt-1 font-mono text-xs leading-[1.6] text-amber-700 dark:text-amber-400">
+                  {shown.unmatched.join(" · ")}
+                </p>
+              </div>
+            ) : null}
+          </div>
+        )
+      ) : null}
+    </details>
+  );
+}
+
+/**
+ * Post-lock, the editors disappear: the basis is frozen. This panel shows
+ * what each Sport's tiers were ranked by.
+ */
+function FrozenBasisPanel({ sports }: { sports: ConsoleSport[] }) {
+  return (
+    <FantasyPanel>
+      <p className="mb-3 max-w-[640px] text-[15px] leading-[1.7] text-ink">
+        The season is locked — every Sport's tier basis is frozen and
+        published on the landing page's Draw Record. Boards can no longer be
+        edited.
+      </p>
+      <ul className="space-y-1">
+        {sports.map((sport) => (
+          <li
+            key={sport.id}
+            className="flex items-baseline justify-between gap-4 text-sm text-ink"
+          >
+            <span>{sport.name}</span>
+            <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.06em] text-ink-muted dark:text-zinc-400">
+              {sport.tier_basis === "odds" && sport.board
+                ? `Odds board — ${sport.board.source}, ${sport.board.retrieved_on}`
+                : "Standings"}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </FantasyPanel>
+  );
+}
+
 export default function DrawConsole() {
-  const { season, sports, drawnSportIds } = useLoaderData<typeof loader>();
+  const { season, sports, drawnSportIds, boardSummaries } =
+    useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const navigation = useNavigation();
   const isLocking = navigation.state === "submitting";
@@ -481,6 +862,31 @@ export default function DrawConsole() {
             {error}
           </p>
         ) : null}
+      </section>
+
+      <section className="mb-9">
+        <FantasySectionHeading>Odds Boards</FantasySectionHeading>
+        {locked ? (
+          <FrozenBasisPanel sports={sports} />
+        ) : (
+          <>
+            <p className="mb-4 max-w-[640px] text-[15px] leading-[1.7] text-ink-muted">
+              Optionally rank a Sport's tiers by a sportsbook championship
+              futures board instead of the standings. Paste the board exactly
+              as published (best odds first — prices are tolerated and kept as
+              provenance), then check the match summary: unmatched names can
+              be saved and fixed iteratively, but Season Lock refuses while
+              any remain. Sports without a board keep the standings basis.
+            </p>
+            {sports.map((sport) => (
+              <BoardEditor
+                key={sport.id}
+                sport={sport}
+                summary={boardSummaries[sport.id]}
+              />
+            ))}
+          </>
+        )}
       </section>
 
       <section>
