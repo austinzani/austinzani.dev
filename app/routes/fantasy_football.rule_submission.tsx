@@ -9,7 +9,6 @@ import {
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
 import { requireFantasyMember } from "~/utils/fantasy-auth.server";
-import { BreadcrumbItem, Breadcrumbs } from "~/components/Breadcrumb";
 import Icon from "~/components/Icon";
 
 type Submission = {
@@ -384,21 +383,7 @@ export default function FantasyFootballRuleSubmissionRoute() {
   return (
     <div className="w-full flex justify-center px-3 pb-8">
       <div className="w-full max-w-[64rem]">
-        <Breadcrumbs className="pt-3">
-          <BreadcrumbItem href="/fantasy_football">Fantasy Football</BreadcrumbItem>
-          <BreadcrumbItem href="/fantasy_football/rule_submission">
-            Rule Submission
-          </BreadcrumbItem>
-        </Breadcrumbs>
-
-        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between mt-2">
-          <div>
-            <h1 className="text-2xl font-bold">Rule Submission</h1>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-              Submit ideas throughout the year so they can be folded into next
-              season's town hall ballot.
-            </p>
-          </div>
+        <div className="mt-4 flex flex-wrap items-center justify-end gap-3">
           <Form method="post" action="/fantasy_football/login" className="flex items-center gap-3">
             <p className="text-sm text-gray-600 dark:text-gray-400">
               {data.userEmail ?? "Signed in"}

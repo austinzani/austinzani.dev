@@ -12,7 +12,6 @@ import type { FormEvent } from "react";
 import { useMemo, useState } from "react";
 
 import { requireFantasyMember } from "~/utils/fantasy-auth.server";
-import { BreadcrumbItem, Breadcrumbs } from "~/components/Breadcrumb";
 
 type BallotStatus = "upcoming" | "open" | "finished";
 
@@ -1214,16 +1213,8 @@ export default function FantasyFootballTownHallRoute() {
   return (
     <div className="w-full flex justify-center px-3 pb-8">
       <div className="w-full max-w-[64rem]">
-        <Breadcrumbs className="pt-3">
-          <BreadcrumbItem href="/fantasy_football">Fantasy Football</BreadcrumbItem>
-          <BreadcrumbItem href="/fantasy_football/town_hall">Town Hall</BreadcrumbItem>
-        </Breadcrumbs>
-
-        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between mt-2">
-          <div>
-            <h1 className="text-2xl font-bold">Town Hall</h1>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{data.leagueName}</p>
-          </div>
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+          <p className="text-sm text-gray-600 dark:text-gray-400">{data.leagueName}</p>
           <Form method="post" action="/fantasy_football/login" className="flex items-center gap-3">
             <p className="text-sm text-gray-600 dark:text-gray-400">
               {data.userEmail ?? "Signed in"}

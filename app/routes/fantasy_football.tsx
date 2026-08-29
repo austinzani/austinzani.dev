@@ -141,6 +141,24 @@ function getFantasyHeroCopy(pathname: string, latestChampionFirstName: string | 
         };
     }
 
+    if (pathname.includes("/town_hall")) {
+        return {
+            eyebrow: "League Governance",
+            title: "Town Hall",
+            subtitle: "The league's annual vote. Debate the ballot, cast your votes, change next season's rules.",
+            showBack: true,
+        };
+    }
+
+    if (pathname.includes("/rule_submission")) {
+        return {
+            eyebrow: "League Governance",
+            title: "Rule Submission",
+            subtitle: "Pitch a rule change any time of year. Every idea lands on the next Town Hall ballot.",
+            showBack: true,
+        };
+    }
+
     if (pathname.includes("/constitution")) {
         return {
             eyebrow: "League Governance",
@@ -180,11 +198,7 @@ export default function Index() {
     const location = useLocation();
     const hero = getFantasyHeroCopy(location.pathname, latestChampionFirstName);
     const isArchiveRoot = location.pathname === "/fantasy_football" || location.pathname === "/fantasy_football/";
-    const shouldUseArchiveShell = !(
-        location.pathname.includes("/login") ||
-        location.pathname.includes("/town_hall") ||
-        location.pathname.includes("/rule_submission")
-    );
+    const shouldUseArchiveShell = !location.pathname.includes("/login");
 
     return (
         <div className="w-full">
