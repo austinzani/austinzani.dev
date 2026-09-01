@@ -9,13 +9,16 @@
  * be bundled and rendered anywhere. If an amendment ever needs a backtick
  * or "${", escape it (\` or \${).
  *
+ * "{{CHAMP}}" marks the reigning champion's first name — the league is named
+ * after whoever holds the title. Render via getConstitutionMarkdown().
+ *
  * Rendered members-only at /fantasy_football/constitution.
  */
-export const constitutionMarkdown = `# ___’s League to Lose League Constitution
+const constitutionTemplate = `# {{CHAMP}}’s League to Lose League Constitution
 
 ## [1.0 LEAGUE OVERVIEW]
 
-Welcome to ___’s League to Lose. This is a 14-team league that was formed in 2010 by a group of owners at the University of Cincinnati. This league is considered a money league, and all owners are expected to pay their league fee before the draft begins. This league is designed to be a competition between owners, but it is not a cut-throat league where anything goes. The rules described below are designed to act as a guideline for overall league play, and any disputes will be handled by discussion in the league chat but ultimately by the commissioner Austin Zani. Please remember that the overall goal of this league is to have fun and enjoy the game.
+Welcome to {{CHAMP}}’s League to Lose. This is a 14-team league that was formed in 2010 by a group of owners at the University of Cincinnati. This league is considered a money league, and all owners are expected to pay their league fee before the draft begins. This league is designed to be a competition between owners, but it is not a cut-throat league where anything goes. The rules described below are designed to act as a guideline for overall league play, and any disputes will be handled by discussion in the league chat but ultimately by the commissioner Austin Zani. Please remember that the overall goal of this league is to have fun and enjoy the game.
 
 ### [1.2 Living Constitution]
 
@@ -44,7 +47,7 @@ League prize money will be paid out within one month of the completion of the le
 
 ## [3.0 LEAGUE SETUP AND COMPETITION]
 
-___’s League to Lose will consist of 14 different teams. The schedule will be randomly generated, with each team playing every other team at least once in head-to-head match-up.
+{{CHAMP}}’s League to Lose will consist of 14 different teams. The schedule will be randomly generated, with each team playing every other team at least once in head-to-head match-up.
 
 ### [3.1 Playoffs]
 
@@ -88,6 +91,8 @@ Starting lineups in the league will consist as follows:
 
 Owners must set their starting lineup each week. Players may be added or removed from the starting lineup up until the start of their NFL game at which time the players status will be locked.
 
+Sleeper’s auto-substitution feature is enabled for the league. Owners may configure auto-subs so that a starter who is declared inactive is automatically replaced by an eligible bench player at kickoff.
+
 #### [4.4.1 Position Designations]
 
 From time to time, the NFL may change their designation of a particular player from one position to another or a player may line up in multiple positions throughout the game. For example, a wide receiver may be switched to a tight end and vice versa. For the purposes of this league, a players designation will be dictated by the Sleeper app in which our league is conducted.
@@ -121,13 +126,14 @@ Scoring will be computed to two decimal places. This will allow points to be awa
 * 1.0 points for every sack recorded
 * 2.0 points for every safety recorded
 * 2.0 points for every blocked kick
+* 2.0 points for every 4th down stop
 * 6.0 points for each touchdown scored (fumble recovery or kick return)
 
 ### Defense Points Allowed Scoring
 
 | 0 | 1-6 | 7-13 | 14-20 | 21-27 | 28-34 | 35+ |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| 5 | 4 | 3 | 1 | 0 | -1 | -4 |
+| 10 | 4 | 3 | 1 | 0 | -1 | -4 |
 
 ### Defense Yards Allowed Scoring
 
@@ -148,4 +154,27 @@ In the event of a tie for a matchup any given week the tiebreaker will be decide
 On the Saturday of each NFL Draft weekend we will host our Annual League Town Hall meeting. This is the one day every year that we will make major rule changes for the league. Any rule changes will be put to a league vote and must be passed by 9 of 14 teams in the league.
 
 Vice Commish is decided every year at the draft by a physical competition between all interested participants. Competition events are physical in nature, not to exceed 8, and each interested participant must submit an equal amount of events. Competition is decided by average placement in all events. Prior to starting completion, all interested participants must shotgun 2 beers. Current Vice Commish MUST participate every year.
+
+## [7.0 TRADITIONS AND PUNISHMENTS]
+
+### [7.1 Breakfast of Champions]
+
+On draft morning, any owner who has won a league championship prepares their plate first and sits at the main table. Every owner without a ring eats at a folding table with folding chairs.
+
+### [7.2 Last-Place Hot Dog Punishment]
+
+The last-place finisher of the regular season must eat hot dogs for every meal, documented for the group, until they have eaten as many hot dogs as Joey Chestnut ate in that year’s Nathan’s Famous 4th of July Hot Dog Eating Contest.
+
+### [7.3 Destination Draft]
+
+The draft may be held outside the tri-state area in some years (e.g. Las Vegas, a preseason NFL game, a cruise). As with Hocking Hills years, attendance is encouraged but not required. When a destination draft is planned, the destination is chosen separately by the league.
 `;
+
+/**
+ * The constitution with the reigning champion's first name filled in.
+ * Falls back to "Zak" (matching the league shell's hero copy) when the
+ * champion isn't known.
+ */
+export function getConstitutionMarkdown(champFirstName: string | null): string {
+  return constitutionTemplate.replace(/\{\{CHAMP\}\}/g, champFirstName ?? "Zak");
+}

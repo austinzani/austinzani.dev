@@ -5,7 +5,8 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 import { FantasyMain } from "~/components/FantasyFootballUI";
-import { constitutionMarkdown } from "~/content/constitution";
+import { getConstitutionMarkdown } from "~/content/constitution";
+import { useFootballContext } from "~/routes/fantasy_football";
 import { requireFantasyMember } from "~/utils/fantasy-auth.server";
 
 export const meta: MetaFunction = () => [
@@ -92,11 +93,12 @@ const markdownComponents: Components = {
 };
 
 export default function Constitution() {
+  const { latestChampionFirstName } = useFootballContext();
   return (
     <FantasyMain>
       <article className="mx-auto max-w-[760px]">
         <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
-          {constitutionMarkdown}
+          {getConstitutionMarkdown(latestChampionFirstName)}
         </ReactMarkdown>
       </article>
     </FantasyMain>
