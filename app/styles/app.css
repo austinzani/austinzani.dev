@@ -3795,6 +3795,10 @@ video {
     display: table-cell;
   }
 
+  .sm\:aspect-square {
+    aspect-ratio: 1 / 1;
+  }
+
   .sm\:h-16 {
     height: 4rem;
   }
@@ -3805,6 +3809,10 @@ video {
 
   .sm\:h-28 {
     height: 7rem;
+  }
+
+  .sm\:h-auto {
+    height: auto;
   }
 
   .sm\:w-11 {
@@ -3821,6 +3829,10 @@ video {
 
   .sm\:w-28 {
     width: 7rem;
+  }
+
+  .sm\:w-full {
+    width: 100%;
   }
 
   .sm\:grid-cols-2 {

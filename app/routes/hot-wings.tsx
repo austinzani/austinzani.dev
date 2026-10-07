@@ -127,15 +127,15 @@ function PanelistPhoto({ panelist }: { panelist: Panelist }) {
   const { imageFailed, imageRef, markImageFailed } = useImageFailure();
 
   return (
-    <div className="relative flex h-[72px] w-[72px] shrink-0 items-center justify-center overflow-hidden rounded border border-line-muted bg-accent-soft font-display text-3xl text-accent-ink">
+    <div className="relative flex h-[72px] w-[72px] shrink-0 items-center justify-center overflow-hidden rounded border border-line-muted bg-accent-soft font-display text-3xl text-accent-ink sm:aspect-square sm:h-auto sm:w-full sm:text-6xl">
       <span aria-hidden="true">{panelist.initials}</span>
       {!imageFailed && (
         <img
           ref={imageRef}
           src={panelist.image}
           alt={panelist.imageAlt}
-          width="72"
-          height="72"
+          width="800"
+          height="800"
           loading="lazy"
           decoding="async"
           onError={markImageFailed}
