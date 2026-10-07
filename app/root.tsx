@@ -77,11 +77,6 @@ export const links: LinksFunction = () => {
       href: "https://fonts.gstatic.com",
       crossOrigin: "true",
     },
-    {
-      rel: "preload",
-      as: "image",
-      href: "https://bvaxppgdleypbyzyjchu.supabase.co/storage/v1/object/public/images/league_pic.JPG",
-    },
     { rel: "me", href: "https://mastodon.social/@zaniad" },
   ];
 };
@@ -103,10 +98,6 @@ function App() {
         <Meta />
         <Links />
         <NonFlashOfWrongThemeEls ssrTheme={Boolean(data.theme)} />
-        <script
-          src="https://kit.fontawesome.com/84ef1ed513.js"
-          crossOrigin="anonymous"
-        ></script>
       </head>
       <body
         className={
