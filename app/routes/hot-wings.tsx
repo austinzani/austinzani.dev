@@ -127,7 +127,7 @@ function PanelistPhoto({ panelist }: { panelist: Panelist }) {
   const { imageFailed, imageRef, markImageFailed } = useImageFailure();
 
   return (
-    <div className="relative flex h-[72px] w-[72px] shrink-0 items-center justify-center overflow-hidden rounded border border-line-muted bg-accent-soft font-display text-3xl text-accent-ink sm:aspect-square sm:h-auto sm:w-full sm:text-6xl">
+    <div className="relative flex h-[72px] w-[72px] shrink-0 items-center justify-center overflow-hidden rounded border border-line-muted bg-accent-soft font-display text-3xl text-accent-ink min-[700px]:aspect-square min-[700px]:h-auto min-[700px]:w-full min-[700px]:text-6xl">
       <span aria-hidden="true">{panelist.initials}</span>
       {!imageFailed && (
         <img
@@ -207,11 +207,12 @@ export default function HotWings() {
               The panel
             </h2>
           </div>
-          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          {/* Switch directly from a list to one row of four cards at 700px. */}
+          <div className="grid gap-3 min-[700px]:grid-cols-4">
             {event.panelists.map((panelist) => (
               <div
                 key={panelist.name}
-                className="flex min-w-0 gap-4 rounded border border-dashed border-line-muted bg-paper-muted p-4 sm:flex-col sm:p-5"
+                className="flex min-w-0 gap-4 rounded border border-dashed border-line-muted bg-paper-muted p-4 min-[700px]:flex-col min-[700px]:p-3 lg:p-4 xl:p-5"
               >
                 <PanelistPhoto panelist={panelist} />
                 <div className="flex min-w-0 flex-1 flex-col items-start">
