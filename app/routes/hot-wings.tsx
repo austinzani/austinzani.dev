@@ -7,6 +7,10 @@ const event = {
   subtitle: "StartupCincy Week 2026",
   description:
     "Meet the Hot Wings & Hard Truths panel and follow the five-sauce lineup at StartupCincy Week 2026.",
+  url: "https://austinzani.dev/hot-wings",
+  shareImage: "https://austinzani.dev/images/hot-wings/share.jpg",
+  shareImageAlt:
+    "Hot Wings & Hard Truths graphic with portraits of Austin Zani, Paul Ehlinger, Chris Bergman, and Christin Godale",
   panelists: [
     {
       name: "Chris Bergman",
@@ -105,6 +109,17 @@ export const meta: MetaFunction = () => [
   { property: "og:title", content: event.title },
   { property: "og:description", content: event.description },
   { property: "og:type", content: "website" },
+  { property: "og:url", content: event.url },
+  { property: "og:image", content: event.shareImage },
+  { property: "og:image:type", content: "image/jpeg" },
+  { property: "og:image:width", content: "1600" },
+  { property: "og:image:height", content: "900" },
+  { property: "og:image:alt", content: event.shareImageAlt },
+  { name: "twitter:card", content: "summary_large_image" },
+  { name: "twitter:title", content: event.title },
+  { name: "twitter:description", content: event.description },
+  { name: "twitter:image", content: event.shareImage },
+  { name: "twitter:image:alt", content: event.shareImageAlt },
 ];
 
 type Panelist = (typeof event.panelists)[number];
