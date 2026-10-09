@@ -8,6 +8,7 @@ import {
   ScrollRestoration,
   useLoaderData,
 } from "@remix-run/react";
+import { Analytics } from "@vercel/analytics/remix";
 import { Theme } from "~/utils/theme-provider";
 import { getThemeSession } from "~/utils/theme.server";
 import { LoaderFunction } from "@remix-run/node";
@@ -111,6 +112,7 @@ function App() {
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
+        <Analytics />
       </body>
     </html>
   );

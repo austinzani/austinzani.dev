@@ -28,6 +28,7 @@
     "@remix-run/v1-route-convention": "^0.1.4",
     "@remix-run/vercel": "^1.19.3",
     "@supabase/supabase-js": "^2.38.4",
+    "@vercel/analytics": "^2.0.1",
     "@vercel/node": "^2.4.0",
     "dotenv": "^16.3.1",
     "framer-motion": "^10.16.4",
